@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MutatorFX.FluentExtensions</AssemblyName>
+    <RootNamespace>MutatorFX.FluentExtensions</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+</Project>

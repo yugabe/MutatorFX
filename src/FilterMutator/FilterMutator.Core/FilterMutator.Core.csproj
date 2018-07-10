@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
+    <AssemblyName>MutatorFX.FilterMutator.Core</AssemblyName>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FilterMutator.Abstractions\FilterMutator.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
