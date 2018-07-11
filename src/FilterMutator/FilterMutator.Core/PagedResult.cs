@@ -5,7 +5,7 @@ namespace MutatorFX.FilterMutator
 {
     internal sealed class PagedResult<TResult> : IPagedResult<TResult>
     {
-        public PagedResult(IEnumerable<TResult> results, int page, int pageSize, int totalItems)
+        public PagedResult(IQueryable<TResult> results, int page, int pageSize, int totalItems)
         {
             Results = results.ToList();
             Page = page;

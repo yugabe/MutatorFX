@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MutatorFX.FilterMutator
 {
-    public sealed class CompositeQueryExecutor<TSource, TResult, TFilter, TSort, TSourceAccessor, TFilterer, TTransformer, TSorter, TPager>
+    public class CompositeQueryExecutor<TSource, TResult, TFilter, TSort, TSourceAccessor, TFilterer, TTransformer, TSorter, TPager>
         : QueryExecutorBase<TSource, TResult, TFilter, TSort>
         where TSort : Enum
         where TSourceAccessor : ISourceAccessor<TSource>
@@ -21,11 +21,11 @@ namespace MutatorFX.FilterMutator
             Pager = pager;
         }
 
-        public TSourceAccessor SourceAccessor { get; }
-        public TFilterer Filterer { get; }
-        public TTransformer Transformer { get; }
-        public TSorter Sorter { get; }
-        public TPager Pager { get; }
+        public virtual TSourceAccessor SourceAccessor { get; }
+        public virtual TFilterer Filterer { get; }
+        public virtual TTransformer Transformer { get; }
+        public virtual TSorter Sorter { get; }
+        public virtual TPager Pager { get; }
 
         public override IQueryable<TSource> Source => SourceAccessor.Source;
         public override IQueryable<TSource> Filter(IQueryable<TSource> source, TFilter filter) => Filterer.Filter(source, filter);

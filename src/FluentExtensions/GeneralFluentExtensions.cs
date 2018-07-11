@@ -31,11 +31,54 @@ namespace MutatorFX.FluentExtensions
         /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <param name="obj">The object to execute the given action on. Can be null.</param>
         /// <param name="predicate">The precondition to check.</param>
-        /// <param name="action">The action to execute on the object <paramref name="obj"/>. Usually a method with 
-        /// no return value or with a return value that should be ignored.</param>
-        /// <returns>The object itself after the invokation of the action.</returns>
+        /// <param name="actionIf">The action to execute on the object <paramref name="obj"/> when the precondition succeeds.
+        /// Usually a method with no return value or with a return value that should be ignored.</param>
+        /// <param name="actionElse">The action to execute on the object <paramref name="obj"/> when the precondition fails.
+        /// Usually a method with no return value or with a return value that should be ignored. Optional.</param>
+        /// <returns>The object itself after the invokation of either or none of the actions.</returns>
         public static T DoWhen<T>(this T obj, bool predicate, Action<T> actionIf, Action<T> actionElse = null) =>
             predicate ? obj.Do(o => (actionIf ?? throw new ArgumentNullException(nameof(actionIf)))(o)) : obj.Do(o => actionElse?.Invoke(o));
+
+        /// <summary>
+        /// Execute an action with the given object as parameter if a precondition succeeds, then return the object.
+        /// Optionally execute another action, like an if-else statement.
+        /// Useful for creating fluent APIs and shortening two-liners.
+        /// Note that the input object <paramref name="obj"/> can only be mutated by the provided actions if it is a reference type.
+        /// </summary>
+        /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
+        /// <param name="obj">The object to execute the given action on. Can be null.</param>
+        /// <param name="predicate">The precondition to check.</param>
+        /// <param name="actionIf">The action to execute on the object <paramref name="obj"/>. A method with 
+        /// no return value or with a return value that should be ignored.</param>
+        /// <returns>The object itself after the invokation of either or none of the actions.</returns>
+        public static T DoWhen<T>(this T obj, Func<T, bool> predicate, Action<T> actionIf, Action<T> actionElse = null) =>
+            predicate(obj) ? obj.Do(o => (actionIf ?? throw new ArgumentNullException(nameof(actionIf)))(o)) : obj.Do(o => actionElse?.Invoke(o));
+
+        /// <summary>Branch a statement based on the current value.</summary>
+        /// <param name="predicate">The value to check for branching.</param>
+        /// <param name="actionIf">The action to execute when precondition succeeds.</param>
+        /// <param name="actionElse">The action to execute when precondition fails. Optional.</param>
+        public static void Branch(this bool predicate, Action actionIf, Action actionElse = null) =>
+            (predicate ? actionIf ?? throw new ArgumentNullException(nameof(actionIf)) : actionElse)();
+
+        /// <summary>Branch a statement based on the current value.</summary>
+        /// <typeparam name="T">The type of the return value. In most cases, should be inferred.</typeparam>
+        /// <param name="predicate">The value to check for branching.</param>
+        /// <param name="funcIf">The function to execute when precondition succeeds.</param>
+        /// <param name="funcElse">The function to execute when precondition fails. Optional.</param>
+        /// <returns>The result of the appropriate invokation. If no else branch was specified and precondition fails, the default of type <typeparamref name="T"/> is returned.</returns>
+        public static T Branch<T>(this bool predicate, Func<T> funcIf, Func<T> funcElse = null) =>
+            (predicate ? funcIf ?? throw new ArgumentNullException(nameof(funcIf)) : funcElse).Pipe(f => f != null ? f.Invoke() : default);
+
+        /// <summary>Branch a statement based on the current value.</summary>
+        /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
+        /// <typeparam name="TResult">The type of the return value. In most cases, should be inferred.</typeparam>
+        /// <param name="predicate">The value to check for branching.</param>
+        /// <param name="funcIf">The function to execute when precondition succeeds.</param>
+        /// <param name="funcElse">The function to execute when precondition fails. Optional.</param>
+        /// <returns>The result of the appropriate invokation. If no else branch was specified and precondition fails, the default of type <typeparamref name="T"/> is returned.</returns>
+        public static TResult Branch<TResult, T>(this T obj, Func<T, bool> predicate, Func<T, TResult> funcIf, Func<T, TResult> funcElse = null) =>
+            (predicate(obj) ? funcIf ?? throw new ArgumentNullException(nameof(funcIf)) : funcElse).Pipe(f => f != null ? f.Invoke(obj) : default);
 
         /// <summary>
         /// Execute a function with the given object as parameter, and return the result.

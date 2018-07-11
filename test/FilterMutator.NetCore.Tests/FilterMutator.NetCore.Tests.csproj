@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -16,11 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FilterMutator.Abstractions\FilterMutator.Abstractions.csproj" />
-    <ProjectReference Include="..\FilterMutator.Core\FilterMutator.Core.csproj" />
-    <ProjectReference Include="..\FilterMutator.EFCore\FilterMutator.EFCore.csproj" />
-    <ProjectReference Include="..\FilterMutator\FilterMutator.csproj" />
-    <ProjectReference Include="..\FluentExtensions\FluentExtensions.csproj" />
+    <ProjectReference Include="..\..\src\FilterMutator\FilterMutator.Abstractions\FilterMutator.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\FilterMutator\FilterMutator.Core\FilterMutator.Core.csproj" />
+    <ProjectReference Include="..\..\src\FilterMutator\FilterMutator.EFCore\FilterMutator.EFCore.csproj" />
+    <ProjectReference Include="..\..\src\FluentExtensions\FluentExtensions.csproj" />
   </ItemGroup>
 
 </Project>
