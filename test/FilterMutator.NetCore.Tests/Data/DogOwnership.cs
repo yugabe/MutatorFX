@@ -2,6 +2,7 @@
 {
     public class DogOwnership
     {
+        public int Id { get; set; }
         public Dog Dog { get; set; }
         public int DogId { get; set; }
         public Owner Owner { get; set; }

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ReflectionExtensions\ReflectionExtensions.csproj" />
     <ProjectReference Include="..\..\FluentExtensions\FluentExtensions.csproj" />
     <ProjectReference Include="..\FilterMutator.Abstractions\FilterMutator.Abstractions.csproj" />
   </ItemGroup>

@@ -9,15 +9,15 @@ namespace FilterMutator.NetCore.Tests.Data
 {
     public class TestDbContext : DbContext
     {
+        public TestDbContext() => Database.EnsureCreated();
+
         public DbSet<Veterinarian> Vets { get; set; }
         public DbSet<Owner> Owners { get; set; }
         public DbSet<Dog> Dogs { get; set; }
         public DbSet<DogOwnership> DogOwnerships { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseInMemoryDatabase("DogsDB");
-        }
+            => optionsBuilder.UseInMemoryDatabase("DogsDB");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,11 +25,14 @@ namespace FilterMutator.NetCore.Tests.Data
             modelBuilder.Entity<Owner>().HasMany(o => o.OwnedDogs).WithOne(d => d.Owner).HasForeignKey(o => o.OwnerId);
             modelBuilder.Entity<Dog>().HasMany(d => d.Ownerships).WithOne(o => o.Dog).HasForeignKey(o => o.DogId);
 
-            Enumerable.Range(1, 10).For(i => {
+            Enumerable.Range(1, 20).For(i =>
+            {
                 modelBuilder.Entity<Veterinarian>().HasData(new Veterinarian { Id = i, Name = $"Vet_{i}" });
                 modelBuilder.Entity<Owner>().HasData(new Owner { Id = i, Name = $"Owner_{i}" });
                 modelBuilder.Entity<Dog>().HasData(new Dog { Id = i, Name = $"Dog_{i}" });
-                modelBuilder.Entity<DogOwnership>().HasData(new DogOwnership { DogId = i, OwnerId = i, VetId = i });
+                modelBuilder.Entity<DogOwnership>().HasData(
+                    new DogOwnership { Id = i * 2, DogId = i, OwnerId = i, VetId = i },
+                    new DogOwnership { Id = i * 2 - 1, DogId = i % 2, OwnerId = i * 2, VetId = i });
             });
         }
     }

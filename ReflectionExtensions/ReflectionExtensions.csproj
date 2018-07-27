@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MutatorFX.ReflectionExtensions</AssemblyName>
+    <RootNamespace>MutatorFX.ReflectionExtensions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\FluentExtensions\FluentExtensions.csproj" />
+  </ItemGroup>
+
+</Project>
