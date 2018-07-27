@@ -85,22 +85,6 @@ namespace MutatorFX.FluentExtensions
         /// Useful to create fluent APIs and shorten code by closing on the object <paramref name="obj"/>.
         /// Instead of a simple invocation, you can create a closure on the object <paramref name="obj"/> and reuse the variable in the <paramref name="function"/> scope.
         /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="function"/> if it is a reference type.
-        /// <seealso cref="Pipe{T, TResult}(T, Func{T, TResult})"/> is an alias for <seealso cref="Select{T, TResult}(T, Func{T, TResult})"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the object <paramref name="obj"/>. Has to be a reference type so that structures won't be copied. Should be inferred.</typeparam>
-        /// <typeparam name="TResult">The type of the invokation result of <paramref name="function"/>. Should be inferred.</typeparam>
-        /// <param name="obj">The object to call the provided function <paramref name="function"/> on.</param>
-        /// <param name="function">The function to call with the parameter <paramref name="obj"/> and return the resulting value of.</param>
-        /// <returns>Returns the result of the function invokation of <paramref name="function"/> with the parameter <paramref name="obj"/>.</returns>
-        public static TResult Select<T, TResult>(this T obj, Func<T, TResult> function) where T : class =>
-            function(obj);
-
-        /// <summary>
-        /// Execute a function with the given object as parameter, and return the result.
-        /// Useful to create fluent APIs and shorten code by closing on the object <paramref name="obj"/>.
-        /// Instead of a simple invocation, you can create a closure on the object <paramref name="obj"/> and reuse the variable in the <paramref name="function"/> scope.
-        /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="function"/> if it is a reference type.
-        /// This is an alias for <seealso cref="Select{T, TResult}(T, Func{T, TResult})"/>.
         /// </summary>
         /// <typeparam name="T">The type of the object <paramref name="obj"/>. Has to be a reference type so that structures won't be copied. Should be inferred.</typeparam>
         /// <typeparam name="TResult">The type of the invokation result of <paramref name="function"/>. Should be inferred.</typeparam>
@@ -108,7 +92,7 @@ namespace MutatorFX.FluentExtensions
         /// <param name="function">The function to call with the parameter <paramref name="obj"/> and return the resulting value of.</param>
         /// <returns>Returns the result of the function invokation of <paramref name="function"/> with the parameter <paramref name="obj"/>.</returns>
         public static TResult Pipe<T, TResult>(this T obj, Func<T, TResult> function) where T : class =>
-            Select(obj, function);
+            function(obj);
 
         /// <summary>
         /// Execute the provided <paramref name="action"/> for all elements in the <paramref name="source"/> collection.

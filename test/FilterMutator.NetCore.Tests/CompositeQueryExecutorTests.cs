@@ -41,12 +41,7 @@ namespace FilterMutator.NetCore.Tests
             var executor = new CompositeQueryExecutor<DogOwnership,
                 DogOwnershipDto,
                 DogOwnershipFilter,
-                DogOwnershipSort,
-                DbSetSourceAccessor<TestDbContext, DogOwnership>,
-                NoopFilterer<DogOwnership, DogOwnershipFilter>,
-                DogOwnershipToDtoTransformer,
-                PropertyChainNameSorter<DogOwnership, DogOwnershipSort>,
-                SimplePager<DogOwnershipDto>>(new DbSetSourceAccessor<TestDbContext, DogOwnership>(context),
+                DogOwnershipSort>(new DbSetSourceAccessor<TestDbContext, DogOwnership>(context),
                 new NoopFilterer<DogOwnership, DogOwnershipFilter>(),
                 new DogOwnershipToDtoTransformer(),
                 new PropertyChainNameSorter<DogOwnership, DogOwnershipSort>(),
@@ -58,12 +53,7 @@ namespace FilterMutator.NetCore.Tests
         public class DogOwnershipQueryExecutor : CompositeQueryExecutor<DogOwnership,
             DogOwnershipDto,
             DogOwnershipFilter,
-            DogOwnershipSort,
-            DbSetSourceAccessor<TestDbContext, DogOwnership>,
-            NoopFilterer<DogOwnership, DogOwnershipFilter>,
-            DogOwnershipToDtoTransformer,
-            PropertyChainNameSorter<DogOwnership, DogOwnershipSort>,
-            SimplePager<DogOwnershipDto>>
+            DogOwnershipSort>
         {
             public DogOwnershipQueryExecutor(DbSetSourceAccessor<TestDbContext, DogOwnership> sourceAccessor, NoopFilterer<DogOwnership, DogOwnershipFilter> filterer, DogOwnershipToDtoTransformer transformer, PropertyChainNameSorter<DogOwnership, DogOwnershipSort> sorter, SimplePager<DogOwnershipDto> pager) : base(sourceAccessor, filterer, transformer, sorter, pager)
             {

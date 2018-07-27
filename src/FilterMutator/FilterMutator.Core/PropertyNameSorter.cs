@@ -17,6 +17,6 @@ namespace MutatorFX.FilterMutator
         public override Expression<Func<TSource, object>> KeySelector(TSort sort) =>
             typeof(TSource).GetProperty(Enum.GetName(typeof(TSort), sort)).Branch(p => p == null,
                 funcIf: p => throw new InvalidOperationException($"The enum value name {Enum.GetName(typeof(TSort), sort)} for type {typeof(TSort).FullName} was not found as a public property name for sorting in {typeof(TSource).FullName}."), 
-                funcElse: property => Parameter(typeof(TSource), char.ToLower(typeof(TSource).Name.First()).ToString()).Select(parameter => Lambda<Func<TSource, object>>(MakeMemberAccess(parameter, property), parameter)));
+                funcElse: property => Parameter(typeof(TSource), char.ToLower(typeof(TSource).Name.First()).ToString()).Pipe(parameter => Lambda<Func<TSource, object>>(MakeMemberAccess(parameter, property), parameter)));
     }
 }

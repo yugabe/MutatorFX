@@ -3,16 +3,11 @@ using System.Linq;
 
 namespace MutatorFX.FilterMutator
 {
-    public class CompositeQueryExecutor<TSource, TResult, TFilter, TSort, TSourceAccessor, TFilterer, TTransformer, TSorter, TPager>
+    public class CompositeQueryExecutor<TSource, TResult, TFilter, TSort>
         : QueryExecutorBase<TSource, TResult, TFilter, TSort>
         where TSort : Enum
-        where TSourceAccessor : ISourceAccessor<TSource>
-        where TFilterer : IFilterer<TSource, TFilter>
-        where TTransformer : ITransformer<TSource, TResult>
-        where TSorter : ISorter<TSource, TSort>
-        where TPager : IPager<TResult>
     {
-        public CompositeQueryExecutor(TSourceAccessor sourceAccessor, TFilterer filterer, TTransformer transformer, TSorter sorter, TPager pager)
+        public CompositeQueryExecutor(ISourceAccessor<TSource> sourceAccessor, IFilterer<TSource, TFilter> filterer, ITransformer<TSource, TResult> transformer, ISorter<TSource, TSort> sorter, IPager<TResult> pager)
         {
             SourceAccessor = sourceAccessor;
             Filterer = filterer;
@@ -21,11 +16,11 @@ namespace MutatorFX.FilterMutator
             Pager = pager;
         }
 
-        public virtual TSourceAccessor SourceAccessor { get; }
-        public virtual TFilterer Filterer { get; }
-        public virtual TTransformer Transformer { get; }
-        public virtual TSorter Sorter { get; }
-        public virtual TPager Pager { get; }
+        public virtual ISourceAccessor<TSource> SourceAccessor { get; }
+        public virtual IFilterer<TSource, TFilter> Filterer { get; }
+        public virtual ITransformer<TSource, TResult> Transformer { get; }
+        public virtual ISorter<TSource, TSort> Sorter { get; }
+        public virtual IPager<TResult> Pager { get; }
 
         public override IQueryable<TSource> Source => SourceAccessor.Source;
         public override IQueryable<TSource> Filter(IQueryable<TSource> source, TFilter filter) => Filterer.Filter(source, filter);
