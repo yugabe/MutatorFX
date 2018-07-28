@@ -85,8 +85,8 @@ namespace FilterMutator.NetCore.Tests
                 .AddSingleton(typeof(SimplePager<>))
                 .AddScoped<CustomQueryExecutor>()
                 .BuildServiceProvider()
-                .Do(sp => sp.GetRequiredService<CustomQueryExecutor>()
-                    .ExecuteQuery(new DogFilter { Id = 4 }, 0, 10, DogSort.OwnerName, true));
+                .GetRequiredService<CustomQueryExecutor>()
+                    .ExecuteQuery(new DogFilter { Id = 4 }, 0, 10, DogSort.OwnerName, true);
 
         }
     }
