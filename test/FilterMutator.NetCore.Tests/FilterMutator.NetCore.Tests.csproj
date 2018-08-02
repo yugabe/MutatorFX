@@ -19,7 +19,6 @@
     <ProjectReference Include="..\..\src\FilterMutator\FilterMutator.Abstractions\FilterMutator.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\FilterMutator\FilterMutator.Core\FilterMutator.Core.csproj" />
     <ProjectReference Include="..\..\src\FilterMutator\FilterMutator.EFCore\FilterMutator.EFCore.csproj" />
-    <ProjectReference Include="..\..\src\FluentExtensions\FluentExtensions.csproj" />
   </ItemGroup>
 
 </Project>

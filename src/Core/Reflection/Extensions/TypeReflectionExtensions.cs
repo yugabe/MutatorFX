@@ -1,10 +1,9 @@
-﻿using MutatorFX.FluentExtensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace MutatorFX.ReflectionExtensions
+namespace MutatorFX.Reflection
 {
     public static class TypeReflectionExtensions
     {

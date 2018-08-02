@@ -1,5 +1,5 @@
-﻿using MutatorFX.FluentExtensions;
-using MutatorFX.ReflectionExtensions;
+﻿using MutatorFX.Coding;
+using MutatorFX.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;

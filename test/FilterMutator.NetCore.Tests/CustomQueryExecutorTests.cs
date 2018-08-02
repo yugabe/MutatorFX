@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MutatorFX.FilterMutator;
 using MutatorFX.FilterMutator.EFCore;
-using MutatorFX.FluentExtensions;
+using MutatorFX.Coding;
 using System;
 using System.Collections.Generic;
 using System.Linq;

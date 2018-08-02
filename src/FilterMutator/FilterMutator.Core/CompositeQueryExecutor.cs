@@ -3,8 +3,7 @@ using System.Linq;
 
 namespace MutatorFX.FilterMutator
 {
-    public class CompositeQueryExecutor<TSource, TResult, TFilter, TSort>
-        : QueryExecutorBase<TSource, TResult, TFilter, TSort>
+    public class CompositeQueryExecutor<TSource, TResult, TFilter, TSort> : QueryExecutorBase<TSource, TResult, TFilter, TSort>
         where TSort : Enum
     {
         public CompositeQueryExecutor(ISourceAccessor<TSource> sourceAccessor, IFilterer<TSource, TFilter> filterer, ITransformer<TSource, TResult> transformer, ISorter<TSource, TSort> sorter, IPager<TResult> pager)
