@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace MutatorFX.FilterMutator
 {
-    public abstract class ExpressionTransformer<TSource, TResult> : ITransformer<TSource, TResult>
+    public class ExpressionTransformer<TSource, TResult> : ITransformer<TSource, TResult>
     {
         public ExpressionTransformer(Expression<Func<TSource, TResult>> transformExpression) => 
             TransformExpression = transformExpression ?? throw new ArgumentNullException(nameof(transformExpression));

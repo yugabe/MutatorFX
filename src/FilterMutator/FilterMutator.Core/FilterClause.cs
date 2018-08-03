@@ -40,7 +40,7 @@ namespace MutatorFX.FilterMutator
         public Expression<Func<TSource, bool>> GetOnDisabledFilterPredicate() => OnDisabledFilterPredicate ?? (s => true);
 
         public bool IsClauseEnabled(TFilter filter)
-            => IsClauseEnabledFunc?.Invoke(filter) ?? EqualityComparer<TClause>.Default.Equals(GetClause(filter), default);
+            => IsClauseEnabledFunc?.Invoke(filter) ?? !EqualityComparer<TClause>.Default.Equals(GetClause(filter), default);
 
         public virtual IQueryable<TSource> Execute(IQueryable<TSource> source, TFilter filter)
             => source.Where(IsClauseEnabled(filter) ? GetFilterPredicate(filter) ?? (s => true) : GetOnDisabledFilterPredicate());

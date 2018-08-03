@@ -9,7 +9,19 @@ namespace FilterMutator.NetCore.Tests.Data
 {
     public class TestDbContext : DbContext
     {
-        public TestDbContext() => Database.EnsureCreated();
+        private static readonly object _syncRoot = new object();
+        private static bool Initialized;
+
+        public TestDbContext()
+        {
+            if (!Initialized)
+                lock (_syncRoot)
+                    if (!Initialized)
+                    {
+                        Database.EnsureCreated();
+                        Initialized = true;
+                    }
+        }
 
         public DbSet<Veterinarian> Vets { get; set; }
         public DbSet<Owner> Owners { get; set; }
@@ -29,7 +41,7 @@ namespace FilterMutator.NetCore.Tests.Data
             {
                 modelBuilder.Entity<Veterinarian>().HasData(new Veterinarian { Id = i, Name = $"Vet_{i}" });
                 modelBuilder.Entity<Owner>().HasData(new Owner { Id = i, Name = $"Owner_{i}" });
-                modelBuilder.Entity<Dog>().HasData(new Dog { Id = i, Name = $"Dog_{i}" });
+                modelBuilder.Entity<Dog>().HasData(new Dog { Id = i, Name = $"Dog_{i}", ParentId = i % 3 == 0 ? i - 2 : default });
                 modelBuilder.Entity<DogOwnership>().HasData(
                     new DogOwnership { Id = i * 2, DogId = i, OwnerId = i, VetId = i },
                     new DogOwnership { Id = i * 2 - 1, DogId = i % 2, OwnerId = i * 2, VetId = i });

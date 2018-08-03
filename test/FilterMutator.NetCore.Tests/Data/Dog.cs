@@ -6,6 +6,8 @@ namespace FilterMutator.NetCore.Tests.Data
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int? ParentId { get; set; }
+        public Dog Parent { get; set; }
         public ICollection<DogOwnership> Ownerships { get; set; }
     }
 }

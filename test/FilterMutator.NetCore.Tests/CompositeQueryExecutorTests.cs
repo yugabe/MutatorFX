@@ -1,4 +1,5 @@
 ﻿using FilterMutator.NetCore.Tests.Data;
+using FilterMutator.NetCore.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MutatorFX.FilterMutator;
 using MutatorFX.FilterMutator.EFCore;
@@ -10,29 +11,8 @@ using System.Text;
 namespace FilterMutator.NetCore.Tests
 {
     [TestClass]
-    public class CompositeQueryExecutorTests
+    public partial class CompositeQueryExecutorTests
     {
-        public class DogOwnershipDto
-        {
-            public int Id { get; set; }
-        }
-
-        public class DogOwnershipFilter
-        {
-            public string OwnerName { get; set; }
-        }
-
-        public enum DogOwnershipSort
-        {
-            DogId, OwnerId, VetId, OwnerName
-        }
-
-        public class DogOwnershipToDtoTransformer : ITransformer<DogOwnership, DogOwnershipDto>
-        {
-            public IQueryable<DogOwnershipDto> Transform(IQueryable<DogOwnership> source)
-                => source.Select(d => new DogOwnershipDto { Id = d.Id });
-        }
-
         [TestMethod]
         public void CanComposeSimpleQueryExecutor()
         {
@@ -48,16 +28,6 @@ namespace FilterMutator.NetCore.Tests
                 new SimplePager<DogOwnershipDto>());
 
             var result = executor.ExecuteQuery(new DogOwnershipFilter { OwnerName = "Alma" }, 2, 10, DogOwnershipSort.OwnerName, true);
-        }
-
-        public class DogOwnershipQueryExecutor : CompositeQueryExecutor<DogOwnership,
-            DogOwnershipDto,
-            DogOwnershipFilter,
-            DogOwnershipSort>
-        {
-            public DogOwnershipQueryExecutor(DbSetSourceAccessor<TestDbContext, DogOwnership> sourceAccessor, NoopFilterer<DogOwnership, DogOwnershipFilter> filterer, DogOwnershipToDtoTransformer transformer, PropertyChainNameSorter<DogOwnership, DogOwnershipSort> sorter, SimplePager<DogOwnershipDto> pager) : base(sourceAccessor, filterer, transformer, sorter, pager)
-            {
-            }
         }
     }
 }

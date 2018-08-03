@@ -9,33 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using FilterMutator.NetCore.Tests;
 
 namespace FilterMutator.NetCore.Tests
 {
     [TestClass]
-    public class CustomQueryExecutorTests
+    public partial class CustomQueryExecutorTests
     {
-        public class DogDto
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string OwnerName { get; set; }
-            public ICollection<int> SiblingDogIds { get; set; }
-        }
-
-        public class DogFilter
-        {
-            public int? Id { get; set; }
-            public int? MinId { get; set; }
-            public int? MaxId { get; set; }
-            public string OwnerNameLike { get; set; }
-        }
-
-        public enum DogSort
-        {
-            OwnerName
-        }
-
         public class CustomQueryExecutor : QueryExecutorBase<Dog, DogDto, DogFilter, DogSort>
         {
             public CustomQueryExecutor(ISourceAccessor<Dog> source, IPager<DogDto> pager, ISorter<Dog, DogSort> sorter)
@@ -71,7 +51,7 @@ namespace FilterMutator.NetCore.Tests
                 {
                     Id = d.Id,
                     Name = d.Name,
-                    OwnerName = d.Ownerships.First().Owner.Name,
+                    OwnerNames = d.Ownerships.Select(o => o.Owner.Name).ToList(),
                     SiblingDogIds = d.Ownerships.Select(o => o.DogId).Where(i => i != d.Id).ToList()
                 });
         }
@@ -86,7 +66,7 @@ namespace FilterMutator.NetCore.Tests
                 .AddScoped<CustomQueryExecutor>()
                 .BuildServiceProvider()
                 .GetRequiredService<CustomQueryExecutor>()
-                    .ExecuteQuery(new DogFilter { Id = 4 }, 0, 10, DogSort.OwnerName, true);
+                    .ExecuteQuery(new DogFilter { Id = 4 }, 0, 10, DogSort.Id, true);
 
         }
     }
