@@ -6,6 +6,7 @@ namespace MutatorFX.FilterMutator
 {
     public interface IFilterClause<TSource, in TFilter>
     {
+        Expression ClauseExpression { get; }
         object GetClause(TFilter filter);
         bool IsClauseEnabled(TFilter filter);
         Expression<Func<TSource, bool>> GetFilterPredicate(TFilter filter);
