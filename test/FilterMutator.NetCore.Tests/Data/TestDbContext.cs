@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MutatorFX.FluentExtensions;
+using MutatorFX.Coding;
 
 namespace FilterMutator.NetCore.Tests.Data
 {

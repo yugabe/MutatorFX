@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MutatorFX.FluentExtensions
+namespace MutatorFX.Coding
 {
     public static class GeneralFluentExtensions
     {
