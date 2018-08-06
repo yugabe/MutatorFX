@@ -7,6 +7,6 @@
     <Description>FilterMutator abstractions for extending basic functionality via inversion of control.</Description>
     <PackageTags>Mutator, MutatorFX, framework, FilterMutator, abstractions</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/src/res/filtermutator-logo.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/filtermutator-logo.png</PackageIconUrl>
   </PropertyGroup>
 </Project>

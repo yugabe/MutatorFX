@@ -7,7 +7,7 @@
     <Description>Reusable, generic filtering framework for all .NET applications.</Description>
     <PackageTags>Mutator, MutatorFX, framework, FilterMutator, filtering, querying</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/src/res/filtermutator-logo.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/filtermutator-logo.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>

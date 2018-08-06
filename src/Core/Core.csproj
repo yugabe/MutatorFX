@@ -7,6 +7,6 @@
     <Description>Coding helpers, general extension methods for MutatorFX projects. Includes Fluent and Reflection extensions for use across projects.</Description>
     <PackageTags>Mutator, MutatorFX, framework, coding conventions, helpers, extensions, reflection</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/src/res/mutatorfx-logo.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/mutatorfx-logo.png</PackageIconUrl>
   </PropertyGroup>
 </Project>
