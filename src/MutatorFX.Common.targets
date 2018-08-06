@@ -1,0 +1,15 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <Version>1.0.0-beta1</Version>
+    <Authors>Gabe Szabo</Authors>
+    <Company>MutatorSoft</Company>
+    <Copyright>https://github.com/yugabe/MutatorFX/blob/master/LICENSE</Copyright>
+    <PackageLicenseUrl>https://github.com/yugabe/MutatorFX</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/yugabe/MutatorFX</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yugabe/MutatorFX</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+</Project>

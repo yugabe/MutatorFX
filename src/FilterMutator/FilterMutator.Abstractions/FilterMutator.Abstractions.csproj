@@ -1,10 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets"/>
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
-    <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
     <AssemblyName>MutatorFX.FilterMutator.Abstractions</AssemblyName>
+    <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
+    <Product>MutatorFX.FilterMutator.Abstractions</Product>
+    <Description>FilterMutator abstractions for extending basic functionality via inversion of control.</Description>
+    <PackageTags>Mutator, MutatorFX, framework, FilterMutator, abstractions</PackageTags>
+    <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/src/res/filtermutator-logo.png</PackageIconUrl>
   </PropertyGroup>
-
 </Project>

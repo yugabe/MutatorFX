@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets"/>
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MutatorFX.Core</AssemblyName>
     <RootNamespace>MutatorFX</RootNamespace>
-    <LangVersion>Latest</LangVersion>
+    <Product>MutatorFX.Core</Product>
+    <Description>Coding helpers, general extension methods for MutatorFX projects. Includes Fluent and Reflection extensions for use across projects.</Description>
+    <PackageTags>Mutator, MutatorFX, framework, coding conventions, helpers, extensions, reflection</PackageTags>
+    <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/src/res/mutatorfx-logo.png</PackageIconUrl>
   </PropertyGroup>
-
 </Project>

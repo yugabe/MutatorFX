@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets"/>
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
     <AssemblyName>MutatorFX.FilterMutator.Core</AssemblyName>
-    <LangVersion>7.3</LangVersion>
+    <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
+    <Product>MutatorFX.FilterMutator</Product>
+    <Description>Reusable, generic filtering framework for all .NET applications.</Description>
+    <PackageTags>Mutator, MutatorFX, framework, FilterMutator, filtering, querying</PackageTags>
+    <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/src/res/filtermutator-logo.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
