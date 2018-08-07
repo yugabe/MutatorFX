@@ -10,6 +10,7 @@ namespace MutatorFX.Reflection
         /// <summary>
         /// Gets the first available property chain that matches the start of the given text. The text should be the concatenation of the property names. 
         /// In case of multiple matches, the first match is selected by ordering the properties by ascending order of the length of their names.
+        /// In case of no matches are found, an <see cref="InvalidOperationException"/> is thrown.
         /// </summary>
         /// <remarks> This method uses recursion, and calls <see cref="GetPropertyChains(Type, string, BindingFlags)"/> internally.</remarks>
         /// <param name="type">The type that should contain the properties described by the <paramref name="text"/>.</param>

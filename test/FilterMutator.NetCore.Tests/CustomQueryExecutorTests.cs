@@ -61,12 +61,13 @@ namespace FilterMutator.NetCore.Tests
         {
             var results = new ServiceCollection().AddDbContext<TestDbContext>()
                 .AddTransient<DbContext>(s => s.GetRequiredService<TestDbContext>())
-                .AddScoped(typeof(DbSetSourceAccessor<>))
-                .AddSingleton(typeof(SimplePager<>))
+                .AddScoped(typeof(ISourceAccessor<>), typeof(DbSetSourceAccessor<>))
+                .AddSingleton(typeof(IPager<>), typeof(SimplePager<>))
+                .AddSingleton(typeof(ISorter<,>), typeof(PropertyChainNameSorter<,>))
                 .AddScoped<CustomQueryExecutor>()
                 .BuildServiceProvider()
                 .GetRequiredService<CustomQueryExecutor>()
-                    .ExecuteQuery(new DogFilter { Id = 4 }, 0, 10, DogSort.Id, true);
+                    .ExecuteQuery(new DogFilter { Id = 4 }, 1, 10, DogSort.Id, true);
 
         }
     }
