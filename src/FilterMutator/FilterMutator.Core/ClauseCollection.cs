@@ -27,10 +27,10 @@ namespace MutatorFX.FilterMutator
         /// </summary>
         /// <typeparam name="TClause">The type of the selected clause from <typeparamref name="TFilter"/>. Should be inferred.</typeparam>
         /// <param name="filterClauseSelector">The accessor used to get the clause value from a filter.</param>
-        /// <param name="filterPredicate">The predicate factory that's used to generate the <see cref="Expression{Func{TSource, bool}}"/> based on the current clause value.</param>
+        /// <param name="filterPredicate">The predicate factory that's used to generate the filtering expression based on the current clause value.</param>
         /// <param name="onDisabledFilterPredicate">A predicate that is used when the clause is considered disabled for a given filter. The default returns a constant true value for each item in the collection.</param>
         /// <param name="isClauseEnabled">A function that determines whether the current clause is enabled for a given filter.</param>
-        /// <param name="options">Additional options that can be passed to the clause. Will be converted to a <see cref="Dictionary{string, object}"/>, so the keys should be unique amongst the parameters.</param>
+        /// <param name="options">Additional options that can be passed to the clause. Will be converted to a <see cref="string"/>-<see cref="string"/> <see cref="Dictionary{TKey, TValue}"/>, so the keys should be unique amongst the parameters.</param>
         /// <returns>The current collection after that clause was added to it.</returns>
         public ClauseCollection<TSource, TFilter> AddClause<TClause>(Expression<Func<TFilter, TClause>> filterClauseSelector,
             Func<TClause, Expression<Func<TSource, bool>>> filterPredicate,

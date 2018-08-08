@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace MutatorFX.Coding
 {
+    /// <summary>
+    /// Globally usable extensions for creating fluent style APIs.
+    /// </summary>
     public static class GeneralFluentExtensions
     {
         /// <summary>
@@ -48,8 +51,8 @@ namespace MutatorFX.Coding
         /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <param name="obj">The object to execute the given action on. Can be null.</param>
         /// <param name="predicate">The precondition to check.</param>
-        /// <param name="actionIf">The action to execute on the object <paramref name="obj"/>. A method with 
-        /// no return value or with a return value that should be ignored.</param>
+        /// <param name="actionIf">The action to execute on the object <paramref name="obj"/> when the predicate resolves to true.</param>
+        /// <param name="actionElse">The optional action to execute on the object <paramref name="obj"/> when the predicate resolves to false.</param>
         /// <returns>The object itself after the invokation of either or none of the actions.</returns>
         public static T Branch<T>(this T obj, Func<T, bool> predicate, Action<T> actionIf, Action<T> actionElse = null)
             => predicate(obj) ? obj.Do(o => (actionIf ?? throw new ArgumentNullException(nameof(actionIf)))(o)) : obj.Do(o => actionElse?.Invoke(o));
@@ -64,8 +67,8 @@ namespace MutatorFX.Coding
         /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <param name="obj">The object to execute the given action on. Can be null.</param>
         /// <param name="predicate">The precondition to check.</param>
-        /// <param name="actionIf">The action to execute on the object <paramref name="obj"/>. A method with 
-        /// no return value or with a return value that should be ignored.</param>
+        /// <param name="actionIf">The action to execute on the object <paramref name="obj"/> when the predicate resolves to true.</param>
+        /// <param name="actionElse">The optional action to execute on the object <paramref name="obj"/> when the predicate resolves to false.</param>
         /// <returns>The object itself after the invokation of either or none of the actions.</returns>
         public static async Task<T> BranchAsync<T>(this T obj, Func<T, Task<bool>> predicate, Func<T, Task> actionIf, Func<T, Task> actionElse = null)
             => await (await predicate(obj) ? obj.DoAsync(async o => await (actionIf ?? throw new ArgumentNullException(nameof(actionIf)))(o)) : obj.DoAsync(async o => await (actionElse != null ? actionElse.Invoke(o) : Task.CompletedTask)));
@@ -73,6 +76,7 @@ namespace MutatorFX.Coding
         /// <summary>Branch a statement based on the current value.</summary>
         /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <typeparam name="TResult">The type of the return value. In most cases, should be inferred.</typeparam>
+        /// <param name="obj">The object to base the branching on.</param>
         /// <param name="predicate">The value to check for branching.</param>
         /// <param name="funcIf">The function to execute when precondition succeeds.</param>
         /// <param name="funcElse">The function to execute when precondition fails. Optional.</param>
@@ -86,6 +90,7 @@ namespace MutatorFX.Coding
         /// </summary>
         /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <typeparam name="TResult">The type of the return value. In most cases, should be inferred.</typeparam>
+        /// <param name="obj">The object to base the branching on.</param>
         /// <param name="predicate">The value to check for branching.</param>
         /// <param name="funcIf">The function to execute when precondition succeeds.</param>
         /// <param name="funcElse">The function to execute when precondition fails. Optional.</param>
@@ -144,6 +149,7 @@ namespace MutatorFX.Coding
         /// <typeparam name="T">The type of the collection elements. Should be inferred.</typeparam>
         /// <param name="source">The collection to enumerate and execute the provided <paramref name="action"/> on. Can not be null.</param>
         /// <param name="action">The action to execute on the <paramref name="source"/> collection. Can not be null.</param>
+        /// <param name="lazy">Using lazy evaluation executes the action once as the <paramref name="source"/> is being enumerated, otherwise a full enumeration happens and each element is called on the <paramref name="action"/>.</param>
         /// <returns>Returns the elements of <paramref name="source"/> one by one after being invoked on <paramref name="action"/>, or after all has been invoked depending on the value of <paramref name="lazy"/>.</returns>
         public static IEnumerable<T> For<T>(this IEnumerable<T> source, Action<T> action, bool lazy)
             => (source ?? throw new ArgumentNullException(nameof(source))).ForInternal(action ?? throw new ArgumentNullException(nameof(action))).Branch(e => !lazy, e => e.ToArray());

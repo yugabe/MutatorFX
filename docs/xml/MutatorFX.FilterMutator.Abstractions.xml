@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MutatorFX.FilterMutator.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:MutatorFX.FilterMutator.IFilterClause`2">
+            <summary>
+            The common interface for clauses that can describe elements in a filter object.
+            </summary>
+            <typeparam name="TSource">The source object type which filtering occurs on.</typeparam>
+            <typeparam name="TFilter">The type of the filter used for filtering.</typeparam>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.IFilterClause`2.ClauseExpression">
+            <summary>
+            The expression which selects the clause. It is usually a <see cref="T:System.Linq.Expressions.LambdaExpression"/>, which encapsulates a <see cref="T:System.Func`2"/> delegate.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IFilterClause`2.GetClause(`1)">
+            <summary>
+            The value of the clause selected from the filter by the <see cref="P:MutatorFX.FilterMutator.IFilterClause`2.ClauseExpression"/>.
+            </summary>
+            <param name="filter">The filter to get the clause from.</param>
+            <returns>The value of the clause, as returned by the clause selector (<see cref="P:MutatorFX.FilterMutator.IFilterClause`2.ClauseExpression"/>).</returns>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IFilterClause`2.IsClauseEnabled(`1)">
+            <summary>
+            Indicates whether the clause is enabled or not on a given filter.
+            </summary>
+            <param name="filter">The filter to check to determine whether the clause is enabled or not.</param>
+            <returns>True if the clause is enabled and should be evaluated.</returns>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IFilterClause`2.GetFilterPredicate(`1)">
+            <summary>
+            The predicate that can be passed to the filtering function.
+            </summary>
+            <param name="filter">The filter to use the values from. Can also use the clause selector expression 
+            to get the clause value and check whether the clause is enabled.</param>
+            <returns>An expression encapsulating a predicate typed delegate, which determines whether an element
+            matches the given clause for the given filter values or not.</returns>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IFilterClause`2.GetOnDisabledFilterPredicate">
+            <summary>
+            A fallback expression that should be used when a cluase is disabled. A good default can be a function
+            that returns the constant true value, thus not filtering the input set of data.
+            </summary>
+            <returns>The fallback expression to use when the clause is disabled.</returns>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IFilterClause`2.Execute(System.Linq.IQueryable{`0},`1)">
+            <summary>
+            Executes the clause on the given IQueryable datasource.
+            </summary>
+            <param name="source">The source dataset to filter.</param>
+            <param name="filter">The filter to apply to the dataset for this clause.</param>
+            <returns>The filtered dataset, represented by a queryable object.</returns>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.IFilterer`2">
+            <summary>
+            The interface which represents an object that can apply filtering to a dataset.
+            </summary>
+            <typeparam name="TSource">The source type to apply filtering to.</typeparam>
+            <typeparam name="TFilter">The filter type to use when filtering.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IFilterer`2.Filter(System.Linq.IQueryable{`0},`1)">
+            <summary>
+            Filter a given dataset with a given filter object.
+            </summary>
+            <param name="source">The source to apply filtering to.</param>
+            <param name="filter">The filter to use for filtering.</param>
+            <returns>The filtered dataset, represented by a queryable object.</returns>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.IPagedResult`1">
+            <summary>
+            An encapsulating object, which can provide a set of results and paging metadata.
+            </summary>
+            <typeparam name="TResult">The result of the object type.</typeparam>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.Results">
+            <summary>
+            The immutable collection of result objects materialized.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.TotalItems">
+            <summary>
+            The number of total items before paging was applied.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.Page">
+            <summary>
+            The page this object contains results for.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.PageSize">
+            <summary>
+            The size of the page this object contains results for.
+            </summary>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.IPager`1">
+            <summary>
+            Represents an object which can create a paged result in the form of a queryable object.
+            </summary>
+            <typeparam name="TResult">The type of the elements in the resultset.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IPager`1.Page(System.Linq.IQueryable{`0},System.Int32,System.Int32)">
+            <summary>
+            Apply paging to a queryable object. The source should refer to the full dataset to be paged.
+            </summary>
+            <param name="source">The source objects represented in the form of a queryable object.</param>
+            <param name="page">The 1-based page number requested. Should be positive.</param>
+            <param name="pageSize">The size of the page requested. Should be positive.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.IQueryExecutor`3">
+            <summary>
+            Represents an object which can filter, page and sort a dataset.
+            </summary>
+            <typeparam name="TFilter">The filter object type to use for filtering.</typeparam>
+            <typeparam name="TSort">The sorting enum type to use when ordering the resultset.</typeparam>
+            <typeparam name="TResult">The type of the objects included in the paged result object.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.IQueryExecutor`3.ExecuteQuery(`0,System.Int32,System.Int32,`1,System.Boolean)">
+            <summary>
+            Executes filtering on a source dataset with the given parameters.
+            </summary>
+            <param name="filter">The filter object used to filter the source dataset.</param>
+            <param name="page">The 1-based page number to use for paging the results.</param>
+            <param name="pageSize">The size of the page to use for paging the results.</param>
+            <param name="sorting">The sorting value to use when querying the source dataset.</param>
+            <param name="sortDescending">The order of sorting to use when querying the source dataset.</param>
+            <returns>The filtered, sorted and paged resultset and paging metadata.</returns>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.ISorter`2">
+            <summary>
+            Represents an implementation of a sorting algorithm based on a typed enum.
+            </summary>
+            <typeparam name="TSource">The source item type to sort.</typeparam>
+            <typeparam name="TSort"></typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.ISorter`2.Sort(System.Linq.IQueryable{`0},`1,System.Boolean)">
+            <summary>
+            Sort a given dataset by the provided sort enum value and order.
+            </summary>
+            <param name="filtered">The filtered dataset to sort.</param>
+            <param name="sort">The sort value to sort the dataset by.</param>
+            <param name="sortDescending">Whether to order the resultset in descending or ascending order.</param>
+            <returns>The sorted queryable object.</returns>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.ISourceAccessor`1">
+            <summary>
+            Represents an object that can provide an <see cref="T:System.Linq.IQueryable`1"/> datasource.
+            </summary>
+            <typeparam name="TSource">The type of the elements in the source dataset.</typeparam>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.ISourceAccessor`1.Source">
+            <summary>
+            The <typeparamref name="TSource"/> elements, represented by a queryable object.
+            </summary>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.ITransformer`2">
+            <summary>
+            Represents a transformation between the types <typeparamref name="TSource"/> and <typeparamref name="TResult"/>.
+            </summary>
+            <typeparam name="TSource">The source type to transform objects from.</typeparam>
+            <typeparam name="TResult">The result type to transform objects to.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.ITransformer`2.Transform(System.Linq.IQueryable{`0})">
+            <summary>
+            Apply a transformation to a queryable of source objects, which produce a queryable of result objects.
+            </summary>
+            <param name="source">The source queryable to transform.</param>
+            <returns>The transformed elements of <typeparamref name="TSource"/>.</returns>
+        </member>
+    </members>
+</doc>

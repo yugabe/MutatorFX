@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MutatorFX.FilterMutator.EFCore</name>
+    </assembly>
+    <members>
+        <member name="T:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`2">
+            <summary>
+            An <see cref="T:MutatorFX.FilterMutator.ISourceAccessor`1"/>, which provides the given entity type <typeparamref name="TEntity"/> from a <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> <typeparamref name="TDbContext"/>.
+            Uses the context's <see cref="M:Microsoft.EntityFrameworkCore.DbContext.Set``1"/> method to access the queryable datasource.
+            For single type parameter matching (i.e. when using dependency injection with unbound generics), inherit from this type and constrain the <typeparamref name="TDbContext"/> type. 
+            Alternatively, you can use the <see cref="T:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`1"/> type which inherits from this type with the base <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> implementation as <typeparamref name="TDbContext"/>.
+            </summary>
+            <typeparam name="TDbContext">The context used to access the data source.</typeparam>
+            <typeparam name="TEntity">The entity type which is used to access the context's <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`2.#ctor(`0)">
+            <summary>
+            Create an instance of this class with the given context to use when accessing its <typeparamref name="TEntity"/> <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>.
+            </summary>
+            <param name="dbContext">The context to use to access the <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>.</param>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`2.Source">
+            <summary>
+            The source dataset accessor. Uses the <see cref="P:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`2.DbContext"/>'s <see cref="M:Microsoft.EntityFrameworkCore.DbContext.Set``1"/> method for access.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`2.DbContext">
+            <summary>
+            The context used to access the datasource queryable.
+            </summary>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`1">
+            <summary>
+            A <see cref="T:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`2"/>, which accepts any <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> as the <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>'s accessor.
+            </summary>
+            <typeparam name="TEntity">The entity type used in accessing the <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>'s <see cref="M:Microsoft.EntityFrameworkCore.DbContext.Set``1"/> method.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.EFCore.DbSetSourceAccessor`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
+            <summary>
+            Create an instance of this class with the given context to use when accessing its <typeparamref name="TEntity"/> <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>.
+            </summary>
+            <param name="dbContext">The context to use to access the <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>.</param>
+        </member>
+    </members>
+</doc>

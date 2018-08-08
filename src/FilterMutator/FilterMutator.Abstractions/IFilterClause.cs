@@ -12,7 +12,7 @@ namespace MutatorFX.FilterMutator
     public interface IFilterClause<TSource, in TFilter>
     {
         /// <summary>
-        /// The expression which selects the clause. It is usually a <see cref="LambdaExpression"/>, which encapsulates a <see cref="Func{T, bool}"/> delegate.
+        /// The expression which selects the clause. It is usually a <see cref="LambdaExpression"/>, which encapsulates a <see cref="Func{T, TResult}"/> delegate.
         /// </summary>
         Expression ClauseExpression { get; }
 

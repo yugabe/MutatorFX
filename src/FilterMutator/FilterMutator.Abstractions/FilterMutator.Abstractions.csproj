@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets"/>
   <PropertyGroup>
     <AssemblyName>MutatorFX.FilterMutator.Abstractions</AssemblyName>
     <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
@@ -9,4 +8,5 @@
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/filtermutator-logo.png</PackageIconUrl>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets"/>
 </Project>

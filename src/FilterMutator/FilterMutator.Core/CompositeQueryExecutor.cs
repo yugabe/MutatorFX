@@ -14,6 +14,14 @@ namespace MutatorFX.FilterMutator
     public class CompositeQueryExecutor<TSource, TResult, TFilter, TSort> : QueryExecutorBase<TSource, TResult, TFilter, TSort>
         where TSort : Enum
     {
+        /// <summary>
+        /// Create a new instance of the <see cref="CompositeQueryExecutor{TSource, TResult, TFilter, TSort}"/> with all its implementation details injected via constructor.
+        /// </summary>
+        /// <param name="sourceAccessor">The source accessor used to acces the <typeparamref name="TSource"/> elements.</param>
+        /// <param name="filterer">The filterer implementation used to filter the dataset.</param>
+        /// <param name="transformer">The transformation object that can transform the <typeparamref name="TSource"/> types to <typeparamref name="TResult"/> types.</param>
+        /// <param name="sorter"></param>
+        /// <param name="pager"></param>
         public CompositeQueryExecutor(ISourceAccessor<TSource> sourceAccessor, IFilterer<TSource, TFilter> filterer, ITransformer<TSource, TResult> transformer, ISorter<TSource, TSort> sorter, IPager<TResult> pager)
         {
             SourceAccessor = sourceAccessor;

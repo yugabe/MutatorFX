@@ -108,7 +108,7 @@ namespace Core.Tests
             Assert.AreEqual((false, false, List), (ifRan, elseRan, retVal));
 
             (ifRan, elseRan) = (false, false);
-            retVal = await List.BranchAsync(async l => await Task.FromResult(l.Count > 50), async l => { await Task.Delay(100); ifRan = true; }, async l => elseRan = true);
+            retVal = await List.BranchAsync(async l => await Task.FromResult(l.Count > 50), async l => { await Task.Delay(100); ifRan = true; }, async l => await Task.FromResult(elseRan = true));
             Assert.AreEqual((false, true, List), (ifRan, elseRan, retVal));
         }
 
@@ -124,7 +124,7 @@ namespace Core.Tests
             Assert.AreEqual((false, false, 0), (ifRan, elseRan, retVal2));
 
             (ifRan, elseRan) = (false, false);
-            var retVal3 = await List.BranchAsync(async l => await Task.FromResult(l.Count > 50), async l => { await Task.Delay(100); ifRan = true; return l.Count; }, async l => { elseRan = true; return l.Count; });
+            var retVal3 = await List.BranchAsync(async l => await Task.FromResult(l.Count > 50), async l => { await Task.Delay(100); ifRan = true; return l.Count; }, async l => { elseRan = true; return await Task.FromResult(l.Count); });
             Assert.AreEqual((false, true, 50), (ifRan, elseRan, retVal3));
         }
     }

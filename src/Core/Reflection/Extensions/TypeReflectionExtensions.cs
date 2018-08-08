@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace MutatorFX.Reflection
 {
+    /// <summary>
+    /// Globally usable helper extensions, useful when using reflection and <see cref="Type"/> objects.
+    /// </summary>
     public static class TypeReflectionExtensions
     {
         /// <summary>
@@ -12,7 +15,7 @@ namespace MutatorFX.Reflection
         /// In case of multiple matches, the first match is selected by ordering the properties by ascending order of the length of their names.
         /// In case of no matches are found, an <see cref="InvalidOperationException"/> is thrown.
         /// </summary>
-        /// <remarks> This method uses recursion, and calls <see cref="GetPropertyChains(Type, string, BindingFlags)"/> internally.</remarks>
+        /// <remarks> This method uses recursion, and calls <see cref="GetPropertyChains(Type, string, BindingFlags?)"/> internally.</remarks>
         /// <param name="type">The type that should contain the properties described by the <paramref name="text"/>.</param>
         /// <param name="text">The string containing the exact names of the chained properties (without separators).</param>
         /// <param name="bindingFlags">The <seealso cref="BindingFlags"/> to use when looking for matching properties.</param>

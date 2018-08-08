@@ -15,6 +15,10 @@ namespace MutatorFX.FilterMutator.EFCore
         where TDbContext : DbContext
         where TEntity : class
     {
+        /// <summary>
+        /// Create an instance of this class with the given context to use when accessing its <typeparamref name="TEntity"/> <see cref="DbSet{TEntity}"/>.
+        /// </summary>
+        /// <param name="dbContext">The context to use to access the <see cref="DbSet{TEntity}"/>.</param>
         public DbSetSourceAccessor(TDbContext dbContext) => DbContext = dbContext;
 
         /// <summary>
@@ -35,6 +39,10 @@ namespace MutatorFX.FilterMutator.EFCore
     public class DbSetSourceAccessor<TEntity> : DbSetSourceAccessor<DbContext, TEntity>
         where TEntity : class
     {
+        /// <summary>
+        /// Create an instance of this class with the given context to use when accessing its <typeparamref name="TEntity"/> <see cref="DbSet{TEntity}"/>.
+        /// </summary>
+        /// <param name="dbContext">The context to use to access the <see cref="DbSet{TEntity}"/>.</param>
         public DbSetSourceAccessor(DbContext dbContext) : base(dbContext) { }
     }
 }
