@@ -1,5 +1,4 @@
 ﻿using MutatorFX.Coding;
-using MutatorFX.QueryMutator.MappingBuilders;
 using MutatorFX.QueryMutator.MemberMappings;
 using MutatorFX.Reflection;
 using System;
@@ -19,7 +18,7 @@ namespace MutatorFX.QueryMutator
         public static IMappingBuilder<TSource, TTarget> MapMatchingPropertyChains<TSource, TTarget>(this IMappingBuilder<TSource, TTarget> builder)
             => builder.Do(b => typeof(TTarget).GetProperties().For(p => typeof(TSource).GetPropertyChains(p.Name).FirstOrDefault()?.Branch((IEnumerable<PropertyInfo> ch) => ch != null, ch => builder.Add(new PropertyChainMapping<TSource, TTarget>(builder.SourceParameter, p, ch)))));
 
-        public static IParameterizedMappingBuilder<TSource, TTarget, TParameter> MapMember<TSource, TTarget, TParameter, TMember>(this IParameterizedMappingBuilder<TSource, TTarget, TParameter> builder, Expression<Func<TTarget, TMember>> memberSelector, Func<TParameter, Expression<Func<TSource, TMember>>> mappingExpression)
+        public static IMappingBuilder<TSource, TTarget, TParameter> MapMember<TSource, TTarget, TParameter, TMember>(this IMappingBuilder<TSource, TTarget, TParameter> builder, Expression<Func<TTarget, TMember>> memberSelector, Func<TParameter, Expression<Func<TSource, TMember>>> mappingExpression)
             => builder.Add(new ParameterizedCustomMemberMapping<TSource, TTarget, TMember, TParameter>(builder.SourceParameter, memberSelector, mappingExpression));
     }
 }

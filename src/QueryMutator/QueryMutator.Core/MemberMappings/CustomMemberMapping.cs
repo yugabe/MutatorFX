@@ -23,9 +23,8 @@ namespace MutatorFX.QueryMutator.MemberMappings
 
     public class CustomMemberMapping<TSource, TTarget, TMember, TParameter> : MemberMapping<TSource, TTarget, TParameter>
     {
-        public override Expression GenerateExpression(TParameter parameter)
+        public CustomMemberMapping(ParameterExpression sourceParameter, MemberInfo targetMember) : base(sourceParameter, targetMember)
         {
-            throw new NotImplementedException();
         }
     }
 }

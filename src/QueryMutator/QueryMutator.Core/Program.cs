@@ -12,11 +12,12 @@ namespace MutatorFX.QueryMutator
         [STAThread]
         public static void Main()
         {
-            var kutyaToDtoMapping = Mapping<Kutya, KutyaDto>.Create(mapping => mapping
+            var kutyaToDtoMapping = Mapping<Kutya, KutyaDto, int>.Create(mapping => mapping
+                .MapMember(k => k.Parameterized, p => k => k.Id * p)
                 .MapMatchingPropertyChains()
                 .MapMember(k => k.DtoProperty, kk => kk.EntityProperty)
                 .IgnoreMember(k => k.Ignored)
-                .WithParameter<int>(b => b.MapMember(k => k.Parameterized, p => k => k.Id * p)));
+                );
 
             var kutyak = new[] {
                 new Kutya
@@ -26,7 +27,7 @@ namespace MutatorFX.QueryMutator
                     Ignored = "IGNORE!"
                 }, new Kutya { },
                 new Kutya { Id = 3, Name = "Pimpedli", EntityProperty = 10 } };
-            var dtok = kutyak.AsQueryable().Select(kutyaToDtoMapping.With(2)).ToList();
+            var dtok = kutyak.AsQueryable().Select(kutyaToDtoMapping, 2).ToList();
         }
     }
 

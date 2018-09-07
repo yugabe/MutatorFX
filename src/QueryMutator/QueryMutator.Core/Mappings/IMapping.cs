@@ -8,7 +8,6 @@ namespace MutatorFX.QueryMutator
     public interface ISimpleMapping<TSource, TTarget>
     {
         ParameterExpression SourceParameter { get; }
-        IEnumerable<MemberMapping<TSource, TTarget>> MemberMappings { get; }
     }
     public interface IMapping<TSource, TTarget> : ISimpleMapping<TSource, TTarget>
     {
