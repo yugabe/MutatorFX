@@ -2,22 +2,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace MutatorFX.QueryMutator.MemberMappings
 {
-    public class CustomMemberMapping<TSource, TTarget, TProperty> : MemberMapping<TSource, TTarget>
+    public class CustomMemberMapping<TSource, TTarget, TMember> : MemberMapping<TSource, TTarget>
     {
-        public CustomMemberMapping(ParameterExpression sourceParameter, Expression<Func<TTarget, TProperty>> memberSelector, Expression<Func<TSource, TProperty>> mappingExpression) : base(sourceParameter, null)
+        public CustomMemberMapping(ParameterExpression sourceParameter, Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) : base(sourceParameter, (memberSelector.Body as MemberExpression).Member)
         {
-            TargetMember = (memberSelector.Body as MemberExpression).Member;
             MemberSelector = memberSelector;
             Expression = mappingExpression;
         }
 
-        public Expression<Func<TTarget, TProperty>> MemberSelector { get; }
-        public Expression<Func<TSource, TProperty>> Expression { get; }
+        public Expression<Func<TTarget, TMember>> MemberSelector { get; }
+        public Expression<Func<TSource, TMember>> Expression { get; }
 
         public override Expression GenerateExpression() => Expression.ReplaceParameter(SourceParameter);
+    }
+
+    public class CustomMemberMapping<TSource, TTarget, TMember, TParameter> : MemberMapping<TSource, TTarget, TParameter>
+    {
+        public override Expression GenerateExpression(TParameter parameter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

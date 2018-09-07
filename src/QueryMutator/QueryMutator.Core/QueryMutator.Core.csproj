@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>MutatorFX.QueryMutator.Core</AssemblyName>
     <RootNamespace>MutatorFX.QueryMutator</RootNamespace>
     <Product>MutatorFX.QueryMutator</Product>
@@ -8,14 +7,9 @@
     <PackageTags>Mutator, MutatorFX, framework, QueryMutator, querying, mapping, AutoMapper</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/querymutator-logo.png</PackageIconUrl>
-    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
   <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
 </Project>
