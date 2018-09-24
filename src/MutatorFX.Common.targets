@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>Latest</LangVersion>
-    <Version>1.0.0-beta2</Version>
+    <Version>1.0.0-beta3</Version>
     <Authors>Gabe Szabo</Authors>
     <Company>MutatorSoft</Company>
     <Copyright>https://github.com/yugabe/MutatorFX/blob/master/LICENSE</Copyright>
