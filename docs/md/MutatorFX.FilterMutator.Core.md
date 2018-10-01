@@ -47,7 +47,6 @@
   - [MutatorFX#FilterMutator#IFilterClause{TSource,TFilter}#GetClause(filter)](#M-MutatorFX-FilterMutator-FilterClause`3-MutatorFX#FilterMutator#IFilterClause{TSource,TFilter}#GetClause-`1- 'MutatorFX.FilterMutator.FilterClause`3.MutatorFX#FilterMutator#IFilterClause{TSource,TFilter}#GetClause(`1)')
 - [NoopFilterer\`2](#T-MutatorFX-FilterMutator-NoopFilterer`2 'MutatorFX.FilterMutator.NoopFilterer`2')
   - [Filter(source,filter)](#M-MutatorFX-FilterMutator-NoopFilterer`2-Filter-System-Linq-IQueryable{`0},`1- 'MutatorFX.FilterMutator.NoopFilterer`2.Filter(System.Linq.IQueryable{`0},`1)')
-- [PagedResult\`1](#T-MutatorFX-FilterMutator-PagedResult`1 'MutatorFX.FilterMutator.PagedResult`1')
 - [PropertyChainNameSorter\`2](#T-MutatorFX-FilterMutator-PropertyChainNameSorter`2 'MutatorFX.FilterMutator.PropertyChainNameSorter`2')
   - [Lookup](#P-MutatorFX-FilterMutator-PropertyChainNameSorter`2-Lookup 'MutatorFX.FilterMutator.PropertyChainNameSorter`2.Lookup')
   - [KeySelector(sort)](#M-MutatorFX-FilterMutator-PropertyChainNameSorter`2-KeySelector-`1- 'MutatorFX.FilterMutator.PropertyChainNameSorter`2.KeySelector(`1)')
@@ -748,24 +747,6 @@ The `source` object.
 | ---- | ---- | ----------- |
 | source | [System.Linq.IQueryable{\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{`0}') | This object is returned. |
 | filter | [\`1](#T-`1 '`1') | This object is ignored. |
-
-<a name='T-MutatorFX-FilterMutator-PagedResult`1'></a>
-## PagedResult\`1 `type`
-
-##### Namespace
-
-MutatorFX.FilterMutator
-
-##### Summary
-
-Internal, trivial [IPagedResult\`1](#T-MutatorFX-FilterMutator-IPagedResult`1 'MutatorFX.FilterMutator.IPagedResult`1') implementation. 
-            All objects aquired as constructor parameters are provided via properties.
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| TResult | The type of the objects in the result dataset. |
 
 <a name='T-MutatorFX-FilterMutator-PropertyChainNameSorter`2'></a>
 ## PropertyChainNameSorter\`2 `type`

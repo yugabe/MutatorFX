@@ -20,13 +20,13 @@ namespace MutatorFX.FilterMutator
         /// <param name="sorting">The sorting used when querying the dataset.</param>
         /// <param name="sortDescending">Whether to use descending ordering of the results in the dataset.</param>
         /// <returns></returns>
-        public virtual IPagedResult<TResult> ExecuteQuery(TFilter filter, int page, int pageSize, TSort sorting, bool sortDescending)
+        public virtual PagedResult<TResult> ExecuteQuery(TFilter filter, int page, int pageSize, TSort sorting, bool sortDescending)
         {
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter), "The provided filter must not be null.");
 
             var results = Filter(Source, filter);
-            return new PagedResult<TResult>(Page(Transform(Sort(results, sorting, sortDescending)), page, pageSize), page, pageSize, results.Count());
+            return new PagedResult<TResult>(Page(Transform(Sort(results, sorting, sortDescending)), page, pageSize).ToList(), page, pageSize, results.Count());
         }
 
         /// <summary>

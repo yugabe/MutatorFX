@@ -8,7 +8,7 @@ namespace MutatorFX.FilterMutator
     /// <typeparam name="TFilter">The filter object type to use for filtering.</typeparam>
     /// <typeparam name="TSort">The sorting enum type to use when ordering the resultset.</typeparam>
     /// <typeparam name="TResult">The type of the objects included in the paged result object.</typeparam>
-    public interface IQueryExecutor<in TFilter, in TSort, out TResult>
+    public interface IQueryExecutor<in TFilter, in TSort, TResult>
         where TSort : Enum
     {
         /// <summary>
@@ -20,6 +20,6 @@ namespace MutatorFX.FilterMutator
         /// <param name="sorting">The sorting value to use when querying the source dataset.</param>
         /// <param name="sortDescending">The order of sorting to use when querying the source dataset.</param>
         /// <returns>The filtered, sorted and paged resultset and paging metadata.</returns>
-        IPagedResult<TResult> ExecuteQuery(TFilter filter, int page, int pageSize, TSort sorting, bool sortDescending);
+        PagedResult<TResult> ExecuteQuery(TFilter filter, int page, int pageSize, TSort sorting, bool sortDescending);
     }
 }
