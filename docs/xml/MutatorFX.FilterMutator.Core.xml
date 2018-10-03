@@ -338,13 +338,6 @@
             <param name="filter">This object is ignored.</param>
             <returns>The <paramref name="source"/> object.</returns>
         </member>
-        <member name="T:MutatorFX.FilterMutator.PagedResult`1">
-            <summary>
-            Internal, trivial <see cref="T:MutatorFX.FilterMutator.IPagedResult`1"/> implementation. 
-            All objects aquired as constructor parameters are provided via properties.
-            </summary>
-            <typeparam name="TResult">The type of the objects in the result dataset.</typeparam>
-        </member>
         <member name="T:MutatorFX.FilterMutator.PropertyChainNameSorter`2">
             <summary>
             A sorter object that can be used to apply sorting to a given source dataset.

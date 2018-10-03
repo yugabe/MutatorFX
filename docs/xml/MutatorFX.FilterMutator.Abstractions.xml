@@ -69,32 +69,6 @@
             <param name="filter">The filter to use for filtering.</param>
             <returns>The filtered dataset, represented by a queryable object.</returns>
         </member>
-        <member name="T:MutatorFX.FilterMutator.IPagedResult`1">
-            <summary>
-            An encapsulating object, which can provide a set of results and paging metadata.
-            </summary>
-            <typeparam name="TResult">The result of the object type.</typeparam>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.Results">
-            <summary>
-            The immutable collection of result objects materialized.
-            </summary>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.TotalItems">
-            <summary>
-            The number of total items before paging was applied.
-            </summary>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.Page">
-            <summary>
-            The page this object contains results for.
-            </summary>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.IPagedResult`1.PageSize">
-            <summary>
-            The size of the page this object contains results for.
-            </summary>
-        </member>
         <member name="T:MutatorFX.FilterMutator.IPager`1">
             <summary>
             Represents an object which can create a paged result in the form of a queryable object.
@@ -169,6 +143,41 @@
             </summary>
             <param name="source">The source queryable to transform.</param>
             <returns>The transformed elements of <typeparamref name="TSource"/>.</returns>
+        </member>
+        <member name="T:MutatorFX.FilterMutator.PagedResult`1">
+            <summary>
+            An encapsulating object, which can provide a set of results and paging metadata.
+            </summary>
+            <typeparam name="TResult">The type of the objects in the result dataset.</typeparam>
+        </member>
+        <member name="M:MutatorFX.FilterMutator.PagedResult`1.#ctor(System.Collections.Generic.IReadOnlyList{`0},System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a PagedResult object, which sets all relevant paging metadata for the given resultset.
+            </summary>
+            <param name="results">The results to contain with this paging object.</param>
+            <param name="page">The page the relevant results are listed for.</param>
+            <param name="pageSize">The size of the page for which the relevant results are listed for.</param>
+            <param name="totalItems">The number of total items for which this object contains one page of.</param>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.PagedResult`1.Results">
+            <summary>
+            The results contained on the page represented by this object.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.PagedResult`1.TotalItems">
+            <summary>
+            The total number of source items regarding the current objects paging metadata.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.PagedResult`1.Page">
+            <summary>
+            The page of results this object represents.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.FilterMutator.PagedResult`1.PageSize">
+            <summary>
+            The size of the page for the results this object represents.
+            </summary>
         </member>
     </members>
 </doc>

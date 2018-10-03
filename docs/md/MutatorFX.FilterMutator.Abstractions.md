@@ -12,11 +12,6 @@
   - [IsClauseEnabled(filter)](#M-MutatorFX-FilterMutator-IFilterClause`2-IsClauseEnabled-`1- 'MutatorFX.FilterMutator.IFilterClause`2.IsClauseEnabled(`1)')
 - [IFilterer\`2](#T-MutatorFX-FilterMutator-IFilterer`2 'MutatorFX.FilterMutator.IFilterer`2')
   - [Filter(source,filter)](#M-MutatorFX-FilterMutator-IFilterer`2-Filter-System-Linq-IQueryable{`0},`1- 'MutatorFX.FilterMutator.IFilterer`2.Filter(System.Linq.IQueryable{`0},`1)')
-- [IPagedResult\`1](#T-MutatorFX-FilterMutator-IPagedResult`1 'MutatorFX.FilterMutator.IPagedResult`1')
-  - [Page](#P-MutatorFX-FilterMutator-IPagedResult`1-Page 'MutatorFX.FilterMutator.IPagedResult`1.Page')
-  - [PageSize](#P-MutatorFX-FilterMutator-IPagedResult`1-PageSize 'MutatorFX.FilterMutator.IPagedResult`1.PageSize')
-  - [Results](#P-MutatorFX-FilterMutator-IPagedResult`1-Results 'MutatorFX.FilterMutator.IPagedResult`1.Results')
-  - [TotalItems](#P-MutatorFX-FilterMutator-IPagedResult`1-TotalItems 'MutatorFX.FilterMutator.IPagedResult`1.TotalItems')
 - [IPager\`1](#T-MutatorFX-FilterMutator-IPager`1 'MutatorFX.FilterMutator.IPager`1')
   - [Page(source,page,pageSize)](#M-MutatorFX-FilterMutator-IPager`1-Page-System-Linq-IQueryable{`0},System-Int32,System-Int32- 'MutatorFX.FilterMutator.IPager`1.Page(System.Linq.IQueryable{`0},System.Int32,System.Int32)')
 - [IQueryExecutor\`3](#T-MutatorFX-FilterMutator-IQueryExecutor`3 'MutatorFX.FilterMutator.IQueryExecutor`3')
@@ -27,6 +22,12 @@
   - [Source](#P-MutatorFX-FilterMutator-ISourceAccessor`1-Source 'MutatorFX.FilterMutator.ISourceAccessor`1.Source')
 - [ITransformer\`2](#T-MutatorFX-FilterMutator-ITransformer`2 'MutatorFX.FilterMutator.ITransformer`2')
   - [Transform(source)](#M-MutatorFX-FilterMutator-ITransformer`2-Transform-System-Linq-IQueryable{`0}- 'MutatorFX.FilterMutator.ITransformer`2.Transform(System.Linq.IQueryable{`0})')
+- [PagedResult\`1](#T-MutatorFX-FilterMutator-PagedResult`1 'MutatorFX.FilterMutator.PagedResult`1')
+  - [#ctor(results,page,pageSize,totalItems)](#M-MutatorFX-FilterMutator-PagedResult`1-#ctor-System-Collections-Generic-IReadOnlyList{`0},System-Int32,System-Int32,System-Int32- 'MutatorFX.FilterMutator.PagedResult`1.#ctor(System.Collections.Generic.IReadOnlyList{`0},System.Int32,System.Int32,System.Int32)')
+  - [Page](#P-MutatorFX-FilterMutator-PagedResult`1-Page 'MutatorFX.FilterMutator.PagedResult`1.Page')
+  - [PageSize](#P-MutatorFX-FilterMutator-PagedResult`1-PageSize 'MutatorFX.FilterMutator.PagedResult`1.PageSize')
+  - [Results](#P-MutatorFX-FilterMutator-PagedResult`1-Results 'MutatorFX.FilterMutator.PagedResult`1.Results')
+  - [TotalItems](#P-MutatorFX-FilterMutator-PagedResult`1-TotalItems 'MutatorFX.FilterMutator.PagedResult`1.TotalItems')
 
 <a name='T-MutatorFX-FilterMutator-IFilterClause`2'></a>
 ## IFilterClause\`2 `type`
@@ -175,51 +176,6 @@ The filtered dataset, represented by a queryable object.
 | ---- | ---- | ----------- |
 | source | [System.Linq.IQueryable{\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{`0}') | The source to apply filtering to. |
 | filter | [\`1](#T-`1 '`1') | The filter to use for filtering. |
-
-<a name='T-MutatorFX-FilterMutator-IPagedResult`1'></a>
-## IPagedResult\`1 `type`
-
-##### Namespace
-
-MutatorFX.FilterMutator
-
-##### Summary
-
-An encapsulating object, which can provide a set of results and paging metadata.
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| TResult | The result of the object type. |
-
-<a name='P-MutatorFX-FilterMutator-IPagedResult`1-Page'></a>
-### Page `property`
-
-##### Summary
-
-The page this object contains results for.
-
-<a name='P-MutatorFX-FilterMutator-IPagedResult`1-PageSize'></a>
-### PageSize `property`
-
-##### Summary
-
-The size of the page this object contains results for.
-
-<a name='P-MutatorFX-FilterMutator-IPagedResult`1-Results'></a>
-### Results `property`
-
-##### Summary
-
-The immutable collection of result objects materialized.
-
-<a name='P-MutatorFX-FilterMutator-IPagedResult`1-TotalItems'></a>
-### TotalItems `property`
-
-##### Summary
-
-The number of total items before paging was applied.
 
 <a name='T-MutatorFX-FilterMutator-IPager`1'></a>
 ## IPager\`1 `type`
@@ -392,3 +348,64 @@ The transformed elements of `TSource`.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | source | [System.Linq.IQueryable{\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{`0}') | The source queryable to transform. |
+
+<a name='T-MutatorFX-FilterMutator-PagedResult`1'></a>
+## PagedResult\`1 `type`
+
+##### Namespace
+
+MutatorFX.FilterMutator
+
+##### Summary
+
+An encapsulating object, which can provide a set of results and paging metadata.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TResult | The type of the objects in the result dataset. |
+
+<a name='M-MutatorFX-FilterMutator-PagedResult`1-#ctor-System-Collections-Generic-IReadOnlyList{`0},System-Int32,System-Int32,System-Int32-'></a>
+### #ctor(results,page,pageSize,totalItems) `constructor`
+
+##### Summary
+
+Create a PagedResult object, which sets all relevant paging metadata for the given resultset.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| results | [System.Collections.Generic.IReadOnlyList{\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IReadOnlyList 'System.Collections.Generic.IReadOnlyList{`0}') | The results to contain with this paging object. |
+| page | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | The page the relevant results are listed for. |
+| pageSize | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | The size of the page for which the relevant results are listed for. |
+| totalItems | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | The number of total items for which this object contains one page of. |
+
+<a name='P-MutatorFX-FilterMutator-PagedResult`1-Page'></a>
+### Page `property`
+
+##### Summary
+
+The page of results this object represents.
+
+<a name='P-MutatorFX-FilterMutator-PagedResult`1-PageSize'></a>
+### PageSize `property`
+
+##### Summary
+
+The size of the page for the results this object represents.
+
+<a name='P-MutatorFX-FilterMutator-PagedResult`1-Results'></a>
+### Results `property`
+
+##### Summary
+
+The results contained on the page represented by this object.
+
+<a name='P-MutatorFX-FilterMutator-PagedResult`1-TotalItems'></a>
+### TotalItems `property`
+
+##### Summary
+
+The total number of source items regarding the current objects paging metadata.

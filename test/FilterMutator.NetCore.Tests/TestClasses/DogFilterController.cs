@@ -14,7 +14,7 @@ namespace FilterMutator.NetCore.Tests.TestClasses
 
         public IQueryExecutor<DogFilter, DogSort, DogDto> QueryExecutor { get; }
 
-        public IPagedResult<DogDto> GetFilteredItems(DogFilter filter)
+        public PagedResult<DogDto> GetFilteredItems(DogFilter filter)
         {
             return QueryExecutor.ExecuteQuery(filter, 1, 5, DogSort.ParentName, true);
         }
