@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MutatorFX.FilterMutator.Core</AssemblyName>
     <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
     <Product>MutatorFX.FilterMutator</Product>

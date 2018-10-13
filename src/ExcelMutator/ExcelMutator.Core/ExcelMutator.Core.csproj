@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MutatorFX.ExcelMutator.Core</AssemblyName>
+    <RootNamespace>MutatorFX.ExcelMutator</RootNamespace>
+    <Product>MutatorFX.ExcelMutator.Core</Product>
+    <Description>ExcelMutator for EPPlus can be used to import/export strongly typed data structures using .xlsx files declaratively.</Description>
+    <PackageTags>Mutator, MutatorFX, framework, ExcelMutator, EPPlus</PackageTags>
+    <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/excelmutator-logo.png</PackageIconUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="[4.5.1,)"></PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
+</Project>

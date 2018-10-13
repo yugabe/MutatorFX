@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MutatorFX.QueryMutator.Core</AssemblyName>
     <RootNamespace>MutatorFX.QueryMutator</RootNamespace>
     <Product>MutatorFX.QueryMutator</Product>
@@ -14,8 +14,4 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
   <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
 </Project>
