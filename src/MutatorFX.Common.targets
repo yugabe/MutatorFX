@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>Latest</LangVersion>
-    <Version>1.0.0-beta5</Version>
+    <Version>1.0.0-beta6</Version>
     <Authors>Gabe Szabo</Authors>
     <Company>MutatorSoft</Company>
     <Copyright>https://github.com/yugabe/MutatorFX/blob/master/LICENSE</Copyright>

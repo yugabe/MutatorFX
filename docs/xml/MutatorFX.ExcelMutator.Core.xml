@@ -17,6 +17,12 @@
             </summary>
             <param name="name">The name of the header row to match the cell contents againts. Not case sensitive.</param>
         </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.ParserType">
+            <summary>
+            The type of IParser to use. Will be instantiated with <see cref="M:System.Activator.CreateInstance(System.Type)"/>. 
+            The resulting object will be cached and reused. The default uses the attribute itself to parse.
+            </summary>
+        </member>
         <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.Name">
             <summary>
             The name of the header row to match the cell contents againts. Not case sensitive.
@@ -99,6 +105,19 @@
             <param name="worksheet">The worksheet to parse. It should match the structure of the type <typeparamref name="T"/>.</param>
             <returns>The resultset of <typeparamref name="T"/> objects, as constructed from the metadata contained 
             in the type's properties' <see cref="T:MutatorFX.ExcelMutator.ColumnAttribute"/> attributes.</returns>
+        </member>
+        <member name="T:MutatorFX.ExcelMutator.IParser">
+            <summary>
+            Represents a parser that can parse a single value to a property of a cell.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.IParser.Parse(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Parse an object from the datasouce's single cell, with regards to the target property to populate.
+            </summary>
+            <param name="value">The value in the datasource's cell.</param>
+            <param name="targetProperty">The property to populate.</param>
+            <returns>The parsed value.</returns>
         </member>
         <member name="T:MutatorFX.ExcelMutator.RowModelBase">
             <summary>
