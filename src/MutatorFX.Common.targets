@@ -1,8 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>Latest</LangVersion>
-    <Version>1.0.0-beta4</Version>
+    <Version>1.0.0-beta6</Version>
     <Authors>Gabe Szabo</Authors>
     <Company>MutatorSoft</Company>
     <Copyright>https://github.com/yugabe/MutatorFX/blob/master/LICENSE</Copyright>
@@ -12,8 +11,10 @@
     <RepositoryType>GitHub</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>$(SolutionDir)/docs/xml/$(AssemblyName).xml</DocumentationFile>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="%USERPROFILE%/.nuget/packages/vsxmd/1.3.1/tools/vsxmd &quot;$(SolutionDir)/docs/xml/$(AssemblyName).xml&quot; &quot;$(SolutionDir)/docs/md/$(AssemblyName).md&quot;" />
-  </Target>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All"/>
+  </ItemGroup>
 </Project>

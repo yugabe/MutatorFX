@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MutatorFX.ExcelMutator.Core</name>
+    </assembly>
+    <members>
+        <member name="T:MutatorFX.ExcelMutator.ColumnAttribute">
+            <summary>
+            Use this attribute to annotate the properties in a <see cref="T:MutatorFX.ExcelMutator.RowModelBase"/> class 
+            with metadata for the parsing and extraction of cell values.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.ColumnAttribute.#ctor(System.String)">
+            <summary>
+            Use this attribute to annotate the properties in a <see cref="T:MutatorFX.ExcelMutator.RowModelBase"/> class 
+            with metadata for the parsing and extraction of cell values.
+            </summary>
+            <param name="name">The name of the header row to match the cell contents againts. Not case sensitive.</param>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.ParserType">
+            <summary>
+            The type of IParser to use. Will be instantiated with <see cref="M:System.Activator.CreateInstance(System.Type)"/>. 
+            The resulting object will be cached and reused. The default uses the attribute itself to parse.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.Name">
+            <summary>
+            The name of the header row to match the cell contents againts. Not case sensitive.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.OutputOrder">
+            <summary>
+            The order value to use when extracting data from a <see cref="T:MutatorFX.ExcelMutator.RowModelBase"/> datasource.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.Trim">
+            <summary>
+            In case of strings and string collections, indicates whether to trim the string value or not.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.SplitSeparators">
+            <summary>
+            In case of strings and string collections, indicates the separator values to use.
+            Default is a single comma: ","
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.StringSplitOptions">
+            <summary>
+            In case of strings and string collections, indicates whether the splitting options should remove empty entries.
+            Defaults to <see cref="F:System.StringSplitOptions.None"/>
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.ColumnAttribute.Optional">
+            <summary>
+            Indicates whether the omission of the column can be overlooked. 
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.ColumnAttribute.Parse(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            The default parser will try and parse a single value from a cell with regards to the target property.
+            Enum parsing matches the names or <see cref="P:System.ComponentModel.DataAnnotations.DisplayAttribute.Name"/> values case insensitively.
+            If the target property is assignable from a string <see cref="T:System.Collections.Generic.IEnumerable`1"/>, splitting occurs.
+            If you want more control over parsing, subclass this attribute and override the default functionality.
+            </summary>
+            <param name="value">The value to parse from the cell.</param>
+            <param name="property">The type of the target property to populate.</param>
+            <returns>The parsed value to set to the target property of the row object.</returns>
+        </member>
+        <member name="T:MutatorFX.ExcelMutator.ExcelExtensions">
+            <summary>
+            Contains extensions that work on EPPlus' worksheets and workbooks to parse and extract data.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.ExcelExtensions.ParseExcelWorkbook``1(OfficeOpenXml.ExcelWorkbook)">
+            <summary>
+            Parses an <see cref="T:OfficeOpenXml.ExcelWorkbook"/> object by enumerating it's <see cref="T:System.Collections.Generic.IEnumerable`1"/> 
+            properties which have the <see cref="T:MutatorFX.ExcelMutator.SheetAttribute"/> attribute.
+            The type parameter of the <see cref="T:System.Collections.Generic.IEnumerable`1"/> properties are used to parse the values in the
+            corresponding worksheets.
+            Returns a newly created and populated model object that represents the parsed data.
+            </summary>
+            <typeparam name="T">The result of the parsing. Should contain <see cref="T:MutatorFX.ExcelMutator.SheetAttribute"/> metadata for it's <see cref="T:System.Collections.Generic.IEnumerable`1"/> properties.</typeparam>
+            <param name="workbook">The workbook to parse.</param>
+            <returns>The populated model object.</returns>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.ExcelExtensions.ParseExcelWorksheet``1(OfficeOpenXml.ExcelWorkbook,System.String)">
+            <summary>
+            Creates a resultset of <typeparamref name="T"/> objects from an <see cref="T:OfficeOpenXml.ExcelWorkbook"/> by using the 
+            <see cref="T:MutatorFX.ExcelMutator.ColumnAttribute"/>s defined on type <typeparamref name="T"/>'s properties.
+            </summary>
+            <typeparam name="T">The type to use as the resulting model, which should contain the parsing metadata.</typeparam>
+            <param name="workbook">The workbook which should contain the worksheet with name <paramref name="worksheetName"/> to parse.</param>
+            <param name="worksheetName">The name of the worksheet to parse. It should match the structure of the type <typeparamref name="T"/>.</param>
+            <returns>The resultset of <typeparamref name="T"/> objects, as constructed from the metadata contained 
+            in the type's properties' <see cref="T:MutatorFX.ExcelMutator.ColumnAttribute"/> attributes.</returns>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.ExcelExtensions.ParseExcelWorksheet``1(OfficeOpenXml.ExcelWorksheet)">
+            <summary>
+            Creates a resultset of <typeparamref name="T"/> objects from an <see cref="T:OfficeOpenXml.ExcelWorkbook"/> by using the 
+            <see cref="T:MutatorFX.ExcelMutator.ColumnAttribute"/>s defined on type <typeparamref name="T"/>'s properties.
+            </summary>
+            <typeparam name="T">The type to use as the resulting model, which should contain the parsing metadata.</typeparam>
+            <param name="worksheet">The worksheet to parse. It should match the structure of the type <typeparamref name="T"/>.</param>
+            <returns>The resultset of <typeparamref name="T"/> objects, as constructed from the metadata contained 
+            in the type's properties' <see cref="T:MutatorFX.ExcelMutator.ColumnAttribute"/> attributes.</returns>
+        </member>
+        <member name="T:MutatorFX.ExcelMutator.IParser">
+            <summary>
+            Represents a parser that can parse a single value to a property of a cell.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.IParser.Parse(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Parse an object from the datasouce's single cell, with regards to the target property to populate.
+            </summary>
+            <param name="value">The value in the datasource's cell.</param>
+            <param name="targetProperty">The property to populate.</param>
+            <returns>The parsed value.</returns>
+        </member>
+        <member name="T:MutatorFX.ExcelMutator.RowModelBase">
+            <summary>
+            The base class used in row parsing. Holds the number of the row which it is constructed from.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.RowModelBase.RowNumber">
+            <summary>
+            The source number of the row in the worksheet the model is constructed from.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.RowModelBase.ToString">
+            <summary>
+            Get the friendly formatted string name of the model, ordered by the corresponding <see cref="P:MutatorFX.ExcelMutator.ColumnAttribute.OutputOrder"/> property.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MutatorFX.ExcelMutator.SheetAttribute">
+            <summary>
+            Use this attribute to annotate the properties of a model type with metadata that is used
+            to identify the worksheets to parse for model extraction.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExcelMutator.SheetAttribute.#ctor(System.String)">
+            <summary>
+            Use this attribute to annotate the properties of a model type with metadata that is used
+            to identify the worksheets to parse for model extraction.
+            </summary>
+            <param name="name">The name of the worksheet to use.</param>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.SheetAttribute.Name">
+            <summary>
+            The name of the worksheet to use.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.SheetAttribute.OutputOrder">
+            <summary>
+            The order value to use when extracting data from a datasource.
+            </summary>
+        </member>
+        <member name="P:MutatorFX.ExcelMutator.SheetAttribute.Optional">
+            <summary>
+            Indicates whether the omission of the worksheet can be overlooked. 
+            Defaults to false.
+            </summary>
+        </member>
+    </members>
+</doc>

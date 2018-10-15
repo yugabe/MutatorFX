@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		res\excelmutator-logo.png = res\excelmutator-logo.png
 		res\filtermutator-logo.png = res\filtermutator-logo.png
+		global.json = global.json
 		LICENSE = LICENSE
 		res\mutatorfx-logo.png = res\mutatorfx-logo.png
 		src\MutatorFX.Common.targets = src\MutatorFX.Common.targets
@@ -26,7 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "test\Core.Tests\Core.Tests.csproj", "{321AF9CE-DC57-4F0B-8AFA-FAC1952A9DE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMutator.Core", "src\QueryMutator\QueryMutator.Core\QueryMutator.Core.csproj", "{AD83C100-229C-42B2-B78F-360AB6AF74A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core", "src\QueryMutator\QueryMutator.Core\QueryMutator.Core.csproj", "{AD83C100-229C-42B2-B78F-360AB6AF74A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMutator.Core", "src\ExcelMutator\ExcelMutator.Core\ExcelMutator.Core.csproj", "{0F913C63-E471-44EB-8684-D054CA364C07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelMutator.NetCore.Tests", "Tests\ExcelMutator\ExcelMutator.NetCore.Tests\ExcelMutator.NetCore.Tests.csproj", "{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +68,14 @@ Global
 		{AD83C100-229C-42B2-B78F-360AB6AF74A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD83C100-229C-42B2-B78F-360AB6AF74A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD83C100-229C-42B2-B78F-360AB6AF74A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F913C63-E471-44EB-8684-D054CA364C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F913C63-E471-44EB-8684-D054CA364C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F913C63-E471-44EB-8684-D054CA364C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F913C63-E471-44EB-8684-D054CA364C07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
