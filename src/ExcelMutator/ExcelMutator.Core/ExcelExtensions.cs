@@ -33,7 +33,7 @@ namespace MutatorFX.ExcelMutator
                 .Select(p => (property: p, meta: p.GetCustomAttribute<SheetAttribute>(true)))
                 .Where(p => p.meta != null)
                 .Select(p => (p.property, p.meta,
-                    worksheet: workbook.Worksheets.FirstOrDefault(w => string.Compare(w.Name, p.meta.Name, StringComparison.OrdinalIgnoreCase) == 0)))
+                    worksheet: workbook.Worksheets.SingleOrDefault(w => string.Compare(w.Name, p.meta.Name, StringComparison.OrdinalIgnoreCase) == 0)))
                 .ToArray();
 
             var invalidTypeProperties = properties.Where(p => !typeof(List<>).IsAssignableFrom(p.property.PropertyType.GetGenericTypeDefinition()));
@@ -79,7 +79,7 @@ namespace MutatorFX.ExcelMutator
                 .Select(p => (property: p, meta: p.GetCustomAttribute<ColumnAttribute>(true)))
                 .Where(p => p.meta != null)
                 .Select(p => (p.property, p.meta,
-                    column: Enumerable.Range(1, worksheet.Dimension.Columns).FirstOrDefault(c => string.Compare(worksheet.Cells[1, c].Text, p.meta.Name, StringComparison.OrdinalIgnoreCase) == 0)))
+                    column: Enumerable.Range(1, worksheet.Dimension.Columns).SingleOrDefault(c => string.Compare(worksheet.Cells[1, c].Text, p.meta.Name, StringComparison.OrdinalIgnoreCase) == 0)))
                 .ToArray();
 
             var missingProperties = properties.Where(p => p.column == 0 && !p.meta.Optional);
