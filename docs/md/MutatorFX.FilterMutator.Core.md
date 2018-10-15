@@ -87,7 +87,7 @@ Get the expression to select the key for ordering a source dataset.
 
 ##### Returns
 
-The Expression used by [OrderBy\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderBy``2 'System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})') or [OrderByDescending\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderByDescending``2 'System.Linq.Queryable.OrderByDescending``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})') (based on the value of ascending or descending ordering).
+The Expression used by [OrderBy\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderBy``2 'System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})')or [OrderByDescending\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderByDescending``2 'System.Linq.Queryable.OrderByDescending``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})')(based on the value of ascending or descending ordering).
 
 ##### Parameters
 
@@ -100,20 +100,20 @@ The Expression used by [OrderBy\`\`2](http://msdn.microsoft.com/query/dev14.quer
 
 ##### Summary
 
-Sorts the `filtered` dataset using the `sort` value to get the key via [KeySelector](#M-MutatorFX-FilterMutator-AscDescSorterBase`2-KeySelector-`1- 'MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)'), and calls either 
-            [OrderBy\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderBy``2 'System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})') or [OrderByDescending\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderByDescending``2 'System.Linq.Queryable.OrderByDescending``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})') 
-            based on the value of `sortDescending`.
+Sorts the `filtered`dataset using the `sort`value to get the key via [KeySelector](#M-MutatorFX-FilterMutator-AscDescSorterBase`2-KeySelector-`1- 'MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)'), and calls either 
+[OrderBy\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderBy``2 'System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})')or [OrderByDescending\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.OrderByDescending``2 'System.Linq.Queryable.OrderByDescending``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})')
+based on the value of `sortDescending`.
 
 ##### Returns
 
-The sorted dataset, repesented as a queryable of `TSource` objects.
+The sorted dataset, repesented as a queryable of `TSource`objects.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | filtered | [System.Linq.IQueryable{\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{`0}') | The dataset to sort. |
-| sort | [\`1](#T-`1 '`1') | The value of the sorting enum to be passed to the [KeySelector](#M-MutatorFX-FilterMutator-AscDescSorterBase`2-KeySelector-`1- 'MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)') method to get the sorting expression. |
+| sort | [\`1](#T-`1 '`1') | The value of the sorting enum to be passed to the [KeySelector](#M-MutatorFX-FilterMutator-AscDescSorterBase`2-KeySelector-`1- 'MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)')method to get the sorting expression. |
 | sortDescending | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | True indicates the resultset should be in descending order. |
 
 <a name='T-MutatorFX-FilterMutator-ClauseCollection`2'></a>
@@ -146,8 +146,8 @@ The clauses contained in this collection.
 
 ##### Summary
 
-Adds an [IFilterClause\`2](#T-MutatorFX-FilterMutator-IFilterClause`2 'MutatorFX.FilterMutator.IFilterClause`2') instance to the current collection. 
-            This method can be used for applying extensions for custom filtering clause implementations.
+Adds an [IFilterClause\`2](#T-MutatorFX-FilterMutator-IFilterClause`2 'MutatorFX.FilterMutator.IFilterClause`2')instance to the current collection. 
+This method can be used for applying extensions for custom filtering clause implementations.
 
 ##### Returns
 
@@ -174,7 +174,7 @@ The current collection after that clause was added to it.
 
 ##### Summary
 
-Returns the enumerator for the [Clauses](#P-MutatorFX-FilterMutator-ClauseCollection`2-Clauses 'MutatorFX.FilterMutator.ClauseCollection`2.Clauses') in the collection.
+Returns the enumerator for the [Clauses](#P-MutatorFX-FilterMutator-ClauseCollection`2-Clauses 'MutatorFX.FilterMutator.ClauseCollection`2.Clauses')in the collection.
 
 ##### Parameters
 
@@ -189,7 +189,7 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-A simple [IFilterer\`2](#T-MutatorFX-FilterMutator-IFilterer`2 'MutatorFX.FilterMutator.IFilterer`2') implementation base class for creating a clause-based filtering mechanism.
+A simple [IFilterer\`2](#T-MutatorFX-FilterMutator-IFilterer`2 'MutatorFX.FilterMutator.IFilterer`2')implementation base class for creating a clause-based filtering mechanism.
 
 ##### Generic Types
 
@@ -203,8 +203,8 @@ A simple [IFilterer\`2](#T-MutatorFX-FilterMutator-IFilterer`2 'MutatorFX.Filter
 
 ##### Summary
 
-Factory method to create a generic [ClauseCollection\`2](#T-MutatorFX-FilterMutator-ClauseCollection`2 'MutatorFX.FilterMutator.ClauseCollection`2') for the current type.
-            Can be used in non-static context to infer the generic type arguments for the collection.
+Factory method to create a generic [ClauseCollection\`2](#T-MutatorFX-FilterMutator-ClauseCollection`2 'MutatorFX.FilterMutator.ClauseCollection`2')for the current type.
+Can be used in non-static context to infer the generic type arguments for the collection.
 
 ##### Returns
 
@@ -219,7 +219,7 @@ This method has no parameters.
 
 ##### Summary
 
-Executes all the available clauses over the given `source` with values obtained for the clauses from the `filter`.
+Executes all the available clauses over the given `source`with values obtained for the clauses from the `filter`.
 
 ##### Returns
 
@@ -230,7 +230,7 @@ The filtered elements from the `source`.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | source | [System.Linq.IQueryable{\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{`0}') | The source to filter with the clauses. |
-| filter | [\`1](#T-`1 '`1') | The filter to use when filtering `source` with the clauses provided by [GetClauses](#M-MutatorFX-FilterMutator-ClauseFilterer`2-GetClauses 'MutatorFX.FilterMutator.ClauseFilterer`2.GetClauses'). |
+| filter | [\`1](#T-`1 '`1') | The filter to use when filtering `source`with the clauses provided by [GetClauses](#M-MutatorFX-FilterMutator-ClauseFilterer`2-GetClauses 'MutatorFX.FilterMutator.ClauseFilterer`2.GetClauses'). |
 
 <a name='M-MutatorFX-FilterMutator-ClauseFilterer`2-GetClauses'></a>
 ### GetClauses() `method`
@@ -238,9 +238,9 @@ The filtered elements from the `source`.
 ##### Summary
 
 Get the clauses, which will be used to filter the input datasource with a given filter.
-            You can use the shorthand static method [CreateClauses](#M-MutatorFX-FilterMutator-ClauseFilterer`2-CreateClauses 'MutatorFX.FilterMutator.ClauseFilterer`2.CreateClauses') to create a static collection and refer it from here,
-            so that instantiations of the clauses don't happen every time. Take caution not to create the collection every time this 
-            method gets called unless you intend to generate them at runtime, because it can have performance repercussions.
+You can use the shorthand static method [CreateClauses](#M-MutatorFX-FilterMutator-ClauseFilterer`2-CreateClauses 'MutatorFX.FilterMutator.ClauseFilterer`2.CreateClauses')to create a static collection and refer it from here,
+so that instantiations of the clauses don't happen every time. Take caution not to create the collection every time this 
+method gets called unless you intend to generate them at runtime, because it can have performance repercussions.
 
 ##### Returns
 
@@ -259,7 +259,7 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-A simple source accessor which accepts an accessor function to provide for the [ISourceAccessor\`1](#T-MutatorFX-FilterMutator-ISourceAccessor`1 'MutatorFX.FilterMutator.ISourceAccessor`1') interface.
+A simple source accessor which accepts an accessor function to provide for the [ISourceAccessor\`1](#T-MutatorFX-FilterMutator-ISourceAccessor`1 'MutatorFX.FilterMutator.ISourceAccessor`1')interface.
 
 ##### Generic Types
 
@@ -297,7 +297,7 @@ MutatorFX.FilterMutator
 ##### Summary
 
 A queryexecutor implementation that accepts all its implementation details via its constructor.
-            Can be used via DI if all parameters can be trivially resolved.
+Can be used via DI if all parameters can be trivially resolved.
 
 ##### Generic Types
 
@@ -313,15 +313,15 @@ A queryexecutor implementation that accepts all its implementation details via i
 
 ##### Summary
 
-Create a new instance of the [CompositeQueryExecutor\`4](#T-MutatorFX-FilterMutator-CompositeQueryExecutor`4 'MutatorFX.FilterMutator.CompositeQueryExecutor`4') with all its implementation details injected via constructor.
+Create a new instance of the [CompositeQueryExecutor\`4](#T-MutatorFX-FilterMutator-CompositeQueryExecutor`4 'MutatorFX.FilterMutator.CompositeQueryExecutor`4')with all its implementation details injected via constructor.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| sourceAccessor | [MutatorFX.FilterMutator.ISourceAccessor{\`0}](#T-MutatorFX-FilterMutator-ISourceAccessor{`0} 'MutatorFX.FilterMutator.ISourceAccessor{`0}') | The source accessor used to acces the `TSource` elements. |
+| sourceAccessor | [MutatorFX.FilterMutator.ISourceAccessor{\`0}](#T-MutatorFX-FilterMutator-ISourceAccessor{`0} 'MutatorFX.FilterMutator.ISourceAccessor{`0}') | The source accessor used to acces the `TSource`elements. |
 | filterer | [MutatorFX.FilterMutator.IFilterer{\`0,\`2}](#T-MutatorFX-FilterMutator-IFilterer{`0,`2} 'MutatorFX.FilterMutator.IFilterer{`0,`2}') | The filterer implementation used to filter the dataset. |
-| transformer | [MutatorFX.FilterMutator.ITransformer{\`0,\`1}](#T-MutatorFX-FilterMutator-ITransformer{`0,`1} 'MutatorFX.FilterMutator.ITransformer{`0,`1}') | The transformation object that can transform the `TSource` types to `TResult` types. |
+| transformer | [MutatorFX.FilterMutator.ITransformer{\`0,\`1}](#T-MutatorFX-FilterMutator-ITransformer{`0,`1} 'MutatorFX.FilterMutator.ITransformer{`0,`1}') | The transformation object that can transform the `TSource`types to `TResult`types. |
 | sorter | [MutatorFX.FilterMutator.ISorter{\`0,\`3}](#T-MutatorFX-FilterMutator-ISorter{`0,`3} 'MutatorFX.FilterMutator.ISorter{`0,`3}') |  |
 | pager | [MutatorFX.FilterMutator.IPager{\`1}](#T-MutatorFX-FilterMutator-IPager{`1} 'MutatorFX.FilterMutator.IPager{`1}') |  |
 
@@ -337,21 +337,21 @@ The filterer used to filter the source dataset with a given `TFilter`.
 
 ##### Summary
 
-A pager object that generates paging results for a given `TResult` dataset.
+A pager object that generates paging results for a given `TResult`dataset.
 
 <a name='P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Sorter'></a>
 ### Sorter `property`
 
 ##### Summary
 
-A sorter object that sorts a given `TSource` object based on a sorting enum parameter.
+A sorter object that sorts a given `TSource`object based on a sorting enum parameter.
 
 <a name='P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Source'></a>
 ### Source `property`
 
 ##### Summary
 
-The default source accessor implementation uses the injected [SourceAccessor](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-SourceAccessor 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.SourceAccessor') to access the source dataset.
+The default source accessor implementation uses the injected [SourceAccessor](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-SourceAccessor 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.SourceAccessor')to access the source dataset.
 
 <a name='P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-SourceAccessor'></a>
 ### SourceAccessor `property`
@@ -365,14 +365,14 @@ The accessor used to access the source dataset.
 
 ##### Summary
 
-An [ITransformer\`2](#T-MutatorFX-FilterMutator-ITransformer`2 'MutatorFX.FilterMutator.ITransformer`2') that can transform a source queryable to a result queryable dataset.
+An [ITransformer\`2](#T-MutatorFX-FilterMutator-ITransformer`2 'MutatorFX.FilterMutator.ITransformer`2')that can transform a source queryable to a result queryable dataset.
 
 <a name='M-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Filter-System-Linq-IQueryable{`0},`2-'></a>
 ### Filter(source,filter) `method`
 
 ##### Summary
 
-The default filtering implementation uses the injected [Filterer](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Filterer 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Filterer') object to filter the given datasource with the provided filter.
+The default filtering implementation uses the injected [Filterer](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Filterer 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Filterer')object to filter the given datasource with the provided filter.
 
 ##### Returns
 
@@ -390,7 +390,7 @@ The filtered dataset.
 
 ##### Summary
 
-The default implementation uses the injected [Pager](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Pager 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Pager') to apply paging to the result dataset.
+The default implementation uses the injected [Pager](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Pager 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Pager')to apply paging to the result dataset.
 
 ##### Returns
 
@@ -409,7 +409,7 @@ The paged entries.
 
 ##### Summary
 
-The default sorting implementation uses the injected [Sorter](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Sorter 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Sorter') object to sort the given source dataset.
+The default sorting implementation uses the injected [Sorter](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Sorter 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Sorter')object to sort the given source dataset.
 
 ##### Returns
 
@@ -428,7 +428,7 @@ The sorted dataset.
 
 ##### Summary
 
-The default transformation implementation uses the injected [Transformer](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Transformer 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Transformer') object to transform the source dataset to the result dataset.
+The default transformation implementation uses the injected [Transformer](#P-MutatorFX-FilterMutator-CompositeQueryExecutor`4-Transformer 'MutatorFX.FilterMutator.CompositeQueryExecutor`4.Transformer')object to transform the source dataset to the result dataset.
 
 ##### Returns
 
@@ -449,7 +449,7 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-A simple [AscDescSorterBase\`2](#T-MutatorFX-FilterMutator-AscDescSorterBase`2 'MutatorFX.FilterMutator.AscDescSorterBase`2') implementation, which accepts the implementation details in constructor.
+A simple [AscDescSorterBase\`2](#T-MutatorFX-FilterMutator-AscDescSorterBase`2 'MutatorFX.FilterMutator.AscDescSorterBase`2')implementation, which accepts the implementation details in constructor.
 
 ##### Generic Types
 
@@ -469,7 +469,7 @@ Create a simple sorter which accepts the implementation details to use for sorti
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| keySelector | [System.Func{\`1,System.Linq.Expressions.Expression{System.Func{\`0,System.Object}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`1,System.Linq.Expressions.Expression{System.Func{`0,System.Object}}}') | The factory method used to get the keySelector [Expression](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression') for a given `TSort` value. |
+| keySelector | [System.Func{\`1,System.Linq.Expressions.Expression{System.Func{\`0,System.Object}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`1,System.Linq.Expressions.Expression{System.Func{`0,System.Object}}}') | The factory method used to get the keySelector [Expression](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression')for a given `TSort`value. |
 
 <a name='M-MutatorFX-FilterMutator-ExpressionSorter`2-KeySelector-`1-'></a>
 ### KeySelector(sort) `method`
@@ -480,7 +480,7 @@ Use the aquired factory function to get the selector for the sorting function.
 
 ##### Returns
 
-The expression used to select the key from a `TSource` object.
+The expression used to select the key from a `TSource`object.
 
 ##### Parameters
 
@@ -497,14 +497,14 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-A simple [ITransformer\`2](#T-MutatorFX-FilterMutator-ITransformer`2 'MutatorFX.FilterMutator.ITransformer`2') implementation, which accepts the implementation details in constructor.
+A simple [ITransformer\`2](#T-MutatorFX-FilterMutator-ITransformer`2 'MutatorFX.FilterMutator.ITransformer`2')implementation, which accepts the implementation details in constructor.
 
 ##### Generic Types
 
 | Name | Description |
 | ---- | ----------- |
 | TSource | The source type to transform. |
-| TResult | The result type to transform `TSource` to. |
+| TResult | The result type to transform `TSource`to. |
 
 <a name='M-MutatorFX-FilterMutator-ExpressionTransformer`2-#ctor-System-Linq-Expressions-Expression{System-Func{`0,`1}}-'></a>
 ### #ctor(transformExpression) `constructor`
@@ -517,14 +517,14 @@ Create a simple transformer, which will use the provided expression to transform
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| transformExpression | [System.Linq.Expressions.Expression{System.Func{\`0,\`1}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,`1}}') | The expression used to transform from `TSource` to `TResult`. |
+| transformExpression | [System.Linq.Expressions.Expression{System.Func{\`0,\`1}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,`1}}') | The expression used to transform from `TSource`to `TResult`. |
 
 <a name='M-MutatorFX-FilterMutator-ExpressionTransformer`2-Transform-System-Linq-IQueryable{`0}-'></a>
 ### Transform(source) `method`
 
 ##### Summary
 
-Use the aquired expression to transform the `source` dataset to the result dataset.
+Use the aquired expression to transform the `source`dataset to the result dataset.
 
 ##### Returns
 
@@ -546,8 +546,8 @@ MutatorFX.FilterMutator
 ##### Summary
 
 Represents the default implementation of a clause used for filtering. Provides a way to select 
-            a clause from a filter object, execute the clause on a given dataset, or fallback to a default
-            filtering mechanism when the clause is considered disabled.
+a clause from a filter object, execute the clause on a given dataset, or fallback to a default
+filtering mechanism when the clause is considered disabled.
 
 ##### Generic Types
 
@@ -569,25 +569,24 @@ Create a new clause used for filtering.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | filterClauseSelector | [System.Linq.Expressions.Expression{System.Func{\`1,\`2}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`1,`2}}') | A selector that can be used to aquire the clause value from a given filter. As 
-            it is an Expression, it can be used to rationalize about a collection of clauses. |
+it is an Expression, it can be used to rationalize about a collection of clauses. |
 | filterPredicate | [System.Func{\`2,System.Linq.Expressions.Expression{System.Func{\`0,System.Boolean}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}}') | The predicate factory to use when building the filtering expressions. Can be a lambda,
-            that gets the selected clause value from the filter as parameter, that returns another lamdbda
-            that uses closure on the outer clause parameter to apply dynamically parametered filtering.
+that gets the selected clause value from the filter as parameter, that returns another lamdbda
+that uses closure on the outer clause parameter to apply dynamically parametered filtering.
 
 
 
 Example:
 
 ```csharp
-(clause: Clause) =&gt; (source: TSource) =&gt; source.Name.Contains(clause); 
-            <para /> // shorter version: <para /> c =&gt; s =&gt; s.Name.Contains(c);
+(clause: Clause) =&gt; (source: TSource) =&gt; source.Name.Contains(clause);  
 ``` |
 | onDisabledFilterPredicate | [System.Linq.Expressions.Expression{System.Func{\`0,System.Boolean}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}') | A predicate that gets used instead of 
-            `filterPredicate` when the clause is considered disabled. |
+`filterPredicate`when the clause is considered disabled. |
 | isClauseEnabled | [System.Func{\`1,System.Boolean}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`1,System.Boolean}') | A predicate that indicates whether the clause is to be
-            considered enabled. |
+considered enabled. |
 | options | [System.Collections.Generic.Dictionary{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.Dictionary 'System.Collections.Generic.Dictionary{System.String,System.Object}') | Additional untyped options. Can be used for extensibility to add 
-            state or configuration to the clause via extensions. |
+state or configuration to the clause via extensions. |
 
 <a name='P-MutatorFX-FilterMutator-FilterClause`3-ClauseExpression'></a>
 ### ClauseExpression `property`
@@ -595,8 +594,8 @@ Example:
 ##### Summary
 
 The expression that represents the clause selector. Can be used to rationalize
-            about this clause in regards to other clauses (i.e. to check whether all filter
-            properties are matched in a collection of clauses).
+about this clause in regards to other clauses (i.e. to check whether all filter
+properties are matched in a collection of clauses).
 
 <a name='P-MutatorFX-FilterMutator-FilterClause`3-Options'></a>
 ### Options `property`
@@ -604,7 +603,7 @@ The expression that represents the clause selector. Can be used to rationalize
 ##### Summary
 
 The options passed to this clause instance used to apply additional logic 
-            based on state via extensions.
+based on state via extensions.
 
 <a name='M-MutatorFX-FilterMutator-FilterClause`3-Execute-System-Linq-IQueryable{`0},`1-'></a>
 ### Execute(source,filter) `method`
@@ -647,13 +646,13 @@ The clause value in the given object.
 ##### Summary
 
 Get the predicate expression for a given source item by a given filter, which
-            indicates whether the given source item should be in the filtered resultset or not.
+indicates whether the given source item should be in the filtered resultset or not.
 
 ##### Returns
 
 The expression that represents a predicate delegate, that can be used to
-            filter the source dataset by the clause value. Returns null if the 
-            [FilterPredicate](#P-MutatorFX-FilterMutator-FilterClause`3-FilterPredicate 'MutatorFX.FilterMutator.FilterClause`3.FilterPredicate') is null.
+filter the source dataset by the clause value. Returns null if the 
+[FilterPredicate](#P-MutatorFX-FilterMutator-FilterClause`3-FilterPredicate 'MutatorFX.FilterMutator.FilterClause`3.FilterPredicate')is null.
 
 ##### Parameters
 
@@ -667,7 +666,7 @@ The expression that represents a predicate delegate, that can be used to
 ##### Summary
 
 Gets the predicate that should be applied when the filter is considered disabled.
-            If no custom predicate was supplied, the default is an always truthy predicate.
+If no custom predicate was supplied, the default is an always truthy predicate.
 
 ##### Returns
 
@@ -683,7 +682,7 @@ This method has no parameters.
 ##### Summary
 
 Determine whether the clause is enabled for the given filter.
-            Uses the `TClause` type's default [EqualityComparer\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.EqualityComparer`1 'System.Collections.Generic.EqualityComparer`1') if none was supplied.
+Uses the `TClause`type's default [EqualityComparer\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.EqualityComparer`1 'System.Collections.Generic.EqualityComparer`1')if none was supplied.
 
 ##### Returns
 
@@ -735,11 +734,11 @@ A simple filterer implementation that returns the input datasource (does not fil
 
 ##### Summary
 
-Returns the input `source` object.
+Returns the input `source`object.
 
 ##### Returns
 
-The `source` object.
+The `source`object.
 
 ##### Parameters
 
@@ -758,8 +757,8 @@ MutatorFX.FilterMutator
 ##### Summary
 
 A sorter object that can be used to apply sorting to a given source dataset.
-            This implementation instantiates a static cache for any given `TSort` parameter,
-            which can throw if no matching property chains are found for any name in the given `TSort` enum.
+This implementation instantiates a static cache for any given `TSort`parameter,
+which can throw if no matching property chains are found for any name in the given `TSort`enum.
 
 ##### Generic Types
 
@@ -767,22 +766,22 @@ A sorter object that can be used to apply sorting to a given source dataset.
 | ---- | ----------- |
 | TSource | The type of the elements in the source dataset. |
 | TSort | The enum type. This enum should only contain names that can be resolved to property chains 
-            without the separating dot, otherwise the static cache will throw. |
+without the separating dot, otherwise the static cache will throw. |
 
 <a name='P-MutatorFX-FilterMutator-PropertyChainNameSorter`2-Lookup'></a>
 ### Lookup `property`
 
 ##### Summary
 
-The global cache lookup for any given `TSort` type.
+The global cache lookup for any given `TSort`type.
 
 <a name='M-MutatorFX-FilterMutator-PropertyChainNameSorter`2-KeySelector-`1-'></a>
 ### KeySelector(sort) `method`
 
 ##### Summary
 
-Uses the static cache [Lookup](#P-MutatorFX-FilterMutator-PropertyChainNameSorter`2-Lookup 'MutatorFX.FilterMutator.PropertyChainNameSorter`2.Lookup') to get the sorter property based on the `TSort` enum value provided.
-            Throws if the given key was not found in the lookup.
+Uses the static cache [Lookup](#P-MutatorFX-FilterMutator-PropertyChainNameSorter`2-Lookup 'MutatorFX.FilterMutator.PropertyChainNameSorter`2.Lookup')to get the sorter property based on the `TSort`enum value provided.
+Throws if the given key was not found in the lookup.
 
 ##### Returns
 
@@ -903,7 +902,7 @@ The sorted queryable dataset.
 
 ##### Summary
 
-Transforms the given `TSource` datasource to a set of `TResult` results.
+Transforms the given `TSource`datasource to a set of `TResult`results.
 
 ##### Returns
 
@@ -924,7 +923,7 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-A simple paging implementation that uses [Skip\`\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.Skip``1 'System.Linq.Queryable.Skip``1(System.Linq.IQueryable{``0},System.Int32)') and [Take\`\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.Take``1 'System.Linq.Queryable.Take``1(System.Linq.IQueryable{``0},System.Int32)').
+A simple paging implementation that uses [Skip\`\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.Skip``1 'System.Linq.Queryable.Skip``1(System.Linq.IQueryable{``0},System.Int32)')and [Take\`\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Queryable.Take``1 'System.Linq.Queryable.Take``1(System.Linq.IQueryable{``0},System.Int32)').
 
 ##### Generic Types
 

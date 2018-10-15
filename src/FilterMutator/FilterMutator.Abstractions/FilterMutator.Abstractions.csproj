@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
     <AssemblyName>MutatorFX.FilterMutator.Abstractions</AssemblyName>
     <RootNamespace>MutatorFX.FilterMutator</RootNamespace>
     <Product>MutatorFX.FilterMutator.Abstractions</Product>

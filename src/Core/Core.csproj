@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
     <AssemblyName>MutatorFX.Core</AssemblyName>
     <RootNamespace>MutatorFX</RootNamespace>
     <Product>MutatorFX.Core</Product>
@@ -8,5 +11,4 @@
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/mutatorfx-logo.png</PackageIconUrl>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
 </Project>

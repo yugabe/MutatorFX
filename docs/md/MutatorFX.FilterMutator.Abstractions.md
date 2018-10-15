@@ -52,7 +52,7 @@ The common interface for clauses that can describe elements in a filter object.
 
 ##### Summary
 
-The expression which selects the clause. It is usually a [LambdaExpression](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.LambdaExpression 'System.Linq.Expressions.LambdaExpression'), which encapsulates a [Func\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func`2 'System.Func`2') delegate.
+The expression which selects the clause. It is usually a [LambdaExpression](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.LambdaExpression 'System.Linq.Expressions.LambdaExpression'), which encapsulates a [Func\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func`2 'System.Func`2')delegate.
 
 <a name='M-MutatorFX-FilterMutator-IFilterClause`2-Execute-System-Linq-IQueryable{`0},`1-'></a>
 ### Execute(source,filter) `method`
@@ -99,14 +99,14 @@ The predicate that can be passed to the filtering function.
 ##### Returns
 
 An expression encapsulating a predicate typed delegate, which determines whether an element
-            matches the given clause for the given filter values or not.
+matches the given clause for the given filter values or not.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | filter | [\`1](#T-`1 '`1') | The filter to use the values from. Can also use the clause selector expression 
-            to get the clause value and check whether the clause is enabled. |
+to get the clause value and check whether the clause is enabled. |
 
 <a name='M-MutatorFX-FilterMutator-IFilterClause`2-GetOnDisabledFilterPredicate'></a>
 ### GetOnDisabledFilterPredicate() `method`
@@ -114,7 +114,7 @@ An expression encapsulating a predicate typed delegate, which determines whether
 ##### Summary
 
 A fallback expression that should be used when a cluase is disabled. A good default can be a function
-            that returns the constant true value, thus not filtering the input set of data.
+that returns the constant true value, thus not filtering the input set of data.
 
 ##### Returns
 
@@ -299,7 +299,7 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-Represents an object that can provide an [IQueryable\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable`1 'System.Linq.IQueryable`1') datasource.
+Represents an object that can provide an [IQueryable\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable`1 'System.Linq.IQueryable`1')datasource.
 
 ##### Generic Types
 
@@ -312,7 +312,7 @@ Represents an object that can provide an [IQueryable\`1](http://msdn.microsoft.c
 
 ##### Summary
 
-The `TSource` elements, represented by a queryable object.
+The `TSource`elements, represented by a queryable object.
 
 <a name='T-MutatorFX-FilterMutator-ITransformer`2'></a>
 ## ITransformer\`2 `type`
@@ -323,7 +323,7 @@ MutatorFX.FilterMutator
 
 ##### Summary
 
-Represents a transformation between the types `TSource` and `TResult`.
+Represents a transformation between the types `TSource`and `TResult`.
 
 ##### Generic Types
 

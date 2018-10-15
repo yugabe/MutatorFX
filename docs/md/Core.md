@@ -36,9 +36,9 @@ Globally usable extensions for creating fluent style APIs.
 ##### Summary
 
 Execute an action with the given object as parameter if a precondition succeeds, then return the object.
-            Optionally execute another action, like an if-else statement.
-            Useful for creating fluent APIs and shortening two-liners.
-            Note that the input object `obj` can only be mutated by the provided actions if it is a reference type.
+Optionally execute another action, like an if-else statement.
+Useful for creating fluent APIs and shortening two-liners.
+Note that the input object `obj`can only be mutated by the provided actions if it is a reference type.
 
 ##### Returns
 
@@ -50,8 +50,8 @@ The object itself after the invokation of either or none of the actions.
 | ---- | ---- | ----------- |
 | obj | [\`\`0](#T-``0 '``0') | The object to execute the given action on. Can be null. |
 | predicate | [System.Func{\`\`0,System.Boolean}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Boolean}') | The precondition to check. |
-| actionIf | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the object `obj` when the predicate resolves to true. |
-| actionElse | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The optional action to execute on the object `obj` when the predicate resolves to false. |
+| actionIf | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the object `obj`when the predicate resolves to true. |
+| actionElse | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The optional action to execute on the object `obj`when the predicate resolves to false. |
 
 ##### Generic Types
 
@@ -68,7 +68,7 @@ Branch a statement based on the current value.
 
 ##### Returns
 
-The result of the appropriate invokation. If no else branch was specified and precondition fails, the default of type `TResult` is returned.
+The result of the appropriate invokation. If no else branch was specified and precondition fails, the default of type `TResult`is returned.
 
 ##### Parameters
 
@@ -92,10 +92,10 @@ The result of the appropriate invokation. If no else branch was specified and pr
 ##### Summary
 
 The async pair of [Branch\`\`1](#M-MutatorFX-Coding-GeneralFluentExtensions-Branch``1-``0,System-Func{``0,System-Boolean},System-Action{``0},System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.Branch``1(``0,System.Func{``0,System.Boolean},System.Action{``0},System.Action{``0})').
-            Execute an action with the given object as parameter if a precondition succeeds, then return the object.
-            Optionally execute another action, like an if-else statement.
-            Useful for creating fluent APIs and shortening two-liners.
-            Note that the input object `obj` can only be mutated by the provided actions if it is a reference type.
+Execute an action with the given object as parameter if a precondition succeeds, then return the object.
+Optionally execute another action, like an if-else statement.
+Useful for creating fluent APIs and shortening two-liners.
+Note that the input object `obj`can only be mutated by the provided actions if it is a reference type.
 
 ##### Returns
 
@@ -107,8 +107,8 @@ The object itself after the invokation of either or none of the actions.
 | ---- | ---- | ----------- |
 | obj | [\`\`0](#T-``0 '``0') | The object to execute the given action on. Can be null. |
 | predicate | [System.Func{\`\`0,System.Threading.Tasks.Task{System.Boolean}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task{System.Boolean}}') | The precondition to check. |
-| actionIf | [System.Func{\`\`0,System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task}') | The action to execute on the object `obj` when the predicate resolves to true. |
-| actionElse | [System.Func{\`\`0,System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task}') | The optional action to execute on the object `obj` when the predicate resolves to false. |
+| actionIf | [System.Func{\`\`0,System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task}') | The action to execute on the object `obj`when the predicate resolves to true. |
+| actionElse | [System.Func{\`\`0,System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task}') | The optional action to execute on the object `obj`when the predicate resolves to false. |
 
 ##### Generic Types
 
@@ -122,11 +122,11 @@ The object itself after the invokation of either or none of the actions.
 ##### Summary
 
 The async pair of [Branch\`\`2](#M-MutatorFX-Coding-GeneralFluentExtensions-Branch``2-``0,System-Func{``0,System-Boolean},System-Func{``0,``1},System-Func{``0,``1}- 'MutatorFX.Coding.GeneralFluentExtensions.Branch``2(``0,System.Func{``0,System.Boolean},System.Func{``0,``1},System.Func{``0,``1})').
-            Branch a statement based on the current value.
+Branch a statement based on the current value.
 
 ##### Returns
 
-The result of the appropriate invokation. If no else branch was specified and precondition fails, the default of type `TResult` is returned.
+The result of the appropriate invokation. If no else branch was specified and precondition fails, the default of type `TResult`is returned.
 
 ##### Parameters
 
@@ -150,8 +150,8 @@ The result of the appropriate invokation. If no else branch was specified and pr
 ##### Summary
 
 Execute an action with the given object as parameter, then return the object.
-            Useful for creating fluent APIs and shortening two-liners.
-            Note that the input object `obj` can only be mutated by the provided `action` if it is a reference type.
+Useful for creating fluent APIs and shortening two-liners.
+Note that the input object `obj`can only be mutated by the provided `action`if it is a reference type.
 
 ##### Returns
 
@@ -163,7 +163,7 @@ The object itself after the invokation of the action.
 | ---- | ---- | ----------- |
 | obj | [\`\`0](#T-``0 '``0') | The object to execute the given action on. Can be null. |
 | action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the object `obj`. Usually a method with 
-            no return value or with a return value that should be ignored. |
+no return value or with a return value that should be ignored. |
 
 ##### Generic Types
 
@@ -177,8 +177,8 @@ The object itself after the invokation of the action.
 ##### Summary
 
 The asynchronous pair of [Do\`\`1](#M-MutatorFX-Coding-GeneralFluentExtensions-Do``1-``0,System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action{``0})').
-            Useful for creating fluent APIs and shortening two-liners.
-            Note that the input object `obj` can only be mutated by the provided `action` if it is a reference type.
+Useful for creating fluent APIs and shortening two-liners.
+Note that the input object `obj`can only be mutated by the provided `action`if it is a reference type.
 
 ##### Returns
 
@@ -190,7 +190,7 @@ The object itself after the invokation and awaiting of the asynchronous function
 | ---- | ---- | ----------- |
 | obj | [\`\`0](#T-``0 '``0') | The object to execute the given action on. Can be null. |
 | action | [System.Func{\`\`0,System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task}') | The (generally) async function to execute on the object `obj`. 
-            If the task has a return value, it is ignored. |
+If the task has a return value, it is ignored. |
 
 ##### Generic Types
 
@@ -203,10 +203,10 @@ The object itself after the invokation and awaiting of the asynchronous function
 
 ##### Summary
 
-Execute the provided `action` for all elements in the `source` collection.
-            Useful to create fluent APIs and shorten code by replacing foreach loops. The action is executed and the element is returned for each element.
-            Used instead of [Select\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Enumerable.Select``2 'System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})') when the `source` should not lazily be enumerated.
-            Note that the input objects in `source` can only be mutated by the provided `action` if `T` is a reference type.
+Execute the provided `action`for all elements in the `source`collection.
+Useful to create fluent APIs and shorten code by replacing foreach loops. The action is executed and the element is returned for each element.
+Used instead of [Select\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Enumerable.Select``2 'System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})')when the `source`should not lazily be enumerated.
+Note that the input objects in `source`can only be mutated by the provided `action`if `T`is a reference type.
 
 ##### Returns
 
@@ -216,8 +216,8 @@ Returns the elements of `source`, after each has been invoked on `action`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| source | [System.Collections.Generic.IEnumerable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{``0}') | The collection to enumerate and execute the provided `action` on. Can not be null. |
-| action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the `source` collection. Can not be null. |
+| source | [System.Collections.Generic.IEnumerable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{``0}') | The collection to enumerate and execute the provided `action`on. Can not be null. |
+| action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the `source`collection. Can not be null. |
 
 ##### Generic Types
 
@@ -230,22 +230,22 @@ Returns the elements of `source`, after each has been invoked on `action`.
 
 ##### Summary
 
-Execute the provided `action` for all elements in the `source` collection.
-            Useful to create fluent APIs and shorten code by replacing foreach loops. The action is executed and the element is returned for each element.
-            Used instead of [Select\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Enumerable.Select``2 'System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})') and the `source` can optionally be lazily enumerated.
-            Note that the input objects in `source` can only be mutated by the provided `action` if `T` is a reference type.
+Execute the provided `action`for all elements in the `source`collection.
+Useful to create fluent APIs and shorten code by replacing foreach loops. The action is executed and the element is returned for each element.
+Used instead of [Select\`\`2](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Enumerable.Select``2 'System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})')and the `source`can optionally be lazily enumerated.
+Note that the input objects in `source`can only be mutated by the provided `action`if `T`is a reference type.
 
 ##### Returns
 
-Returns the elements of `source` one by one after being invoked on `action`, or after all has been invoked depending on the value of `lazy`.
+Returns the elements of `source`one by one after being invoked on `action`, or after all has been invoked depending on the value of `lazy`.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| source | [System.Collections.Generic.IEnumerable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{``0}') | The collection to enumerate and execute the provided `action` on. Can not be null. |
-| action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the `source` collection. Can not be null. |
-| lazy | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | Using lazy evaluation executes the action once as the `source` is being enumerated, otherwise a full enumeration happens and each element is called on the `action`. |
+| source | [System.Collections.Generic.IEnumerable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{``0}') | The collection to enumerate and execute the provided `action`on. Can not be null. |
+| action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the `source`collection. Can not be null. |
+| lazy | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | Using lazy evaluation executes the action once as the `source`is being enumerated, otherwise a full enumeration happens and each element is called on the `action`. |
 
 ##### Generic Types
 
@@ -259,18 +259,18 @@ Returns the elements of `source` one by one after being invoked on `action`, or 
 ##### Summary
 
 Internal helper method for the method [For\`\`1](#M-MutatorFX-Coding-GeneralFluentExtensions-For``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.For``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})'). Used for reducing the number of parameter null checks.
-            Note that the input objects in `source` can only be mutated by the provided `action` if `T` is a reference type.
+Note that the input objects in `source`can only be mutated by the provided `action`if `T`is a reference type.
 
 ##### Returns
 
-The parameter `source` after invoking `action` with its elements. Evaluated lazily.
+The parameter `source`after invoking `action`with its elements. Evaluated lazily.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| source | [System.Collections.Generic.IEnumerable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{``0}') | The collection to enumerate and execute the provided `action` on. Can not be null, but not checked. |
-| action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the `source` collection. Can not be null, but not checked. |
+| source | [System.Collections.Generic.IEnumerable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{``0}') | The collection to enumerate and execute the provided `action`on. Can not be null, but not checked. |
+| action | [System.Action{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0}') | The action to execute on the `source`collection. Can not be null, but not checked. |
 
 ##### Generic Types
 
@@ -284,20 +284,20 @@ The parameter `source` after invoking `action` with its elements. Evaluated lazi
 ##### Summary
 
 Execute a function with the given object as parameter, and return the result.
-            Useful to create fluent APIs and shorten code by closing on the object `obj`.
-            Instead of a simple invocation, you can create a closure on the object `obj` and reuse the variable in the `function` scope.
-            Note that the input object `obj` can only be mutated by the provided `function` if it is a reference type.
+Useful to create fluent APIs and shorten code by closing on the object `obj`.
+Instead of a simple invocation, you can create a closure on the object `obj`and reuse the variable in the `function`scope.
+Note that the input object `obj`can only be mutated by the provided `function`if it is a reference type.
 
 ##### Returns
 
-Returns the result of the function invokation of `function` with the parameter `obj`.
+Returns the result of the function invokation of `function`with the parameter `obj`.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| obj | [\`\`0](#T-``0 '``0') | The object to call the provided function `function` on. |
-| function | [System.Func{\`\`0,\`\`1}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,``1}') | The function to call with the parameter `obj` and return the resulting value of. |
+| obj | [\`\`0](#T-``0 '``0') | The object to call the provided function `function`on. |
+| function | [System.Func{\`\`0,\`\`1}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,``1}') | The function to call with the parameter `obj`and return the resulting value of. |
 
 ##### Generic Types
 
@@ -312,21 +312,21 @@ Returns the result of the function invokation of `function` with the parameter `
 ##### Summary
 
 The asynchronous pair of [Pipe\`\`2](#M-MutatorFX-Coding-GeneralFluentExtensions-Pipe``2-``0,System-Func{``0,``1}- 'MutatorFX.Coding.GeneralFluentExtensions.Pipe``2(``0,System.Func{``0,``1})').
-            /// Execute and await an asynchronous function with the given object as parameter, and return the result.
-            Useful to create fluent APIs and shorten code by closing on the object `obj`.
-            Instead of a simple invocation, you can create a closure on the object `obj` and reuse the variable in the `function` scope.
-            Note that the input object `obj` can only be mutated by the provided `function` if it is a reference type.
+/// Execute and await an asynchronous function with the given object as parameter, and return the result.
+Useful to create fluent APIs and shorten code by closing on the object `obj`.
+Instead of a simple invocation, you can create a closure on the object `obj`and reuse the variable in the `function`scope.
+Note that the input object `obj`can only be mutated by the provided `function`if it is a reference type.
 
 ##### Returns
 
-Returns the result of the function invokation of `function` with the parameter `obj`.
+Returns the result of the function invokation of `function`with the parameter `obj`.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| obj | [\`\`0](#T-``0 '``0') | The object to call the provided function `function` on. |
-| function | [System.Func{\`\`0,System.Threading.Tasks.Task{\`\`1}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task{``1}}') | The function to call with the parameter `obj` and return the resulting value of. |
+| obj | [\`\`0](#T-``0 '``0') | The object to call the provided function `function`on. |
+| function | [System.Func{\`\`0,System.Threading.Tasks.Task{\`\`1}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task{``1}}') | The function to call with the parameter `obj`and return the resulting value of. |
 
 ##### Generic Types
 
@@ -344,7 +344,7 @@ MutatorFX.Reflection
 
 ##### Summary
 
-Globally usable helper extensions, useful when using reflection and [Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') objects.
+Globally usable helper extensions, useful when using reflection and [Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type')objects.
 
 <a name='M-MutatorFX-Reflection-TypeReflectionExtensions-GetPropertyChain-System-Type,System-String,System-Nullable{System-Reflection-BindingFlags}-'></a>
 ### GetPropertyChain(type,text,bindingFlags) `method`
@@ -352,8 +352,8 @@ Globally usable helper extensions, useful when using reflection and [Type](http:
 ##### Summary
 
 Gets the first available property chain that matches the start of the given text. The text should be the concatenation of the property names. 
-            In case of multiple matches, the first match is selected by ordering the properties by ascending order of the length of their names.
-            In case of no matches are found, an [InvalidOperationException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.InvalidOperationException 'System.InvalidOperationException') is thrown.
+In case of multiple matches, the first match is selected by ordering the properties by ascending order of the length of their names.
+In case of no matches are found, an [InvalidOperationException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.InvalidOperationException 'System.InvalidOperationException')is thrown.
 
 ##### Returns
 
@@ -365,11 +365,11 @@ The property chain in order.
 | ---- | ---- | ----------- |
 | type | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') | The type that should contain the properties described by the `text`. |
 | text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The string containing the exact names of the chained properties (without separators). |
-| bindingFlags | [System.Nullable{System.Reflection.BindingFlags}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Reflection.BindingFlags}') | The  to use when looking for matching properties. |
+| bindingFlags | [System.Nullable{System.Reflection.BindingFlags}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Reflection.BindingFlags}') | The to use when looking for matching properties. |
 
 ##### Remarks
 
-This method uses recursion, and calls [GetPropertyChains](#M-MutatorFX-Reflection-TypeReflectionExtensions-GetPropertyChains-System-Type,System-String,System-Nullable{System-Reflection-BindingFlags}- 'MutatorFX.Reflection.TypeReflectionExtensions.GetPropertyChains(System.Type,System.String,System.Nullable{System.Reflection.BindingFlags})') internally.
+This method uses recursion, and calls [GetPropertyChains](#M-MutatorFX-Reflection-TypeReflectionExtensions-GetPropertyChains-System-Type,System-String,System-Nullable{System-Reflection-BindingFlags}- 'MutatorFX.Reflection.TypeReflectionExtensions.GetPropertyChains(System.Type,System.String,System.Nullable{System.Reflection.BindingFlags})')internally.
 
 <a name='M-MutatorFX-Reflection-TypeReflectionExtensions-GetPropertyChains-System-Type,System-String,System-Nullable{System-Reflection-BindingFlags}-'></a>
 ### GetPropertyChains(type,text,bindingFlags) `method`
@@ -377,7 +377,7 @@ This method uses recursion, and calls [GetPropertyChains](#M-MutatorFX-Reflectio
 ##### Summary
 
 Gets all the available property chains that matches the given text. The text should be the concatenation of the property names. 
-            The matches are ordered by ascending order of the length of their propertynames.
+The matches are ordered by ascending order of the length of their propertynames.
 
 ##### Returns
 
@@ -389,4 +389,4 @@ The matching property chains.
 | ---- | ---- | ----------- |
 | type | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') | The type that should contain the properties described by the `text`. |
 | text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The string containing the exact names of the chained properties (without separators). |
-| bindingFlags | [System.Nullable{System.Reflection.BindingFlags}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Reflection.BindingFlags}') | The  to use when looking for matching properties. |
+| bindingFlags | [System.Nullable{System.Reflection.BindingFlags}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Reflection.BindingFlags}') | The to use when looking for matching properties. |
