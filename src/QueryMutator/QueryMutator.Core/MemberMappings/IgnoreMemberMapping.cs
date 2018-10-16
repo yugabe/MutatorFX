@@ -6,9 +6,9 @@ using System.Text;
 
 namespace MutatorFX.QueryMutator.MemberMappings
 {
-    public class IgnorePropertyMapping<TSource, TTarget> : MemberMapping<TSource, TTarget>
+    public class IgnoreMemberMapping<TSource, TTarget> : MemberMapping<TSource, TTarget>
     {
-        public IgnorePropertyMapping(ParameterExpression sourceParameter, MemberInfo targetMember) : base(sourceParameter, targetMember) { }
+        public IgnoreMemberMapping(ParameterExpression sourceParameter, MemberInfo targetMember) : base(sourceParameter, targetMember) { }
 
         public override Expression GenerateExpression() => null;
     }

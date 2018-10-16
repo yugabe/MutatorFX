@@ -14,6 +14,6 @@ namespace MutatorFX.QueryMutator.MemberMappings
         public IEnumerable<PropertyInfo> PropertyChain { get; }
 
         public override Expression GenerateExpression()
-            => PropertyChain.Aggregate((Expression)this.SourceParameter, MakeMemberAccess);
+            => PropertyChain.Aggregate((Expression)SourceParameter, MakeMemberAccess);
     }
 }

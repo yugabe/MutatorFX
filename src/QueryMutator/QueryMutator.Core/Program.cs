@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MutatorFX.QueryMutator.Linq;
+using System;
 using System.Linq;
 
 namespace MutatorFX.QueryMutator
@@ -11,20 +12,13 @@ namespace MutatorFX.QueryMutator
         [STAThread]
         public static void Main()
         {
-            var kutyaToDtoMapping = new MappingBuilder<Kutya, KutyaDto>()
+            var kutyaToDtoMapping = Mapping<Kutya, KutyaDto, int>.Create(mapping => mapping
+                .MapMember(k => k.Parameterized, p => k => k.Id * p)
                 .MapMatchingPropertyChains()
-                .MapProperty(k => k.DtoProperty, kk => kk.EntityProperty)
-                .IgnoreProperty(k => k.Ignored)
-                .Build();
+                .MapMember(k => k.DtoProperty, kk => kk.EntityProperty)
+                .IgnoreMember(k => k.Ignored)
+                );
 
-            try
-            {
-
-            }
-            catch
-            {
-            }
-            finally { Console.WriteLine(); }
             var kutyak = new[] {
                 new Kutya
                 {
@@ -33,7 +27,7 @@ namespace MutatorFX.QueryMutator
                     Ignored = "IGNORE!"
                 }, new Kutya { },
                 new Kutya { Id = 3, Name = "Pimpedli", EntityProperty = 10 } };
-            var dtok = kutyak.AsQueryable().Select(kutyaToDtoMapping.ToExpression()).ToList();
+            var dtok = kutyak.AsQueryable().Select(kutyaToDtoMapping, 2).ToList();
         }
     }
 
@@ -50,6 +44,7 @@ namespace MutatorFX.QueryMutator
         public int Id { get; set; }
         public string Name { get; set; }
         public int DtoProperty { get; set; }
+        public int Parameterized { get; set; }
         public string Ignored { get; set; }
     }
 }

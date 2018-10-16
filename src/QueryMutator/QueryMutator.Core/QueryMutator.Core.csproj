@@ -8,7 +8,6 @@
     <PackageTags>Mutator, MutatorFX, framework, QueryMutator, querying, mapping, AutoMapper</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/querymutator-logo.png</PackageIconUrl>
-    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
