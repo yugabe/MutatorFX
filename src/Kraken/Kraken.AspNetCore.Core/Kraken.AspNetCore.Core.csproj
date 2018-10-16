@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <AssemblyName>MutatorFX.Kraken.AspNetCore.Core</AssemblyName>
+    <RootNamespace>MutatorFX.Kraken.AspNetCore</RootNamespace>
+    <Product>MutatorFX.Kraken</Product>
+    <Description>
+      An opinionated application architecture framework for ASP.NET Core applications which
+      enforces maximized code reuse, separation of concerns, dependency inversion and minimized redundancy.
+    </Description>
+    <PackageTags>
+      Kraken, Mutator, MutatorFX, framework, coding conventions, helpers, extensions, reflection, ASP.NET Core,
+      dependency injection, inversion
+    </PackageTags>
+    <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/kraken-logo.png</PackageIconUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
+</Project>

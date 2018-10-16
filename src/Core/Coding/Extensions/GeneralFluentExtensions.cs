@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static MutatorFX.ExceptionHandling.Assertions;
 
 namespace MutatorFX.Coding
 {
@@ -164,5 +165,59 @@ namespace MutatorFX.Coding
         /// <returns>The parameter <paramref name="source"/> after invoking <paramref name="action"/> with its elements. Evaluated lazily.</returns>
         private static IEnumerable<T> ForInternal<T>(this IEnumerable<T> source, Action<T> action)
             => source.Select(e => { action(e); return e; });
+
+        /// <summary>
+        /// Invokes a synchronous action on a disposable object. The object will be used in a using block.
+        /// </summary>
+        /// <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+        /// <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+        /// <param name="action">The action to invoke on the disposable object in a using block. Should not be null.</param>
+        public static void Using<T>(this T disposable, Action<T> action) where T : IDisposable
+        {
+            using (EnsureNoneNull(new { disposable, action }).disposable)
+                action(disposable);
+        }
+
+        /// <summary>
+        /// Invokes a synchronous function on a disposable object. The object will be used in a using block.
+        /// </summary>
+        /// <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+        /// <typeparam name="TResult">The result type of the <paramref name="function"/> call on the object. Should be inferred.</typeparam>
+        /// <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+        /// <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
+        /// <returns>The result of calling the <paramref name="function"/> on the <paramref name="disposable"/> object.
+        /// When the object is returned to the caller, the disposable object is disposed of.</returns>
+        public static TResult Using<T, TResult>(this T disposable, Func<T, TResult> function) where T : IDisposable
+        {
+            using (EnsureNoneNull(new { disposable, function }).disposable)
+                return function(disposable);
+        }
+
+        /// <summary>
+        /// Invokes an asynchronous action on a disposable object. The object will be used in a using block.
+        /// </summary>
+        /// <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+        /// <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+        /// <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
+        /// <returns>When control is returned to the caller, the disposable object is disposed of and the task returned by <paramref name="function"/> awaited.</returns>
+        public static async Task UsingAsync<T>(this T disposable, Func<T, Task> function) where T : IDisposable
+        {
+            using (EnsureNoneNull(new { disposable, function }).disposable)
+                await function(disposable);
+        }
+
+        /// <summary>
+        /// Invokes an asynchronous function on a disposable object. The object will be used in a using block.
+        /// </summary>
+        /// <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+        /// <typeparam name="TResult">The result type of the asynchronous <paramref name="function"/> call on the object. Should be inferred.</typeparam>
+        /// <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+        /// <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
+        /// <returns>When control is returned to the caller, the disposable object is disposed of and the result of the task returned by <paramref name="function"/> is returned.</returns>
+        public static async Task<TResult> UsingAsync<T, TResult>(this T disposable, Func<T, Task<TResult>> function) where T : IDisposable
+        {
+            using (EnsureNoneNull(new { disposable, function }).disposable)
+                return await function(disposable);
+        }
     }
 }

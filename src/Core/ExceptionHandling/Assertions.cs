@@ -21,7 +21,7 @@ namespace MutatorFX.ExceptionHandling
     /// 
     /// void Method2(string parameter)
     /// {
-    ///     EnsureNotNull(nameof(parameter), parameter);
+    ///     EnsureNotNull(parameter, nameof(parameter));
     /// }
     /// </code>
     /// </summary>
@@ -29,7 +29,7 @@ namespace MutatorFX.ExceptionHandling
     {
         /// <summary>
         /// Throws an <see cref="ArgumentNullException"/> if the passed parameter was null.
-        /// Consider using the <see cref="EnsureNotNull{T}(string, T)"/> overload for named parameters.
+        /// Consider using the <see cref="EnsureNotNull{T}(T, string)"/> overload for named parameters.
         /// </summary>
         /// <param name="parameter">The parameter which should not be null.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given parameter object is null.</exception>
@@ -41,13 +41,25 @@ namespace MutatorFX.ExceptionHandling
         /// <summary>
         /// Throws an <see cref="ArgumentNullException"/> if the passed parameter was null.
         /// </summary>
-        /// <param name="parameterName">The (outer) name of the parameter. Should not be null :)</param>
         /// <param name="parameter">The parameter which should not be null.</param>
+        /// <param name="parameterName">The (outer) name of the parameter. Should not be null :)</param>
         /// <exception cref="ArgumentNullException">Thrown when the given parameter object is null.</exception>
         /// <returns>The parameter if it was not null, throws an <see cref="ArgumentNullException"/> otherwise.</returns>
         [DebuggerStepThrough]
-        public static T EnsureNotNull<T>(string parameterName, T parameter)
+        public static T EnsureNotNull<T>(T parameter, string parameterName)
             => parameter == null ? parameter : throw new ArgumentNullException(parameterName);
+
+        /// <summary>
+        /// Throws an <see cref="ArgumentNullException"/> if the passed parameter was null.
+        /// </summary>
+        /// <param name="parameter">The parameter which should not be null.</param>
+        /// <param name="parameterName">The (outer) name of the parameter. Should not be null :)</param>
+        /// <param name="message">The message to set on the resulting <see cref="ArgumentNullException"/>.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the given parameter object is null.</exception>
+        /// <returns>The parameter if it was not null, throws an <see cref="ArgumentNullException"/> otherwise.</returns>
+        [DebuggerStepThrough]
+        public static T EnsureNotNull<T>(T parameter, string parameterName, string message)
+            => parameter == null ? parameter : throw new ArgumentNullException(parameterName, message);
 
         /// <summary>
         /// Throws an <see cref="AggregateException"/> if any of the passed <paramref name="parameters"/> object's properties are null.
@@ -68,8 +80,8 @@ namespace MutatorFX.ExceptionHandling
         /// <exception cref="AggregateException">Thrown when any of the given parameters object's properties are null. 
         /// Contains <see cref="ArgumentNullException"/> instances which show the invalid parameters.</exception>
         [DebuggerStepThrough]
-        public static void EnsureNoneNull(object parameters)
-            => (parameters ?? throw new ArgumentNullException(nameof(parameters), "The parameters object passed to this method should not be null and contain the parameters in an anonymous object's properties."))
-                .GetType().GetProperties().Where(p => p.GetValue(parameters) == null).Branch(nullValues => nullValues.Any(), nullValues => throw new AggregateException(nullValues.Select(n => new ArgumentNullException(n.Name))));
+        public static T EnsureNoneNull<T>(T parameters)
+            => EnsureNotNull(parameters, nameof(parameters), "The parameters object passed to this method should not be null and contain the parameters in an anonymous object's properties.")
+                .Do(ps => ps.GetType().GetProperties().Where(p => p.GetValue(ps) == null).Branch(nullValues => nullValues.Any(), nullValues => throw new AggregateException(nullValues.Select(n => new ArgumentNullException(n.Name)))));
     }
 }

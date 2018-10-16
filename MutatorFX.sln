@@ -32,7 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core", "src\Qu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMutator.Core", "src\ExcelMutator\ExcelMutator.Core\ExcelMutator.Core.csproj", "{0F913C63-E471-44EB-8684-D054CA364C07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelMutator.NetCore.Tests", "Tests\ExcelMutator\ExcelMutator.NetCore.Tests\ExcelMutator.NetCore.Tests.csproj", "{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMutator.NetCore.Tests", "Tests\ExcelMutator\ExcelMutator.NetCore.Tests\ExcelMutator.NetCore.Tests.csproj", "{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.AspNetCore.Core", "src\Kraken\Kraken.AspNetCore.Core\Kraken.AspNetCore.Core.csproj", "{F57CAD47-0FC8-4028-A35D-4F3767E24368}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.AspNetCore", "src\Kraken\Kraken.AspNetCore\Kraken.AspNetCore.csproj", "{0BCBFDE7-F045-4F02-8843-CB5FD9810C01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +80,14 @@ Global
 		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57CAD47-0FC8-4028-A35D-4F3767E24368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57CAD47-0FC8-4028-A35D-4F3767E24368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57CAD47-0FC8-4028-A35D-4F3767E24368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57CAD47-0FC8-4028-A35D-4F3767E24368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BCBFDE7-F045-4F02-8843-CB5FD9810C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BCBFDE7-F045-4F02-8843-CB5FD9810C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BCBFDE7-F045-4F02-8843-CB5FD9810C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BCBFDE7-F045-4F02-8843-CB5FD9810C01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

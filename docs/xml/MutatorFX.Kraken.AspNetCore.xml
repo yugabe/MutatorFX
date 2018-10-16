@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MutatorFX.Kraken.AspNetCore</name>
+    </assembly>
+    <members>
+        <member name="T:MutatorFX.Kraken.AspNetCore.WebHostBuilderExtensions">
+            <summary>
+            Contains extensions for configuring Kraken architecture application modules.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.WebHostBuilderExtensions.UseKrakenModule``1(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+            Configures a Kraken module to be used for the current <paramref name="webHostBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/> to use. A new object will be instantiated.</typeparam>
+            <param name="webHostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> to use. Should not be null.</param>
+            <returns>The <paramref name="webHostBuilder"/> instance after configured by the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/>.</returns>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.WebHostBuilderExtensions.UseKrakenModule``1(Microsoft.AspNetCore.Hosting.IWebHostBuilder,``0)">
+            <summary>
+            Configures a Kraken module to be used for the current <paramref name="webHostBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/> to use.</typeparam>
+            <param name="webHostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> to use. Should not be null.</param>
+            <param name="krakenModule">The module to configure the builder with.</param>
+            <returns>The <paramref name="webHostBuilder"/> instance after configured by the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/>.</returns>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.WebHostBuilderExtensions.UseKrakenModule``2(``1)">
+            <summary>
+            Configures a Kraken module to be used for the current <paramref name="webHostBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/> to use. A new object will be instantiated.</typeparam>
+            <typeparam name="TBuilder">The type of the builder. Should be inferred.</typeparam>
+            <param name="webHostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> to use. Should not be null.</param>
+            <returns>The <paramref name="webHostBuilder"/> instance after configured by the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/>.</returns>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.WebHostBuilderExtensions.UseKrakenModule``2(``1,``0)">
+            <summary>
+            Configures a Kraken module to be used for the current <paramref name="webHostBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/> to use.</typeparam>
+            <typeparam name="TBuilder">The type of the builder. Should be inferred.</typeparam>
+            <param name="webHostBuilder">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHostBuilder"/> to use. Should not be null.</param>
+            <param name="krakenModule">The module to configure the builder with.</param>
+            <returns>The <paramref name="webHostBuilder"/> instance after configured by the <see cref="T:MutatorFX.Kraken.AspNetCore.IKrakenModule"/>.</returns>
+        </member>
+    </members>
+</doc>

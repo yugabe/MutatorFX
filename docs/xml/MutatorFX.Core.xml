@@ -147,6 +147,128 @@
             <param name="action">The action to execute on the <paramref name="source"/> collection. Can not be null, but not checked.</param>
             <returns>The parameter <paramref name="source"/> after invoking <paramref name="action"/> with its elements. Evaluated lazily.</returns>
         </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.Using``1(``0,System.Action{``0})">
+            <summary>
+            Invokes a synchronous action on a disposable object. The object will be used in a using block.
+            </summary>
+            <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+            <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+            <param name="action">The action to invoke on the disposable object in a using block. Should not be null.</param>
+        </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.Using``2(``0,System.Func{``0,``1})">
+            <summary>
+            Invokes a synchronous function on a disposable object. The object will be used in a using block.
+            </summary>
+            <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+            <typeparam name="TResult">The result type of the <paramref name="function"/> call on the object. Should be inferred.</typeparam>
+            <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+            <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
+            <returns>The result of calling the <paramref name="function"/> on the <paramref name="disposable"/> object.
+            When the object is returned to the caller, the disposable object is disposed of.</returns>
+        </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.UsingAsync``1(``0,System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Invokes an asynchronous action on a disposable object. The object will be used in a using block.
+            </summary>
+            <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+            <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+            <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
+            <returns>When control is returned to the caller, the disposable object is disposed of and the task returned by <paramref name="function"/> awaited.</returns>
+        </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.UsingAsync``2(``0,System.Func{``0,System.Threading.Tasks.Task{``1}})">
+            <summary>
+            Invokes an asynchronous function on a disposable object. The object will be used in a using block.
+            </summary>
+            <typeparam name="T">The type of the disposable object to use. Should be inferred.</typeparam>
+            <typeparam name="TResult">The result type of the asynchronous <paramref name="function"/> call on the object. Should be inferred.</typeparam>
+            <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
+            <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
+            <returns>When control is returned to the caller, the disposable object is disposed of and the result of the task returned by <paramref name="function"/> is returned.</returns>
+        </member>
+        <member name="T:MutatorFX.ExceptionHandling.Assertions">
+            <summary>
+            This class contains static helper methods to validate simple assertions for generating Exceptions like
+            <see cref="T:System.ArgumentNullException"/> or <see cref="T:System.ArgumentOutOfRangeException"/>.
+            It is suggested that you use the assertions as follows:<para></para>
+            <code>
+            using static MutatorFX.ExceptionHandling.Assertions;
+            
+            void Method(string param1, object param2)
+            {
+                EnsureNoneNull(new { param1, param2 });
+            }
+            
+            void Method2(string parameter)
+            {
+                EnsureNotNull(parameter, nameof(parameter));
+            }
+            </code>
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExceptionHandling.Assertions.EnsureNotNull``1(``0)">
+            <summary>
+            Throws an <see cref="T:System.ArgumentNullException"/> if the passed parameter was null.
+            Consider using the <see cref="M:MutatorFX.ExceptionHandling.Assertions.EnsureNotNull``1(``0,System.String)"/> overload for named parameters.
+            </summary>
+            <param name="parameter">The parameter which should not be null.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the given parameter object is null.</exception>
+            <returns>The parameter if it was not null, throws an <see cref="T:System.ArgumentNullException"/> otherwise.</returns>
+        </member>
+        <member name="M:MutatorFX.ExceptionHandling.Assertions.EnsureNotNull``1(``0,System.String)">
+            <summary>
+            Throws an <see cref="T:System.ArgumentNullException"/> if the passed parameter was null.
+            </summary>
+            <param name="parameter">The parameter which should not be null.</param>
+            <param name="parameterName">The (outer) name of the parameter. Should not be null :)</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the given parameter object is null.</exception>
+            <returns>The parameter if it was not null, throws an <see cref="T:System.ArgumentNullException"/> otherwise.</returns>
+        </member>
+        <member name="M:MutatorFX.ExceptionHandling.Assertions.EnsureNotNull``1(``0,System.String,System.String)">
+            <summary>
+            Throws an <see cref="T:System.ArgumentNullException"/> if the passed parameter was null.
+            </summary>
+            <param name="parameter">The parameter which should not be null.</param>
+            <param name="parameterName">The (outer) name of the parameter. Should not be null :)</param>
+            <param name="message">The message to set on the resulting <see cref="T:System.ArgumentNullException"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the given parameter object is null.</exception>
+            <returns>The parameter if it was not null, throws an <see cref="T:System.ArgumentNullException"/> otherwise.</returns>
+        </member>
+        <member name="M:MutatorFX.ExceptionHandling.Assertions.EnsureNoneNull``1(``0)">
+            <summary>
+            Throws an <see cref="T:System.AggregateException"/> if any of the passed <paramref name="parameters"/> object's properties are null.
+            Should be used with an anonymous object containing
+            Usage:<para></para>
+            <code>
+            using static MutatorFX.ExceptionHandling.Assertions;
+            
+            void Method(string param1, object param2)
+            {
+                EnsureNoneNull(new { param1, param2 });
+            }
+            </code>
+            </summary>
+            <param name="parameters">The object containing the parameters in its properties to check for null. 
+            Should be an anonymous object constructed inline from the names of the parameters.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the given parameters object is null.</exception>
+            <exception cref="T:System.AggregateException">Thrown when any of the given parameters object's properties are null. 
+            Contains <see cref="T:System.ArgumentNullException"/> instances which show the invalid parameters.</exception>
+        </member>
+        <member name="T:MutatorFX.ExceptionHandling.ExceptionHandlingExtensions">
+            <summary>
+            Contains helper methods to use when throwing and handling <see cref="T:System.Exception"/>s.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.ExceptionHandling.ExceptionHandlingExtensions.WithData``1(``0,System.Object)">
+            <summary>
+            Appends the <paramref name="data"/> object's properties to the <paramref name="exception"/>'s <see cref="P:System.Exception.Data"/> dictionary.
+            </summary>
+            <typeparam name="TException">The type of the <see cref="T:System.Exception"/> to extend. Should be inferred by using as an extension method.</typeparam>
+            <param name="exception">The exception to append the data to. Can be null, in this case null will be returned.</param>
+            <param name="data">The data to append to the exception. Can be null, in this case the exception object will be returned as is.</param>
+            <returns>The <paramref name="exception"/> with data appended from the <paramref name="data"/> object's properties to its <see cref="P:System.Exception.Data"/> property. 
+            If the <paramref name="data"/> was null, the <paramref name="exception"/> is returned as is. 
+            If the <paramref name="exception"/> was null, null will be returned.</returns>
+        </member>
         <member name="T:MutatorFX.Reflection.TypeReflectionExtensions">
             <summary>
             Globally usable helper extensions, useful when using reflection and <see cref="T:System.Type"/> objects.
