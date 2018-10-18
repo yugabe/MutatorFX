@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using static MutatorFX.ExceptionHandling.Assertions;
 
@@ -105,12 +106,12 @@ namespace MutatorFX.Coding
         /// Instead of a simple invocation, you can create a closure on the object <paramref name="obj"/> and reuse the variable in the <paramref name="function"/> scope.
         /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="function"/> if it is a reference type.
         /// </summary>
-        /// <typeparam name="T">The type of the object <paramref name="obj"/>. Has to be a reference type so that structures won't be copied. Should be inferred.</typeparam>
+        /// <typeparam name="T">The type of the object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <typeparam name="TResult">The type of the invokation result of <paramref name="function"/>. Should be inferred.</typeparam>
-        /// <param name="obj">The object to call the provided function <paramref name="function"/> on.</param>
+        /// <param name="obj">The object to call the provided function <paramref name="function"/> on. If the object is not a reference type, the input won't be mutated.</param>
         /// <param name="function">The function to call with the parameter <paramref name="obj"/> and return the resulting value of.</param>
         /// <returns>Returns the result of the function invokation of <paramref name="function"/> with the parameter <paramref name="obj"/>.</returns>
-        public static TResult Pipe<T, TResult>(this T obj, Func<T, TResult> function) where T : class
+        public static TResult Pipe<T, TResult>(this T obj, Func<T, TResult> function)
             => function(obj);
 
         /// <summary>
@@ -120,12 +121,12 @@ namespace MutatorFX.Coding
         /// Instead of a simple invocation, you can create a closure on the object <paramref name="obj"/> and reuse the variable in the <paramref name="function"/> scope.
         /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="function"/> if it is a reference type.
         /// </summary>
-        /// <typeparam name="T">The type of the object <paramref name="obj"/>. Has to be a reference type so that structures won't be copied. Should be inferred.</typeparam>
+        /// <typeparam name="T">The type of the object <paramref name="obj"/>. Should be inferred.</typeparam>
         /// <typeparam name="TResult">The type of the invokation result of <paramref name="function"/>. Should be inferred.</typeparam>
         /// <param name="obj">The object to call the provided function <paramref name="function"/> on.</param>
         /// <param name="function">The function to call with the parameter <paramref name="obj"/> and return the resulting value of.</param>
         /// <returns>Returns the result of the function invokation of <paramref name="function"/> with the parameter <paramref name="obj"/>.</returns>
-        public static async Task<TResult> PipeAsync<T, TResult>(this T obj, Func<T, Task<TResult>> function) where T : class
+        public static async Task<TResult> PipeAsync<T, TResult>(this T obj, Func<T, Task<TResult>> function) 
             => await function(obj);
 
         /// <summary>
@@ -219,5 +220,27 @@ namespace MutatorFX.Coding
             using (EnsureNoneNull(new { disposable, function }).disposable)
                 return await function(disposable);
         }
+
+        /// <summary>
+        /// Awaits an asynchrounous operation on an object and returns the object. Uses <see cref="Task.GetAwaiter"/> and <see cref="TaskAwaiter.GetResult"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
+        /// <param name="obj">The object to use. Should not be null.</param>
+        /// <param name="func">The async function to execute. Should not be null.</param>
+        /// <returns>The object <paramref name="obj"/> after the async function <paramref name="func"/> is executed and awaited. 
+        /// If type <typeparamref name="T"/> is not a reference type, the input will be returned and won't be mutated.</returns>
+        public static T DoAwait<T>(this T obj, Func<T, Task> func)
+            => EnsureNoneNull(new { obj, func }).obj.Do(o => func(o).GetAwaiter().GetResult());
+
+        /// <summary>
+        /// Awaits an asynchrounous operation on an object and returns the result of the operation. Uses <see cref="Task.GetAwaiter"/> and <see cref="TaskAwaiter.GetResult"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
+        /// <typeparam name="TResult">The type of result of the function <paramref name="func"/>. Should be inferred.</typeparam>
+        /// <param name="obj">The object to use Should not be null.</param>
+        /// <param name="func">The async function to execute. Should not be null.</param>
+        /// <returns>The result of the async function <paramref name="func"/>.</returns>
+        public static TResult PipeAwait<T, TResult>(this T obj, Func<T, Task<TResult>> func)
+            => EnsureNoneNull(new { obj, func }).obj.Pipe(t => func(t).GetAwaiter().GetResult());
     }
 }

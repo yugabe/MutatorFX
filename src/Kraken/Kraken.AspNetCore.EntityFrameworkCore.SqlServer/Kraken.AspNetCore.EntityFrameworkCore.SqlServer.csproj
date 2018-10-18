@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer</AssemblyName>
+    <RootNamespace>MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.AspNetCore.EntityFrameworkCore\Kraken.AspNetCore.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Kraken.AspNetCore\Kraken.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
