@@ -6,7 +6,7 @@
     <RootNamespace>MutatorFX.Kraken.AspNetCore</RootNamespace>
     <Product>MutatorFX.Kraken</Product>
     <Description>
-      An opinionated application architecture framework for ASP.NET Core applications which
+      Kraken is an opinionated application architecture framework for ASP.NET Core applications which
       enforces maximized code reuse, separation of concerns, dependency inversion and minimized redundancy.
     </Description>
     <PackageTags>

@@ -1,18 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
     <AssemblyName>MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer</AssemblyName>
     <RootNamespace>MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer</RootNamespace>
+    <Product>MutatorFX.Kraken</Product>
+    <Description>
+      Kraken is an opinionated application architecture framework for ASP.NET Core applications which
+      enforces maximized code reuse, separation of concerns, dependency inversion and minimized redundancy.
+      The EF Core SQL Server package contains a specific helpers, like a startup task specific for Microsoft 
+      SQL Server that migrates the database to the latest version.
+    </Description>
+    <PackageTags>
+      Kraken, Mutator, MutatorFX, framework, coding conventions, helpers, extensions, reflection, ASP.NET Core,
+      dependency injection, inversion, EF Core, DbContext, Migrations
+    </PackageTags>
+    <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/kraken-logo.png</PackageIconUrl>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Kraken.AspNetCore.EntityFrameworkCore\Kraken.AspNetCore.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Kraken.AspNetCore\Kraken.AspNetCore.csproj" />
   </ItemGroup>
-
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
 </Project>

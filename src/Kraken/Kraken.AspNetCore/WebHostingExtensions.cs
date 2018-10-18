@@ -19,7 +19,7 @@ namespace MutatorFX.Kraken.AspNetCore
         /// <returns>The <paramref name="webHostBuilder"/> instance after configured by the <see cref="IKrakenModule"/>.</returns>
         public static IWebHostBuilder UseKrakenModule<T>(this IWebHostBuilder webHostBuilder)
             where T : class, IKrakenModule, new()
-            => webHostBuilder.UseKrakenModule<T>(new T());
+            => webHostBuilder.UseKrakenModule(new T());
 
         /// <summary>
         /// Configures a Kraken module to be used for the current <paramref name="webHostBuilder"/>.
@@ -43,5 +43,15 @@ namespace MutatorFX.Kraken.AspNetCore
         public static IWebHost UseKrakenStartupTask<T>(this IWebHost webHost)
             where T : IKrakenStartupTask
             => EnsureNotNull(webHost, nameof(webHost)).DoAwait(h => h.Services.CreateScope().Using(s => s.ServiceProvider.GetRequiredService<T>().OnBeforeHostStartsAsync(h)));
+
+        /// <summary>
+        /// Branch the host chain by an <see cref="IHostingEnvironment"/>.
+        /// </summary>
+        /// <param name="webHost">The host to branch based on the <paramref name="predicate"/>.</param>
+        /// <param name="predicate">The predicate to check the hostingenvironment to match.</param>
+        /// <param name="buildAction">The action to execute when the host's environment is the given one.</param>
+        /// <returns>The <paramref name="webHost"/>, after the branching statements executed in case of the hosting environment matching or immediately.</returns>
+        public static IWebHost UseInEnvironment(this IWebHost webHost, Func<IHostingEnvironment, bool> predicate, Action<IWebHost> buildAction)
+            => EnsureNoneNull(new { webHost, predicate, buildAction }).webHost.Branch(h => h.Services.GetRequiredService<IHostingEnvironment>().Pipe(predicate), buildAction);
     }
 }

@@ -17,11 +17,13 @@
   - [BranchAsync\`\`2(obj,predicate,funcIf,funcElse)](#M-MutatorFX-Coding-GeneralFluentExtensions-BranchAsync``2-``0,System-Func{``0,System-Threading-Tasks-Task{System-Boolean}},System-Func{``0,System-Threading-Tasks-Task{``1}},System-Func{``0,System-Threading-Tasks-Task{``1}}- 'MutatorFX.Coding.GeneralFluentExtensions.BranchAsync``2(``0,System.Func{``0,System.Threading.Tasks.Task{System.Boolean}},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Func{``0,System.Threading.Tasks.Task{``1}})')
   - [Do\`\`1(obj,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-Do``1-``0,System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action{``0})')
   - [DoAsync\`\`1(obj,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-DoAsync``1-``0,System-Func{``0,System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.DoAsync``1(``0,System.Func{``0,System.Threading.Tasks.Task})')
+  - [DoAwait\`\`1(obj,func)](#M-MutatorFX-Coding-GeneralFluentExtensions-DoAwait``1-``0,System-Func{``0,System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.DoAwait``1(``0,System.Func{``0,System.Threading.Tasks.Task})')
   - [For\`\`1(source,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-For``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.For``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})')
   - [For\`\`1(source,action,lazy)](#M-MutatorFX-Coding-GeneralFluentExtensions-For``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0},System-Boolean- 'MutatorFX.Coding.GeneralFluentExtensions.For``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0},System.Boolean)')
   - [ForInternal\`\`1(source,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-ForInternal``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.ForInternal``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})')
   - [Pipe\`\`2(obj,function)](#M-MutatorFX-Coding-GeneralFluentExtensions-Pipe``2-``0,System-Func{``0,``1}- 'MutatorFX.Coding.GeneralFluentExtensions.Pipe``2(``0,System.Func{``0,``1})')
   - [PipeAsync\`\`2(obj,function)](#M-MutatorFX-Coding-GeneralFluentExtensions-PipeAsync``2-``0,System-Func{``0,System-Threading-Tasks-Task{``1}}- 'MutatorFX.Coding.GeneralFluentExtensions.PipeAsync``2(``0,System.Func{``0,System.Threading.Tasks.Task{``1}})')
+  - [PipeAwait\`\`2(obj,func)](#M-MutatorFX-Coding-GeneralFluentExtensions-PipeAwait``2-``0,System-Func{``0,System-Threading-Tasks-Task{``1}}- 'MutatorFX.Coding.GeneralFluentExtensions.PipeAwait``2(``0,System.Func{``0,System.Threading.Tasks.Task{``1}})')
   - [Using\`\`1(disposable,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-Using``1-``0,System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.Using``1(``0,System.Action{``0})')
   - [Using\`\`2(disposable,function)](#M-MutatorFX-Coding-GeneralFluentExtensions-Using``2-``0,System-Func{``0,``1}- 'MutatorFX.Coding.GeneralFluentExtensions.Using``2(``0,System.Func{``0,``1})')
   - [UsingAsync\`\`1(disposable,function)](#M-MutatorFX-Coding-GeneralFluentExtensions-UsingAsync``1-``0,System-Func{``0,System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.UsingAsync``1(``0,System.Func{``0,System.Threading.Tasks.Task})')
@@ -380,6 +382,31 @@ If the task has a return value, it is ignored. |
 | ---- | ----------- |
 | T | The type of the given object `obj`. Should be inferred. |
 
+<a name='M-MutatorFX-Coding-GeneralFluentExtensions-DoAwait``1-``0,System-Func{``0,System-Threading-Tasks-Task}-'></a>
+### DoAwait\`\`1(obj,func) `method`
+
+##### Summary
+
+Awaits an asynchrounous operation on an object and returns the object. Uses [GetAwaiter](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Threading.Tasks.Task.GetAwaiter 'System.Threading.Tasks.Task.GetAwaiter')and [GetResult](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Runtime.CompilerServices.TaskAwaiter.GetResult 'System.Runtime.CompilerServices.TaskAwaiter.GetResult').
+
+##### Returns
+
+The object `obj`after the async function `func`is executed and awaited. 
+If type `T`is not a reference type, the input will be returned and won't be mutated.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| obj | [\`\`0](#T-``0 '``0') | The object to use. Should not be null. |
+| func | [System.Func{\`\`0,System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task}') | The async function to execute. Should not be null. |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | The type of the object to use. Should be inferred. |
+
 <a name='M-MutatorFX-Coding-GeneralFluentExtensions-For``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}-'></a>
 ### For\`\`1(source,action) `method`
 
@@ -478,14 +505,14 @@ Returns the result of the function invokation of `function`with the parameter `o
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| obj | [\`\`0](#T-``0 '``0') | The object to call the provided function `function`on. |
+| obj | [\`\`0](#T-``0 '``0') | The object to call the provided function `function`on. If the object is not a reference type, the input won't be mutated. |
 | function | [System.Func{\`\`0,\`\`1}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,``1}') | The function to call with the parameter `obj`and return the resulting value of. |
 
 ##### Generic Types
 
 | Name | Description |
 | ---- | ----------- |
-| T | The type of the object `obj`. Has to be a reference type so that structures won't be copied. Should be inferred. |
+| T | The type of the object `obj`. Should be inferred. |
 | TResult | The type of the invokation result of `function`. Should be inferred. |
 
 <a name='M-MutatorFX-Coding-GeneralFluentExtensions-PipeAsync``2-``0,System-Func{``0,System-Threading-Tasks-Task{``1}}-'></a>
@@ -514,8 +541,33 @@ Returns the result of the function invokation of `function`with the parameter `o
 
 | Name | Description |
 | ---- | ----------- |
-| T | The type of the object `obj`. Has to be a reference type so that structures won't be copied. Should be inferred. |
+| T | The type of the object `obj`. Should be inferred. |
 | TResult | The type of the invokation result of `function`. Should be inferred. |
+
+<a name='M-MutatorFX-Coding-GeneralFluentExtensions-PipeAwait``2-``0,System-Func{``0,System-Threading-Tasks-Task{``1}}-'></a>
+### PipeAwait\`\`2(obj,func) `method`
+
+##### Summary
+
+Awaits an asynchrounous operation on an object and returns the result of the operation. Uses [GetAwaiter](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Threading.Tasks.Task.GetAwaiter 'System.Threading.Tasks.Task.GetAwaiter')and [GetResult](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Runtime.CompilerServices.TaskAwaiter.GetResult 'System.Runtime.CompilerServices.TaskAwaiter.GetResult').
+
+##### Returns
+
+The result of the async function `func`.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| obj | [\`\`0](#T-``0 '``0') | The object to use Should not be null. |
+| func | [System.Func{\`\`0,System.Threading.Tasks.Task{\`\`1}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{``0,System.Threading.Tasks.Task{``1}}') | The async function to execute. Should not be null. |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | The type of the object to use. Should be inferred. |
+| TResult | The type of result of the function `func`. Should be inferred. |
 
 <a name='M-MutatorFX-Coding-GeneralFluentExtensions-Using``1-``0,System-Action{``0}-'></a>
 ### Using\`\`1(disposable,action) `method`

@@ -13,7 +13,7 @@ namespace MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer
         /// </summary>
         /// <param name="webHost">The host to execute the startup task on.</param>
         /// <returns>The <paramref name="webHost"/>, after the startup task finished.</returns>
-        public static IWebHost MigrateSqlDatabse(this IWebHost webHost)
+        public static IWebHost MigrateSqlDatabase(this IWebHost webHost)
             => webHost.UseKrakenStartupTask<MigrateSqlDatabase<DbContext>>();
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer
         /// <typeparam name="T">The type of DbContext to use for migrations.</typeparam>
         /// <param name="webHost">The host to execute the startup task on.</param>
         /// <returns>The <paramref name="webHost"/>, after the startup task finished.</returns>
-        public static IWebHost MigrateSqlDatabse<T>(this IWebHost webHost)
+        public static IWebHost MigrateSqlDatabase<T>(this IWebHost webHost)
             where T : DbContext
             => webHost.UseKrakenStartupTask<MigrateSqlDatabase<T>>();
     }

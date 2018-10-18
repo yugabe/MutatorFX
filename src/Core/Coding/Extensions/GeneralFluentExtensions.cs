@@ -29,6 +29,22 @@ namespace MutatorFX.Coding
         }
 
         /// <summary>
+        /// Execute an action, then return the object.
+        /// Useful for creating fluent APIs and shortening two-liners.
+        /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="action"/> if it is a reference type.
+        /// </summary>
+        /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
+        /// <param name="obj">The object to execute the given action on. Can be null.</param>
+        /// <param name="action">The action to execute. Usually a method with 
+        /// no return value or with a return value that should be ignored.</param>
+        /// <returns>The object itself after the invokation of the action.</returns>
+        public static T Do<T>(this T obj, Action action)
+        {
+            (action ?? throw new ArgumentNullException(nameof(action)))();
+            return obj;
+        }
+
+        /// <summary>
         /// The asynchronous pair of <see cref="Do{T}(T, Action{T})"/>.
         /// Useful for creating fluent APIs and shortening two-liners.
         /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="action"/> if it is a reference type.
@@ -41,6 +57,21 @@ namespace MutatorFX.Coding
         public static async Task<T> DoAsync<T>(this T obj, Func<T, Task> action)
         {
             await (action ?? throw new ArgumentNullException(nameof(action)))(obj);
+            return obj;
+        }
+        
+        /// <summary>
+        /// The asynchronous pair of <see cref="Do{T}(T, Action)"/>.
+        /// Useful for creating fluent APIs and shortening two-liners.
+        /// Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="action"/> if it is a reference type.
+        /// </summary>
+        /// <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
+        /// <param name="obj">The object to execute the given action on. Can be null.</param>
+        /// <param name="action">The (generally) async function to execute.</param>
+        /// <returns>The object itself after the invokation and awaiting of the asynchronous function.</returns>
+        public static async Task<T> DoAsync<T>(this T obj, Func<Task> action)
+        {
+            await (action ?? throw new ArgumentNullException(nameof(action)))();
             return obj;
         }
 
@@ -223,6 +254,7 @@ namespace MutatorFX.Coding
 
         /// <summary>
         /// Awaits an asynchrounous operation on an object and returns the object. Uses <see cref="Task.GetAwaiter"/> and <see cref="TaskAwaiter.GetResult"/>.
+        /// Useful for invoking an async operation in a synchronous context.
         /// </summary>
         /// <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
         /// <param name="obj">The object to use. Should not be null.</param>
@@ -234,6 +266,7 @@ namespace MutatorFX.Coding
 
         /// <summary>
         /// Awaits an asynchrounous operation on an object and returns the result of the operation. Uses <see cref="Task.GetAwaiter"/> and <see cref="TaskAwaiter.GetResult"/>.
+        /// Useful for invoking an async operation in a synchronous context.
         /// </summary>
         /// <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
         /// <typeparam name="TResult">The type of result of the function <paramref name="func"/>. Should be inferred.</typeparam>

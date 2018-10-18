@@ -92,9 +92,9 @@
             Instead of a simple invocation, you can create a closure on the object <paramref name="obj"/> and reuse the variable in the <paramref name="function"/> scope.
             Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="function"/> if it is a reference type.
             </summary>
-            <typeparam name="T">The type of the object <paramref name="obj"/>. Has to be a reference type so that structures won't be copied. Should be inferred.</typeparam>
+            <typeparam name="T">The type of the object <paramref name="obj"/>. Should be inferred.</typeparam>
             <typeparam name="TResult">The type of the invokation result of <paramref name="function"/>. Should be inferred.</typeparam>
-            <param name="obj">The object to call the provided function <paramref name="function"/> on.</param>
+            <param name="obj">The object to call the provided function <paramref name="function"/> on. If the object is not a reference type, the input won't be mutated.</param>
             <param name="function">The function to call with the parameter <paramref name="obj"/> and return the resulting value of.</param>
             <returns>Returns the result of the function invokation of <paramref name="function"/> with the parameter <paramref name="obj"/>.</returns>
         </member>
@@ -106,7 +106,7 @@
             Instead of a simple invocation, you can create a closure on the object <paramref name="obj"/> and reuse the variable in the <paramref name="function"/> scope.
             Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="function"/> if it is a reference type.
             </summary>
-            <typeparam name="T">The type of the object <paramref name="obj"/>. Has to be a reference type so that structures won't be copied. Should be inferred.</typeparam>
+            <typeparam name="T">The type of the object <paramref name="obj"/>. Should be inferred.</typeparam>
             <typeparam name="TResult">The type of the invokation result of <paramref name="function"/>. Should be inferred.</typeparam>
             <param name="obj">The object to call the provided function <paramref name="function"/> on.</param>
             <param name="function">The function to call with the parameter <paramref name="obj"/> and return the resulting value of.</param>
@@ -184,6 +184,26 @@
             <param name="disposable">The object to use. Will be disposed of by the end of the call. Should not be null.</param>
             <param name="function">The action to invoke on the disposable object in a using block. Should not be null.</param>
             <returns>When control is returned to the caller, the disposable object is disposed of and the result of the task returned by <paramref name="function"/> is returned.</returns>
+        </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.DoAwait``1(``0,System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            Awaits an asynchrounous operation on an object and returns the object. Uses <see cref="M:System.Threading.Tasks.Task.GetAwaiter"/> and <see cref="M:System.Runtime.CompilerServices.TaskAwaiter.GetResult"/>.
+            </summary>
+            <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
+            <param name="obj">The object to use. Should not be null.</param>
+            <param name="func">The async function to execute. Should not be null.</param>
+            <returns>The object <paramref name="obj"/> after the async function <paramref name="func"/> is executed and awaited. 
+            If type <typeparamref name="T"/> is not a reference type, the input will be returned and won't be mutated.</returns>
+        </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.PipeAwait``2(``0,System.Func{``0,System.Threading.Tasks.Task{``1}})">
+            <summary>
+            Awaits an asynchrounous operation on an object and returns the result of the operation. Uses <see cref="M:System.Threading.Tasks.Task.GetAwaiter"/> and <see cref="M:System.Runtime.CompilerServices.TaskAwaiter.GetResult"/>.
+            </summary>
+            <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
+            <typeparam name="TResult">The type of result of the function <paramref name="func"/>. Should be inferred.</typeparam>
+            <param name="obj">The object to use Should not be null.</param>
+            <param name="func">The async function to execute. Should not be null.</param>
+            <returns>The result of the async function <paramref name="func"/>.</returns>
         </member>
         <member name="T:MutatorFX.ExceptionHandling.Assertions">
             <summary>

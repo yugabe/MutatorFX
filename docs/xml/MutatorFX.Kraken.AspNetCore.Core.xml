@@ -18,5 +18,16 @@
             <param name="hostingEnvironment">The environment of the application. Can be used to switch different implementations for services, logging and so on.</param>
             <param name="loggingBuilder">Used to configure different logging objects for the application. Should be scoped to the module's featureset.</param>
         </member>
+        <member name="T:MutatorFX.Kraken.AspNetCore.IKrakenStartupTask">
+            <summary>
+            Represents a startup task that gets executed before hosting starts.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.IKrakenStartupTask.OnBeforeHostStartsAsync(Microsoft.AspNetCore.Hosting.IWebHost)">
+            <summary>
+            The task to execute before hosting starts on the <paramref name="webHost"/>.
+            </summary>
+            <param name="webHost">The <see cref="T:Microsoft.AspNetCore.Hosting.IWebHost"/> to use.</param>
+        </member>
     </members>
 </doc>
