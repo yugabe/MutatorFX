@@ -15,14 +15,21 @@ namespace MutatorFX.QueryMutator.Expressions
             : this(new Dictionary<Expression, Expression> { [source] = target }) { }
 
         public ExpressionNodeReplacer(IReadOnlyDictionary<Expression, Expression> replaceTokenMap)
-            => ReplaceTokens = replaceTokenMap;
+        {
+            ReplaceTokens = replaceTokenMap;
+        }
 
-        public override Expression Visit(Expression node) => ReplaceTokens.TryGetValue(node, out var target) ? target : base.Visit(node);
+        public override Expression Visit(Expression node)
+        {
+            return ReplaceTokens.TryGetValue(node, out var target) ? target : base.Visit(node);
+        }
     }
 
     public static class ExpressionNodeReplacerExpressions
     {
         public static Expression<Func<T, TResult>> ReplaceParameter<T, TResult>(this Expression<Func<T, TResult>> expression, ParameterExpression target)
-            => Lambda<Func<T, TResult>>(new ExpressionNodeReplacer(expression.Parameters.Single(), target).Visit(expression.Body), target);
+        {
+            return Lambda<Func<T, TResult>>(new ExpressionNodeReplacer(expression.Parameters.Single(), target).Visit(expression.Body), target);
+        }
     }
 }

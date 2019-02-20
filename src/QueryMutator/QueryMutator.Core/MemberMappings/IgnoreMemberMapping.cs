@@ -10,6 +10,9 @@ namespace MutatorFX.QueryMutator.MemberMappings
     {
         public IgnoreMemberMapping(ParameterExpression sourceParameter, MemberInfo targetMember) : base(sourceParameter, targetMember) { }
 
-        public override Expression GenerateExpression() => null;
+        public override Expression GenerateExpression()
+        {
+            return null;
+        }
     }
 }

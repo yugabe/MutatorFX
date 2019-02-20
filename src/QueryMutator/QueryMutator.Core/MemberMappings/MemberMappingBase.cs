@@ -15,6 +15,7 @@ namespace MutatorFX.QueryMutator
         }
 
         public ParameterExpression SourceParameter { get; }
+
         public MemberInfo TargetMember { get; }
     }
 }

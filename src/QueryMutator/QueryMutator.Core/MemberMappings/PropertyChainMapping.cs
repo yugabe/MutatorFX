@@ -9,11 +9,15 @@ namespace MutatorFX.QueryMutator.MemberMappings
     public class PropertyChainMapping<TSource, TTarget> : MemberMapping<TSource, TTarget>
     {
         public PropertyChainMapping(ParameterExpression sourceParameter, MemberInfo targetMember, IEnumerable<PropertyInfo> propertyChain) : base(sourceParameter, targetMember)
-            => PropertyChain = propertyChain;
+        {
+            PropertyChain = propertyChain;
+        }
 
         public IEnumerable<PropertyInfo> PropertyChain { get; }
 
         public override Expression GenerateExpression()
-            => PropertyChain.Aggregate((Expression)SourceParameter, MakeMemberAccess);
+        {
+            return PropertyChain.Aggregate((Expression)SourceParameter, MakeMemberAccess);
+        }
     }
 }
