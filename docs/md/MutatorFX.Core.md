@@ -16,7 +16,9 @@
   - [BranchAsync\`\`1(obj,predicate,actionIf,actionElse)](#M-MutatorFX-Coding-GeneralFluentExtensions-BranchAsync``1-``0,System-Func{``0,System-Threading-Tasks-Task{System-Boolean}},System-Func{``0,System-Threading-Tasks-Task},System-Func{``0,System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.BranchAsync``1(``0,System.Func{``0,System.Threading.Tasks.Task{System.Boolean}},System.Func{``0,System.Threading.Tasks.Task},System.Func{``0,System.Threading.Tasks.Task})')
   - [BranchAsync\`\`2(obj,predicate,funcIf,funcElse)](#M-MutatorFX-Coding-GeneralFluentExtensions-BranchAsync``2-``0,System-Func{``0,System-Threading-Tasks-Task{System-Boolean}},System-Func{``0,System-Threading-Tasks-Task{``1}},System-Func{``0,System-Threading-Tasks-Task{``1}}- 'MutatorFX.Coding.GeneralFluentExtensions.BranchAsync``2(``0,System.Func{``0,System.Threading.Tasks.Task{System.Boolean}},System.Func{``0,System.Threading.Tasks.Task{``1}},System.Func{``0,System.Threading.Tasks.Task{``1}})')
   - [Do\`\`1(obj,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-Do``1-``0,System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action{``0})')
+  - [Do\`\`1(obj,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-Do``1-``0,System-Action- 'MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action)')
   - [DoAsync\`\`1(obj,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-DoAsync``1-``0,System-Func{``0,System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.DoAsync``1(``0,System.Func{``0,System.Threading.Tasks.Task})')
+  - [DoAsync\`\`1(obj,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-DoAsync``1-``0,System-Func{System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.DoAsync``1(``0,System.Func{System.Threading.Tasks.Task})')
   - [DoAwait\`\`1(obj,func)](#M-MutatorFX-Coding-GeneralFluentExtensions-DoAwait``1-``0,System-Func{``0,System-Threading-Tasks-Task}- 'MutatorFX.Coding.GeneralFluentExtensions.DoAwait``1(``0,System.Func{``0,System.Threading.Tasks.Task})')
   - [For\`\`1(source,action)](#M-MutatorFX-Coding-GeneralFluentExtensions-For``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0}- 'MutatorFX.Coding.GeneralFluentExtensions.For``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})')
   - [For\`\`1(source,action,lazy)](#M-MutatorFX-Coding-GeneralFluentExtensions-For``1-System-Collections-Generic-IEnumerable{``0},System-Action{``0},System-Boolean- 'MutatorFX.Coding.GeneralFluentExtensions.For``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0},System.Boolean)')
@@ -355,6 +357,33 @@ no return value or with a return value that should be ignored. |
 | ---- | ----------- |
 | T | The type of the given object `obj`. Should be inferred. |
 
+<a name='M-MutatorFX-Coding-GeneralFluentExtensions-Do``1-``0,System-Action-'></a>
+### Do\`\`1(obj,action) `method`
+
+##### Summary
+
+Execute an action, then return the object.
+Useful for creating fluent APIs and shortening two-liners.
+Note that the input object `obj`can only be mutated by the provided `action`if it is a reference type.
+
+##### Returns
+
+The object itself after the invokation of the action.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| obj | [\`\`0](#T-``0 '``0') | The object to execute the given action on. Can be null. |
+| action | [System.Action](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action') | The action to execute. Usually a method with 
+no return value or with a return value that should be ignored. |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | The type of the given object `obj`. Should be inferred. |
+
 <a name='M-MutatorFX-Coding-GeneralFluentExtensions-DoAsync``1-``0,System-Func{``0,System-Threading-Tasks-Task}-'></a>
 ### DoAsync\`\`1(obj,action) `method`
 
@@ -382,12 +411,39 @@ If the task has a return value, it is ignored. |
 | ---- | ----------- |
 | T | The type of the given object `obj`. Should be inferred. |
 
+<a name='M-MutatorFX-Coding-GeneralFluentExtensions-DoAsync``1-``0,System-Func{System-Threading-Tasks-Task}-'></a>
+### DoAsync\`\`1(obj,action) `method`
+
+##### Summary
+
+The asynchronous pair of [Do\`\`1](#M-MutatorFX-Coding-GeneralFluentExtensions-Do``1-``0,System-Action- 'MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action)').
+Useful for creating fluent APIs and shortening two-liners.
+Note that the input object `obj`can only be mutated by the provided `action`if it is a reference type.
+
+##### Returns
+
+The object itself after the invokation and awaiting of the asynchronous function.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| obj | [\`\`0](#T-``0 '``0') | The object to execute the given action on. Can be null. |
+| action | [System.Func{System.Threading.Tasks.Task}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{System.Threading.Tasks.Task}') | The (generally) async function to execute. |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | The type of the given object `obj`. Should be inferred. |
+
 <a name='M-MutatorFX-Coding-GeneralFluentExtensions-DoAwait``1-``0,System-Func{``0,System-Threading-Tasks-Task}-'></a>
 ### DoAwait\`\`1(obj,func) `method`
 
 ##### Summary
 
 Awaits an asynchrounous operation on an object and returns the object. Uses [GetAwaiter](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Threading.Tasks.Task.GetAwaiter 'System.Threading.Tasks.Task.GetAwaiter')and [GetResult](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Runtime.CompilerServices.TaskAwaiter.GetResult 'System.Runtime.CompilerServices.TaskAwaiter.GetResult').
+Useful for invoking an async operation in a synchronous context.
 
 ##### Returns
 
@@ -550,6 +606,7 @@ Returns the result of the function invokation of `function`with the parameter `o
 ##### Summary
 
 Awaits an asynchrounous operation on an object and returns the result of the operation. Uses [GetAwaiter](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Threading.Tasks.Task.GetAwaiter 'System.Threading.Tasks.Task.GetAwaiter')and [GetResult](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Runtime.CompilerServices.TaskAwaiter.GetResult 'System.Runtime.CompilerServices.TaskAwaiter.GetResult').
+Useful for invoking an async operation in a synchronous context.
 
 ##### Returns
 

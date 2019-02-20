@@ -34,5 +34,14 @@
             <param name="webHost">The host to execute the startup task on.</param>
             <returns>The <paramref name="webHost"/>, after the startup task finished.</returns>
         </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.WebHostingExtensions.UseInEnvironment(Microsoft.AspNetCore.Hosting.IWebHost,System.Func{Microsoft.AspNetCore.Hosting.IHostingEnvironment,System.Boolean},System.Action{Microsoft.AspNetCore.Hosting.IWebHost})">
+            <summary>
+            Branch the host chain by an <see cref="T:Microsoft.AspNetCore.Hosting.IHostingEnvironment"/>.
+            </summary>
+            <param name="webHost">The host to branch based on the <paramref name="predicate"/>.</param>
+            <param name="predicate">The predicate to check the hostingenvironment to match.</param>
+            <param name="buildAction">The action to execute when the host's environment is the given one.</param>
+            <returns>The <paramref name="webHost"/>, after the branching statements executed in case of the hosting environment matching or immediately.</returns>
+        </member>
     </members>
 </doc>
