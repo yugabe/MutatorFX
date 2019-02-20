@@ -14,6 +14,6 @@ namespace MutatorFX.QueryMutator.MemberMappings
 
         public Expression<Func<TTarget, TMember>> MemberSelector { get; }
         public Func<TParameter, Expression<Func<TSource, TMember>>> ExpressionFactory { get; }
-        public override Expression GenerateExpression(TParameter parameter) => ExpressionFactory(parameter).ReplaceParameter(SourceParameter);
+        public override Expression GenerateExpression(TParameter parameter) => ExpressionFactory(parameter).ReplaceParameter(SourceParameter).Body;
     }
 }

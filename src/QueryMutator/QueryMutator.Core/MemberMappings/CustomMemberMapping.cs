@@ -18,13 +18,13 @@ namespace MutatorFX.QueryMutator.MemberMappings
         public Expression<Func<TTarget, TMember>> MemberSelector { get; }
         public Expression<Func<TSource, TMember>> Expression { get; }
 
-        public override Expression GenerateExpression() => Expression.ReplaceParameter(SourceParameter);
+        public override Expression GenerateExpression() => Expression.ReplaceParameter(SourceParameter).Body;
     }
 
-    public class CustomMemberMapping<TSource, TTarget, TMember, TParameter> : MemberMapping<TSource, TTarget, TParameter>
-    {
-        public CustomMemberMapping(ParameterExpression sourceParameter, MemberInfo targetMember) : base(sourceParameter, targetMember)
-        {
-        }
-    }
+    //public class CustomMemberMapping<TSource, TTarget, TMember, TParameter> : MemberMapping<TSource, TTarget, TParameter>
+    //{
+    //    public CustomMemberMapping(ParameterExpression sourceParameter, MemberInfo targetMember) : base(sourceParameter, targetMember)
+    //    {
+    //    }
+    //}
 }
