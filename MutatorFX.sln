@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kraken.AspNetCore.EntityFra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kraken.AspNetCore.EntityFrameworkCore.SqlServer", "src\Kraken\Kraken.AspNetCore.EntityFrameworkCore.SqlServer\Kraken.AspNetCore.EntityFrameworkCore.SqlServer.csproj", "{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMutator.Tests", "QueryMutator.Tests\QueryMutator.Tests.csproj", "{09087457-D058-487B-A5EA-F5288DFFF903}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Tests", "src\QueryMutator.Tests\QueryMutator.Tests.csproj", "{D8918D8F-E427-4799-8A8F-FA7160E96C19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,10 +103,10 @@ Global
 		{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09087457-D058-487B-A5EA-F5288DFFF903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09087457-D058-487B-A5EA-F5288DFFF903}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09087457-D058-487B-A5EA-F5288DFFF903}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09087457-D058-487B-A5EA-F5288DFFF903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

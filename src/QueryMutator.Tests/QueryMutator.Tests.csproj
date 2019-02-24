@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\QueryMutator\QueryMutator.Core\QueryMutator.Core.csproj" />
+    <ProjectReference Include="..\QueryMutator\QueryMutator.Core\QueryMutator.Core.csproj" />
   </ItemGroup>
 
 </Project>
