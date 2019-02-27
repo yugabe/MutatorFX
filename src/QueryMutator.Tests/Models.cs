@@ -25,4 +25,11 @@ namespace QueryMutator.Tests
 
         public string Name { get; set; }
     }
+    
+    public class DogMapperParamaters
+    {
+        public int IntProperty { get; set; }
+
+        public string StringProperty { get; set; }
+    }
 }

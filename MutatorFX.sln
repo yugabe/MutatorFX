@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "test\Core.Tests\Core.Tests.csproj", "{321AF9CE-DC57-4F0B-8AFA-FAC1952A9DE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core", "src\QueryMutator\QueryMutator.Core\QueryMutator.Core.csproj", "{AD83C100-229C-42B2-B78F-360AB6AF74A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core.Old", "src\QueryMutator\QueryMutator.Core\QueryMutator.Core.Old.csproj", "{AD83C100-229C-42B2-B78F-360AB6AF74A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMutator.Core", "src\ExcelMutator\ExcelMutator.Core\ExcelMutator.Core.csproj", "{0F913C63-E471-44EB-8684-D054CA364C07}"
 EndProject
@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kraken.AspNetCore.EntityFra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kraken.AspNetCore.EntityFrameworkCore.SqlServer", "src\Kraken\Kraken.AspNetCore.EntityFrameworkCore.SqlServer\Kraken.AspNetCore.EntityFrameworkCore.SqlServer.csproj", "{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Tests", "src\QueryMutator.Tests\QueryMutator.Tests.csproj", "{D8918D8F-E427-4799-8A8F-FA7160E96C19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core", "src\QueryMutator.Core\QueryMutator.Core.csproj", "{4BCEE50D-2C86-4877-925E-79365E1E89C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Tests", "src\QueryMutator.Tests\QueryMutator.Tests.csproj", "{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,10 +105,14 @@ Global
 		{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8918D8F-E427-4799-8A8F-FA7160E96C19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BCEE50D-2C86-4877-925E-79365E1E89C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BCEE50D-2C86-4877-925E-79365E1E89C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BCEE50D-2C86-4877-925E-79365E1E89C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BCEE50D-2C86-4877-925E-79365E1E89C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

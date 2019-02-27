@@ -15,7 +15,7 @@ namespace QueryMutator.Tests
         public string Ignored { get; set; }
 
         public int? SmallDogId { get; set; }
-        public virtual SmallDog SmallDog { get; set; }
+        public SmallDog SmallDog { get; set; }
     }
 
     public class SmallDog
