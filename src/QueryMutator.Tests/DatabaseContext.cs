@@ -21,5 +21,47 @@ namespace QueryMutator.Tests
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Dog>().HasData(new Dog
+            {
+                Id = 1,
+                Name = "Dog1",
+                EntityProperty = 5,
+                Ignored = "Ignore this property!",
+                SmallDogId = 1
+            });
+
+            modelBuilder.Entity<SmallDog>().HasData(new SmallDog
+            {
+                Id = 1,
+                Name = "SmallDog1"
+            });
+
+            modelBuilder.Entity<NullableEntity>().HasData(new NullableEntity
+            {
+                Id = 0,
+                NullableProperty = null,
+                NotNullableProperty = 0
+            });
+
+            modelBuilder.Entity<Collection>().HasData(new Collection
+            {
+                Id = 0
+            });
+
+            modelBuilder.Entity<CollectionItem>().HasData(new CollectionItem
+            {
+                Id = 0,
+                CollectionId = 0,
+            });
+
+            modelBuilder.Entity<CollectionItem>().HasData(new CollectionItem
+            {
+                Id = 1,
+                CollectionId = 0,
+            });
+        }
     }
 }

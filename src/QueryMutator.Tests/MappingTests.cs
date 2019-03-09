@@ -9,50 +9,10 @@ namespace QueryMutator.Tests
     [TestClass]
     public class MappingTests
     {
-        private static readonly Dog TestDog = new Dog
-        {
-            Id = 1,
-            Name = "Dog1",
-            EntityProperty = 5,
-            Ignored = "Ignore this property!",
-            SmallDogId = 1
-        };
-
-        private static readonly SmallDog TestSmallDog = new SmallDog
-        {
-            Id = 1,
-            Name = "SmallDog1"
-        };
-
-        private static readonly NullableEntity TestNullableEntity = new NullableEntity
-        {
-            Id = 0,
-            NullableProperty = null,
-            NotNullableProperty = 0
-        };
-
-        private static readonly Collection TestCollection = new Collection
-        {
-            Id = 0
-        };
-
-        private static readonly CollectionItem TestCollectionItem1 = new CollectionItem
-        {
-            Id = 0,
-            CollectionId = 0,
-        };
-
-        private static readonly CollectionItem TestCollectionItem2 = new CollectionItem
-        {
-            Id = 1,
-            CollectionId = 0,
-        };
-
         [TestMethod]
         public void TestBasicMapping()
         {
             var options = BuildDatabase(nameof(TestBasicMapping));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -78,10 +38,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = null
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -89,7 +47,6 @@ namespace QueryMutator.Tests
         public void TestIgnoreMember()
         {
             var options = BuildDatabase(nameof(TestIgnoreMember));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -117,10 +74,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = null
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -128,7 +83,6 @@ namespace QueryMutator.Tests
         public void TestExplicitMapping()
         {
             var options = BuildDatabase(nameof(TestExplicitMapping));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -156,10 +110,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = null
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -167,7 +119,6 @@ namespace QueryMutator.Tests
         public void TestConstantMapping()
         {
             var options = BuildDatabase(nameof(TestConstantMapping));
-            SeedDatabase(options);
 
             var constant = 15;
             var config = new MapperConfiguration(cfg =>
@@ -196,10 +147,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = null
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -208,7 +157,6 @@ namespace QueryMutator.Tests
         public void TestSourceValidation()
         {
             var options = BuildDatabase(nameof(TestSourceValidation));
-            SeedDatabase(options);
             
             var config = new MapperConfiguration(cfg =>
             {
@@ -230,7 +178,6 @@ namespace QueryMutator.Tests
         public void TestDestinationValidation()
         {
             var options = BuildDatabase(nameof(TestDestinationValidation));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -251,7 +198,6 @@ namespace QueryMutator.Tests
         public void TestChildMapping()
         {
             var options = BuildDatabase(nameof(TestChildMapping));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -281,10 +227,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -292,7 +236,6 @@ namespace QueryMutator.Tests
         public void TestMapUsing()
         {
             var options = BuildDatabase(nameof(TestMapUsing));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -322,10 +265,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -333,7 +274,6 @@ namespace QueryMutator.Tests
         public void TestMapWithParameter()
         {
             var options = BuildDatabase(nameof(TestMapWithParameter));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -368,10 +308,8 @@ namespace QueryMutator.Tests
                     Parameterized = 1 * param,
                     SmallDog = null
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
 
                 var @params = new DogMapperParamaters
                 {
@@ -393,10 +331,8 @@ namespace QueryMutator.Tests
                     Parameterized = 1 * @params.IntProperty,
                     SmallDog = null
                 };
-
-                equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -404,7 +340,6 @@ namespace QueryMutator.Tests
         public void TestJoin()
         {
             var options = BuildDatabase(nameof(TestJoin));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -450,10 +385,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -461,7 +394,6 @@ namespace QueryMutator.Tests
         public void TestAnonymousType()
         {
             var options = BuildDatabase(nameof(TestAnonymousType));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -504,10 +436,8 @@ namespace QueryMutator.Tests
                     Parameterized = 0,
                     SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -515,7 +445,6 @@ namespace QueryMutator.Tests
         public void TestNullableMapping()
         {
             var options = BuildDatabase(nameof(TestNullableMapping));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -543,10 +472,8 @@ namespace QueryMutator.Tests
                     NullableProperty2 = null,
                     NotNullableProperty = 0
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -554,7 +481,6 @@ namespace QueryMutator.Tests
         public void TestCollectionMapping()
         {
             var options = BuildDatabase(nameof(TestCollectionMapping));
-            SeedDatabase(options);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -584,10 +510,8 @@ namespace QueryMutator.Tests
                         new CollectionItemDto { Id = 1 },
                     }
                 };
-
-                var equal = CheckEqual(expected, result);
-
-                Assert.AreEqual(true, equal);
+                
+                Assert.AreEqual(true, expected.Equals(result));
             }
         }
 
@@ -595,98 +519,18 @@ namespace QueryMutator.Tests
 
         private DbContextOptions<DatabaseContext> BuildDatabase(string databaseName)
         {
-            return new DbContextOptionsBuilder<DatabaseContext>()
+            var options = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseInMemoryDatabase(databaseName)
                 .Options;
-        }
 
-        private void SeedDatabase(DbContextOptions<DatabaseContext> options)
-        {
             using (var context = new DatabaseContext(options))
             {
-                context.SmallDogs.Add(TestSmallDog);
-                context.Dogs.Add(TestDog);
-                context.NullableEntities.Add(TestNullableEntity);
-                context.Collections.Add(TestCollection);
-                context.CollectionItems.Add(TestCollectionItem1);
-                context.CollectionItems.Add(TestCollectionItem2);
-                context.SaveChanges();
+                context.Database.EnsureCreated(); // This call is necessary for the data seeding to work
             }
+
+            return options;
         }
         
-        private bool CheckEqual(DogDto expected, DogDto actual)
-        {
-            if (expected.Id != actual.Id || expected.Name != actual.Name || expected.DtoProperty != actual.DtoProperty
-                || expected.Ignored != actual.Ignored || expected.Parameterized != actual.Parameterized)
-            {
-                return false;
-            }
-
-            if ((expected.SmallDog == null && actual.SmallDog != null) || (expected.SmallDog != null && actual.SmallDog == null))
-            {
-                return false;
-            }
-
-            if (expected.SmallDog != null && actual.SmallDog != null)
-            {
-                return CheckEqual(expected.SmallDog, actual.SmallDog);
-            }
-
-            return true;
-        }
-
-        private bool CheckEqual(SmallDogDto expected, SmallDogDto actual)
-        {
-            if (expected.Id != actual.Id || expected.Name != actual.Name)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckEqual(NullableEntityDto expected, NullableEntityDto actual)
-        {
-            if (expected.Id != actual.Id || expected.NotNullableProperty != actual.NotNullableProperty
-                || expected.NullableProperty != actual.NullableProperty || expected.NullableProperty2 != actual.NullableProperty2)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckEqual(CollectionDto expected, CollectionDto actual)
-        {
-            if (expected.Id != actual.Id)
-            {
-                return false;
-            }
-            if (expected.CollectionItems.Count != actual.CollectionItems.Count)
-            {
-                return false;
-            }
-            for(var i = 0; i < expected.CollectionItems.Count; i++)
-            {
-                if(!CheckEqual(expected.CollectionItems[i], actual.CollectionItems[i]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool CheckEqual(CollectionItemDto expected, CollectionItemDto actual)
-        {
-            if (expected.Id != actual.Id)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         #endregion
     }
 }
