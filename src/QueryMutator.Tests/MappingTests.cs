@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QueryMutator.Core;
@@ -23,6 +24,29 @@ namespace QueryMutator.Tests
             Name = "SmallDog1"
         };
 
+        private static readonly NullableEntity TestNullableEntity = new NullableEntity
+        {
+            Id = 0,
+            NullableProperty = null,
+            NotNullableProperty = 0
+        };
+
+        private static readonly Collection TestCollection = new Collection
+        {
+            Id = 0
+        };
+
+        private static readonly CollectionItem TestCollectionItem1 = new CollectionItem
+        {
+            Id = 0,
+            CollectionId = 0,
+        };
+
+        private static readonly CollectionItem TestCollectionItem2 = new CollectionItem
+        {
+            Id = 1,
+            CollectionId = 0,
+        };
 
         [TestMethod]
         public void TestBasicMapping()
@@ -136,6 +160,90 @@ namespace QueryMutator.Tests
                 var equal = CheckEqual(expected, result);
 
                 Assert.AreEqual(true, equal);
+            }
+        }
+
+        [TestMethod]
+        public void TestConstantMapping()
+        {
+            var options = BuildDatabase(nameof(TestConstantMapping));
+            SeedDatabase(options);
+
+            var constant = 15;
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
+                    .MapMember(d => d.DtoProperty, constant)
+                );
+            });
+            var mapper = config.CreateMapper();
+            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var dogs = context.Dogs.Select(dogMapping).ToList();
+
+                Assert.AreEqual(1, dogs.Count);
+
+                var result = dogs.FirstOrDefault();
+
+                var expected = new DogDto
+                {
+                    Id = 1,
+                    Name = "Dog1",
+                    DtoProperty = constant,
+                    Ignored = "Ignore this property!",
+                    Parameterized = 0,
+                    SmallDog = null
+                };
+
+                var equal = CheckEqual(expected, result);
+
+                Assert.AreEqual(true, equal);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(QueryMutatorValidationException))]
+        public void TestSourceValidation()
+        {
+            var options = BuildDatabase(nameof(TestSourceValidation));
+            SeedDatabase(options);
+            
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
+                    .ValidateMapping(ValidationMode.Source)
+                );
+            });
+            var mapper = config.CreateMapper();
+            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var dogs = context.Dogs.Select(dogMapping).ToList();
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(QueryMutatorValidationException))]
+        public void TestDestinationValidation()
+        {
+            var options = BuildDatabase(nameof(TestDestinationValidation));
+            SeedDatabase(options);
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
+                    .ValidateMapping(ValidationMode.Destination)
+                );
+            });
+            var mapper = config.CreateMapper();
+            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var dogs = context.Dogs.Select(dogMapping).ToList();
             }
         }
 
@@ -402,7 +510,87 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, equal);
             }
         }
-        
+
+        [TestMethod]
+        public void TestNullableMapping()
+        {
+            var options = BuildDatabase(nameof(TestNullableMapping));
+            SeedDatabase(options);
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<NullableEntity, NullableEntityDto>(mapping => mapping
+                    .MapMember(d => d.NullableProperty, dd => dd.NotNullableProperty)
+                    .MapMember(d => d.NullableProperty2, dd => dd.NullableProperty)
+                    .MapMember(d => d.NotNullableProperty, dd => dd.NullableProperty)
+                );
+            });
+            var mapper = config.CreateMapper();
+            var nullableMapping = mapper.GetMapping<NullableEntity, NullableEntityDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var nullableDtos = context.NullableEntities.Select(nullableMapping).ToList();
+
+                Assert.AreEqual(1, nullableDtos.Count);
+
+                var result = nullableDtos.FirstOrDefault();
+
+                var expected = new NullableEntityDto
+                {
+                    Id = 0,
+                    NullableProperty = 0,
+                    NullableProperty2 = null,
+                    NotNullableProperty = 0
+                };
+
+                var equal = CheckEqual(expected, result);
+
+                Assert.AreEqual(true, equal);
+            }
+        }
+
+        [TestMethod]
+        public void TestCollectionMapping()
+        {
+            var options = BuildDatabase(nameof(TestCollectionMapping));
+            SeedDatabase(options);
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<CollectionItem, CollectionItemDto>();
+
+                cfg.CreateMapping<Collection, CollectionDto>(mapping => mapping
+                    .MapMember(d => d.CollectionItems, dd => dd.CollectionItems)
+                );
+            });
+            var mapper = config.CreateMapper();
+            var collectionMapping = mapper.GetMapping<Collection, CollectionDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var collections = context.Dogs.Select(collectionMapping).ToList();
+
+                Assert.AreEqual(1, collections.Count);
+
+                var result = collections.FirstOrDefault();
+
+                var expected = new CollectionDto
+                {
+                    Id = 0,
+                    CollectionItems = new List<CollectionItemDto>
+                    {
+                        new CollectionItemDto { Id = 0 },
+                        new CollectionItemDto { Id = 1 },
+                    }
+                };
+
+                var equal = CheckEqual(expected, result);
+
+                Assert.AreEqual(true, equal);
+            }
+        }
+
         #region Helper methods
 
         private DbContextOptions<DatabaseContext> BuildDatabase(string databaseName)
@@ -418,6 +606,10 @@ namespace QueryMutator.Tests
             {
                 context.SmallDogs.Add(TestSmallDog);
                 context.Dogs.Add(TestDog);
+                context.NullableEntities.Add(TestNullableEntity);
+                context.Collections.Add(TestCollection);
+                context.CollectionItems.Add(TestCollectionItem1);
+                context.CollectionItems.Add(TestCollectionItem2);
                 context.SaveChanges();
             }
         }
@@ -446,6 +638,48 @@ namespace QueryMutator.Tests
         private bool CheckEqual(SmallDogDto expected, SmallDogDto actual)
         {
             if (expected.Id != actual.Id || expected.Name != actual.Name)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckEqual(NullableEntityDto expected, NullableEntityDto actual)
+        {
+            if (expected.Id != actual.Id || expected.NotNullableProperty != actual.NotNullableProperty
+                || expected.NullableProperty != actual.NullableProperty || expected.NullableProperty2 != actual.NullableProperty2)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckEqual(CollectionDto expected, CollectionDto actual)
+        {
+            if (expected.Id != actual.Id)
+            {
+                return false;
+            }
+            if (expected.CollectionItems.Count != actual.CollectionItems.Count)
+            {
+                return false;
+            }
+            for(var i = 0; i < expected.CollectionItems.Count; i++)
+            {
+                if(!CheckEqual(expected.CollectionItems[i], actual.CollectionItems[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool CheckEqual(CollectionItemDto expected, CollectionItemDto actual)
+        {
+            if (expected.Id != actual.Id)
             {
                 return false;
             }

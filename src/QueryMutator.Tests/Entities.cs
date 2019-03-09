@@ -24,4 +24,28 @@ namespace QueryMutator.Tests
 
         public string Name { get; set; }
     }
+
+    public class NullableEntity
+    {
+        public int Id { get; set; }
+
+        public int? NullableProperty { get; set; }
+
+        public int NotNullableProperty { get; set; }
+    }
+
+    public class Collection
+    {
+        public int Id { get; set; }
+
+        public ICollection<CollectionItem> CollectionItems { get; set; }
+    }
+
+    public class CollectionItem
+    {
+        public int Id { get; set; }
+
+        public int CollectionId { get; set; }
+        public Collection Collection { get; set; }
+    }
 }

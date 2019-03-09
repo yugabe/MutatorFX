@@ -22,22 +22,34 @@ namespace QueryMutator.Core
 
     public interface IMappingBuilder<TSource, TTarget>
     {
+        IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, TMember constant);
+
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression);
+
+        IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
         IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping);
 
         IMappingBuilder<TSource, TTarget> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector);
+
+        IMappingBuilder<TSource, TTarget> ValidateMapping(ValidationMode mode);
     }
 
     public interface IMappingBuilder<TSource, TTarget, TParam>
     {
+        IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, TMember constant);
+
         IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression);
+
+        IMappingBuilder<TSource, TTarget, TParam> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
         IMappingBuilder<TSource, TTarget, TParam> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping);
 
         IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression);
 
         IMappingBuilder<TSource, TTarget, TParam> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector);
+
+        IMappingBuilder<TSource, TTarget, TParam> ValidateMapping(ValidationMode mode);
     }
 
     public interface IMapperConfigurationExpression
@@ -47,6 +59,13 @@ namespace QueryMutator.Core
         IMapping<TSource, TTarget> CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory);
 
         IMapping<TSource, TTarget, TParam> CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory);
+    }
+
+    public enum ValidationMode
+    {
+        Destination = 0,
+        Source = 1,
+        None = 2
     }
 
     public class MapperConfiguration
@@ -83,6 +102,10 @@ namespace QueryMutator.Core
         {
             throw new NotImplementedException();
         }
+    }
+
+    public class QueryMutatorValidationException : Exception
+    {
 
     }
 }

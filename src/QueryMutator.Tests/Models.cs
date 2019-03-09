@@ -32,4 +32,27 @@ namespace QueryMutator.Tests
 
         public string StringProperty { get; set; }
     }
+
+    public class NullableEntityDto
+    {
+        public int Id { get; set; }
+
+        public int? NullableProperty { get; set; }
+
+        public int? NullableProperty2 { get; set; }
+
+        public int NotNullableProperty { get; set; }
+    }
+
+    public class CollectionDto
+    {
+        public int Id { get; set; }
+
+        public IList<CollectionItemDto> CollectionItems { get; set; }
+    }
+
+    public class CollectionItemDto
+    {
+        public int Id { get; set; }
+    }
 }

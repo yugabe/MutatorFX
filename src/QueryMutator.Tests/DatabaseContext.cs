@@ -11,6 +11,12 @@ namespace QueryMutator.Tests
 
         public DbSet<SmallDog> SmallDogs { get; set; }
 
+        public DbSet<NullableEntity> NullableEntities { get; set; }
+
+        public DbSet<Collection> Collections { get; set; }
+
+        public DbSet<CollectionItem> CollectionItems { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
