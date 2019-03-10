@@ -41,26 +41,26 @@ namespace QueryMutator.Tests
 
             modelBuilder.Entity<NullableEntity>().HasData(new NullableEntity
             {
-                Id = 0,
+                Id = 1,
                 NullableProperty = null,
                 NotNullableProperty = 0
             });
 
             modelBuilder.Entity<Collection>().HasData(new Collection
             {
-                Id = 0
-            });
-
-            modelBuilder.Entity<CollectionItem>().HasData(new CollectionItem
-            {
-                Id = 0,
-                CollectionId = 0,
+                Id = 1
             });
 
             modelBuilder.Entity<CollectionItem>().HasData(new CollectionItem
             {
                 Id = 1,
-                CollectionId = 0,
+                CollectionId = 1,
+            });
+
+            modelBuilder.Entity<CollectionItem>().HasData(new CollectionItem
+            {
+                Id = 2,
+                CollectionId = 1,
             });
         }
     }

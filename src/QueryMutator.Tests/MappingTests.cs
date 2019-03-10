@@ -514,9 +514,7 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
-
-        #region Helper methods
-
+        
         private DbContextOptions<DatabaseContext> BuildDatabase(string databaseName)
         {
             var options = new DbContextOptionsBuilder<DatabaseContext>()
@@ -530,7 +528,5 @@ namespace QueryMutator.Tests
 
             return options;
         }
-        
-        #endregion
     }
 }
