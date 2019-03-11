@@ -11,7 +11,7 @@ namespace QueryMutator.Core
 
         IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression);
 
-        IMappingBuilder<TSource, TTarget, TParam> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
+        //IMappingBuilder<TSource, TTarget, TParam> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
         IMappingBuilder<TSource, TTarget, TParam> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping);
 
@@ -28,7 +28,7 @@ namespace QueryMutator.Core
 
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression);
 
-        IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
+        //IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
         IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping);
 
@@ -41,11 +41,13 @@ namespace QueryMutator.Core
 
     internal class MappingBuilder<TSource, TTarget> : IMappingBuilder<TSource, TTarget>
     {
-        public List<MemberMapping> Bindings { get; set; }
+        public List<MemberBindingBase> Bindings { get; set; }
+
+        public ValidationMode ValidationMode { get; set; }
 
         public MappingBuilder()
         {
-            Bindings = new List<MemberMapping>();
+            Bindings = new List<MemberBindingBase>();
         }
 
         public IMapping<TSource, TTarget> Build()
@@ -55,8 +57,10 @@ namespace QueryMutator.Core
             var parameter = Expression.Parameter(typeof(TSource));
 
             var bindings = Bindings
-                .Where(p => p.SourceExpression != null)
-                .Select(p => Expression.Bind(p.TargetMember, p.SourceExpression.ReplaceParameter(parameter)));
+                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression(parameter)))
+                    .Where(p => p.Expression != null)
+                    .Select(p => Expression.Bind(p.TargetMember, p.Expression));
+
             var body = Expression.MemberInit(Expression.New(typeof(TTarget)), bindings);
 
             mapping.Expression = Expression.Lambda<Func<TSource, TTarget>>(body, parameter);
@@ -76,7 +80,7 @@ namespace QueryMutator.Core
                     {
                         var sourceProperty = sourceProperties.First(p => p.Name == property.Name);
                         
-                        Bindings.Add(new MemberMapping
+                        Bindings.Add(new MemberBinding
                         {
                             SourceExpression = Expression.Property(Expression.Parameter(typeof(TSource)), sourceProperty),
                             TargetMember = property
@@ -88,9 +92,8 @@ namespace QueryMutator.Core
 
         public IMappingBuilder<TSource, TTarget> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector)
         {
-            Bindings.Add(new MemberMapping
+            Bindings.Add(new IgnoreMemberBinding
             {
-                SourceExpression = null,
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 
@@ -99,27 +102,47 @@ namespace QueryMutator.Core
 
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, TMember constant)
         {
-            throw new NotImplementedException();
+            Bindings.Add(new ConstantMemberBinding
+            {
+                SourceExpression = Expression.Constant(constant),
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
+
+            return this;
         }
 
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression)
         {
-            throw new NotImplementedException();
+            Bindings.Add(new MemberBinding
+            {
+                SourceExpression = mappingExpression.Body as MemberExpression,
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
+
+            return this;
         }
 
-        public IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression)
-        {
-            throw new NotImplementedException();
-        }
+        //public IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping)
         {
-            throw new NotImplementedException();
+            Bindings.Add(new UsingMemberBinding
+            {
+                SourceExpression = mapping.Expression.Body as MemberInitExpression,
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
+
+            return this;
         }
 
         public IMappingBuilder<TSource, TTarget> ValidateMapping(ValidationMode mode)
         {
-            throw new NotImplementedException();
+            ValidationMode = mode;
+
+            return this;
         }
     }
 
