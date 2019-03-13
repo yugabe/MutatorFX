@@ -60,6 +60,8 @@ namespace QueryMutator.Tests
 
         public string Name { get; set; }
 
+        public SmallSmallDogDto SmallSmallDog { get; set; }
+
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -72,6 +74,43 @@ namespace QueryMutator.Tests
                 return false;
             }
 
+            if(Id != d.Id || Name != d.Name)
+            {
+                return false;
+            }
+
+            if (SmallSmallDog != null && d.SmallSmallDog != null)
+            {
+                return SmallSmallDog.Equals(d.SmallSmallDog);
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Name);
+        }
+    }
+
+    public class SmallSmallDogDto
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (!(obj is SmallSmallDogDto d))
+            {
+                return false;
+            }
+
             return (Id == d.Id) && (Name == d.Name);
         }
 
@@ -80,7 +119,7 @@ namespace QueryMutator.Tests
             return HashCode.Combine(Id, Name);
         }
     }
-    
+
     public class DogMapperParamaters
     {
         public int IntProperty { get; set; }

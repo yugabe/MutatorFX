@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 
 namespace QueryMutator.Core
 {
@@ -8,7 +9,12 @@ namespace QueryMutator.Core
 
         public override Expression GenerateExpression(ParameterExpression parameter)
         {
-            return SourceExpression.ReplaceParameter(parameter);
+            return ReplaceMemberParameter(SourceExpression, parameter);
+        }
+        
+        protected MemberExpression ReplaceMemberParameter(MemberExpression expression, ParameterExpression target)
+        {
+            return Expression.Property(target, expression.Member as PropertyInfo); // ?
         }
     }
 }

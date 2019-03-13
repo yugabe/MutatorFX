@@ -23,6 +23,16 @@ namespace QueryMutator.Tests
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public int? SmallSmallDogId { get; set; }
+        public SmallSmallDog SmallSmallDog { get; set; }
+    }
+
+    public class SmallSmallDog
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class NullableEntity

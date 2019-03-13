@@ -11,6 +11,8 @@ namespace QueryMutator.Tests
 
         public DbSet<SmallDog> SmallDogs { get; set; }
 
+        public DbSet<SmallSmallDog> SmallSmallDogs { get; set; }
+
         public DbSet<NullableEntity> NullableEntities { get; set; }
 
         public DbSet<Collection> Collections { get; set; }
@@ -36,7 +38,14 @@ namespace QueryMutator.Tests
             modelBuilder.Entity<SmallDog>().HasData(new SmallDog
             {
                 Id = 1,
-                Name = "SmallDog1"
+                Name = "SmallDog1",
+                SmallSmallDogId = 1
+            });
+
+            modelBuilder.Entity<SmallSmallDog>().HasData(new SmallDog
+            {
+                Id = 1,
+                Name = "SmallSmallDog1"
             });
 
             modelBuilder.Entity<NullableEntity>().HasData(new NullableEntity

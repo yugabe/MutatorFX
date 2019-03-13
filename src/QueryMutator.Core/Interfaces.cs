@@ -13,7 +13,7 @@ namespace QueryMutator.Core
 
         //IMappingBuilder<TSource, TTarget, TParam> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
-        IMappingBuilder<TSource, TTarget, TParam> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping);
+        IMappingBuilder<TSource, TTarget, TParam> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping);
 
         IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression);
 
@@ -30,7 +30,7 @@ namespace QueryMutator.Core
 
         //IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
-        IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping);
+        IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping);
 
         IMappingBuilder<TSource, TTarget> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector);
 
@@ -127,11 +127,12 @@ namespace QueryMutator.Core
         //    throw new NotImplementedException();
         //}
 
-        public IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, IMapping<TMapSource, TMember> mapping)
+        public IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping)
         {
             Bindings.Add(new UsingMemberBinding
             {
                 SourceExpression = mapping.Expression.Body as MemberInitExpression,
+                SourceMember = (sourceMemberSelector.Body as MemberExpression).Member,
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 

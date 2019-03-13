@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QueryMutator.Core;
@@ -239,10 +241,14 @@ namespace QueryMutator.Tests
 
             var config = new MapperConfiguration(cfg =>
             {
-                var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>();
+                var smallSmallDogMapping = cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>();
+
+                var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>(mapping => mapping
+                    .MapMemberUsing(d => d.SmallSmallDog, dd => dd.SmallSmallDog, smallSmallDogMapping)
+                );
 
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallDog, smallDogMapping)
+                    .MapMemberUsing(d => d.SmallDog, dd => dd.SmallDog, smallDogMapping)
                 );
             });
             var mapper = config.CreateMapper();
@@ -263,7 +269,16 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -346,7 +361,7 @@ namespace QueryMutator.Tests
                 var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>();
 
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallDog, smallDogMapping)
+                    .MapMemberUsing(d => d.SmallDog, dd => dd.SmallDog, smallDogMapping)
                 );
             });
             var mapper = config.CreateMapper();
@@ -400,7 +415,7 @@ namespace QueryMutator.Tests
                 var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>();
 
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallDog, smallDogMapping)
+                    .MapMemberUsing(d => d.SmallDog, dd => dd.SmallDog, smallDogMapping)
                 );
             });
             var mapper = config.CreateMapper();
