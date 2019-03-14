@@ -41,6 +41,8 @@ namespace QueryMutator.Tests
 
         public int? NullableProperty { get; set; }
 
+        public int? NullablePropertyWithValue { get; set; }
+
         public int NotNullableProperty { get; set; }
     }
 

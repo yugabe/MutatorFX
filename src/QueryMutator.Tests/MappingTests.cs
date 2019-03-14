@@ -461,12 +461,15 @@ namespace QueryMutator.Tests
         {
             var options = BuildDatabase(nameof(TestNullableMapping));
 
+            var constant = 15;
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<NullableEntity, NullableEntityDto>(mapping => mapping
                     .MapMember(d => d.NullableProperty, dd => dd.NotNullableProperty)
                     .MapMember(d => d.NullableProperty2, dd => dd.NullableProperty)
                     .MapMember(d => d.NotNullableProperty, dd => dd.NullableProperty)
+                    .MapMember(d => d.NotNullableProperty2, dd => dd.NullablePropertyWithValue)
+                    .MapMember(d => d.NullableProperty3, constant)
                 );
             });
             var mapper = config.CreateMapper();
@@ -482,10 +485,12 @@ namespace QueryMutator.Tests
 
                 var expected = new NullableEntityDto
                 {
-                    Id = 0,
-                    NullableProperty = 0,
+                    Id = 1,
+                    NullableProperty = 10,
                     NullableProperty2 = null,
-                    NotNullableProperty = 0
+                    NullableProperty3 = constant,
+                    NotNullableProperty = 0,
+                    NotNullableProperty2 = 20
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -518,7 +523,7 @@ namespace QueryMutator.Tests
 
         //        var expected = new CollectionDto
         //        {
-        //            Id = 0,
+        //            Id = 1,
         //            CollectionItems = new List<CollectionItemDto>
         //            {
         //                new CollectionItemDto { Id = 0 },

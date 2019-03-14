@@ -52,7 +52,8 @@ namespace QueryMutator.Tests
             {
                 Id = 1,
                 NullableProperty = null,
-                NotNullableProperty = 0
+                NullablePropertyWithValue = 20,
+                NotNullableProperty = 10
             });
 
             modelBuilder.Entity<Collection>().HasData(new Collection

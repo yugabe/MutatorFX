@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace QueryMutator.Core
 {
@@ -10,6 +11,10 @@ namespace QueryMutator.Core
         IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, TMember constant);
 
         IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression);
+
+        IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember?>> mappingExpression) where TMember : struct;
+
+        IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct;
 
         //IMappingBuilder<TSource, TTarget, TParam> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
@@ -27,6 +32,10 @@ namespace QueryMutator.Core
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, TMember constant);
 
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression);
+
+        IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember?>> mappingExpression) where TMember : struct;
+
+        IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct;
 
         //IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
 
@@ -104,18 +113,39 @@ namespace QueryMutator.Core
         {
             Bindings.Add(new ConstantMemberBinding
             {
-                SourceExpression = Expression.Constant(constant),
+                SourceExpression = Expression.Constant(constant, typeof(TMember)), // Second parameter is required to handle nullable types
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 
             return this;
         }
-
+        
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression)
         {
             Bindings.Add(new MemberBinding
             {
                 SourceExpression = mappingExpression.Body as MemberExpression,
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
+
+            return this;
+        }
+        
+        public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember?>> mappingExpression) where TMember : struct
+        {
+            Bindings.Add(new NullableMemberBinding
+            {
+                SourceExpression = Expression.Coalesce(mappingExpression.Body, Expression.Default(typeof(TMember))),
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
+            return this;
+        }
+
+        public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct
+        {
+            Bindings.Add(new NullableMemberBinding
+            {
+                SourceExpression = Expression.Convert(mappingExpression.Body as MemberExpression, typeof(TMember?)),
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 

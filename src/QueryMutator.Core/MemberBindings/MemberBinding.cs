@@ -14,7 +14,7 @@ namespace QueryMutator.Core
         
         protected MemberExpression ReplaceMemberParameter(MemberExpression expression, ParameterExpression target)
         {
-            return Expression.Property(target, expression.Member as PropertyInfo); // ?
+            return Expression.Property(target, expression.Member as PropertyInfo);
         }
     }
 }

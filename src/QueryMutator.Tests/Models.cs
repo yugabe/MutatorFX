@@ -135,7 +135,11 @@ namespace QueryMutator.Tests
 
         public int? NullableProperty2 { get; set; }
 
+        public int? NullableProperty3 { get; set; }
+
         public int NotNullableProperty { get; set; }
+
+        public int NotNullableProperty2 { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -150,7 +154,8 @@ namespace QueryMutator.Tests
             }
 
             return (Id == n.Id) && (NullableProperty == n.NullableProperty) && (NullableProperty2 == n.NullableProperty2)
-                 && (NotNullableProperty == n.NotNullableProperty);
+                  && (NullableProperty3 == n.NullableProperty3) && (NotNullableProperty == n.NotNullableProperty)
+                  && (NotNullableProperty2 == n.NotNullableProperty2);
         }
 
         public override int GetHashCode()
