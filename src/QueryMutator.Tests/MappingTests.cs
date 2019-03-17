@@ -16,6 +16,7 @@ namespace QueryMutator.Tests
         {
             var options = BuildDatabase(nameof(TestBasicMapping));
 
+            // TODO test collection default mapping?
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<Dog, DogDto>();
@@ -497,44 +498,50 @@ namespace QueryMutator.Tests
             }
         }
 
-        //[TestMethod]
-        //public void TestCollectionMapping()
-        //{
-        //    var options = BuildDatabase(nameof(TestCollectionMapping));
+        [TestMethod]
+        public void TestCollectionMapping()
+        {
+            var options = BuildDatabase(nameof(TestCollectionMapping));
 
-        //    var config = new MapperConfiguration(cfg =>
-        //    {
-        //        cfg.CreateMapping<CollectionItem, CollectionItemDto>();
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<CollectionItem, CollectionItemDto>();
 
-        //        cfg.CreateMapping<Collection, CollectionDto>(mapping => mapping
-        //            .MapMember(d => d.CollectionItems, dd => dd.CollectionItems)
-        //        );
-        //    });
-        //    var mapper = config.CreateMapper();
-        //    var collectionMapping = mapper.GetMapping<Collection, CollectionDto>();
+                cfg.CreateMapping<Collection, CollectionDto>(mapping => mapping
+                    .MapMemberList(d => d.CollectionItems, dd => dd.CollectionItems)
+                    .MapMemberList(d => d.CollectionItemDtos, dd => dd.CollectionItems)
+                );
+            });
+            var mapper = config.CreateMapper();
+            var collectionMapping = mapper.GetMapping<Collection, CollectionDto>();
+            
+            using (var context = new DatabaseContext(options))
+            {
+                var collections = context.Collections.Select(collectionMapping).ToList();
 
-        //    using (var context = new DatabaseContext(options))
-        //    {
-        //        var collections = context.Dogs.Select(collectionMapping).ToList();
+                Assert.AreEqual(1, collections.Count);
 
-        //        Assert.AreEqual(1, collections.Count);
+                var result = collections.FirstOrDefault();
 
-        //        var result = collections.FirstOrDefault();
+                var expected = new CollectionDto
+                {
+                    Id = 1,
+                    CollectionItemDtos = new List<CollectionItemDto>
+                    {
+                        new CollectionItemDto { Id = 0 },
+                        new CollectionItemDto { Id = 1 },
+                    },
+                    CollectionItems = new List<CollectionItem>
+                    {
+                        new CollectionItem { Id = 0 },
+                        new CollectionItem { Id = 1 },
+                    }
+                };
 
-        //        var expected = new CollectionDto
-        //        {
-        //            Id = 1,
-        //            CollectionItems = new List<CollectionItemDto>
-        //            {
-        //                new CollectionItemDto { Id = 0 },
-        //                new CollectionItemDto { Id = 1 },
-        //            }
-        //        };
-                
-        //        Assert.AreEqual(true, expected.Equals(result));
-        //    }
-        //}
-        
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
         private DbContextOptions<DatabaseContext> BuildDatabase(string databaseName)
         {
             var options = new DbContextOptionsBuilder<DatabaseContext>()

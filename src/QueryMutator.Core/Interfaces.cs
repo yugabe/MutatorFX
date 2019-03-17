@@ -16,7 +16,7 @@ namespace QueryMutator.Core
 
         IMappingBuilder<TSource, TTarget, TParam> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct;
 
-        //IMappingBuilder<TSource, TTarget, TParam> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
+        IMappingBuilder<TSource, TTarget, TParam> MapMemberList<TMember, TMapSource>(Expression<Func<TTarget, IEnumerable<TMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TMapSource>>> mappingExpression);
 
         IMappingBuilder<TSource, TTarget, TParam> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping);
 
@@ -37,8 +37,8 @@ namespace QueryMutator.Core
 
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct;
 
-        //IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression);
-
+        IMappingBuilder<TSource, TTarget> MapMemberList<TMember, TMapSource>(Expression<Func<TTarget, IEnumerable<TMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TMapSource>>> mappingExpression);
+        
         IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping);
 
         IMappingBuilder<TSource, TTarget> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector);
@@ -152,11 +152,40 @@ namespace QueryMutator.Core
 
             return this;
         }
+        
+        public IMappingBuilder<TSource, TTarget> MapMemberList<TMember, TMapSource>(Expression<Func<TTarget, IEnumerable<TMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TMapSource>>> mappingExpression)
+        {
+            var property = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo);
 
-        //public IMappingBuilder<TSource, TTarget> MapMember(Expression<Func<TTarget, object>> memberSelector, Expression<Func<TSource, object>> mappingExpression)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            if (typeof(TMember) == typeof(TMapSource))
+            {
+                var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { typeof(TMember) }, property);
+
+                Bindings.Add(new MemberListBinding
+                {
+                    SourceExpression = expression,
+                    TargetMember = (memberSelector.Body as MemberExpression).Member
+                });
+            }
+            else
+            {
+                // TODO this has to be replaced later
+                var builder = new MappingBuilder<TMapSource, TMember>();
+                builder.CreateDefaultBindings();
+                var mapping = builder.Build();
+                
+                var selectExpression = Expression.Call(typeof(Enumerable), "Select", new Type[] { typeof(TMapSource), typeof(TMember) }, property, mapping.Expression);
+                var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { typeof(TMember) }, selectExpression);
+
+                Bindings.Add(new MemberListBinding
+                {
+                    SourceExpression = expression,
+                    TargetMember = (memberSelector.Body as MemberExpression).Member
+                });
+            }
+
+            return this;
+        }
 
         public IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping)
         {
@@ -177,7 +206,7 @@ namespace QueryMutator.Core
             return this;
         }
     }
-
+    
     // TODO replace return values to void?
     public interface IMapperConfigurationExpression
     {

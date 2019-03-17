@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace QueryMutator.Tests
@@ -168,7 +169,9 @@ namespace QueryMutator.Tests
     {
         public int Id { get; set; }
 
-        public IList<CollectionItemDto> CollectionItems { get; set; }
+        public IList<CollectionItemDto> CollectionItemDtos { get; set; }
+
+        public IList<CollectionItem> CollectionItems { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -182,11 +185,24 @@ namespace QueryMutator.Tests
                 return false;
             }
 
-            if((Id != c.Id) || (CollectionItems.Count != c.CollectionItems.Count))
+            if ((Id != c.Id) || (CollectionItemDtos.Count != c.CollectionItemDtos.Count))
             {
                 return false;
             }
-            
+
+            for (var i = 0; i < CollectionItemDtos.Count; i++)
+            {
+                if (CollectionItemDtos[i].Equals(c.CollectionItemDtos[i]))
+                {
+                    return false;
+                }
+            }
+
+            if ((Id != c.Id) || (CollectionItems.Count != c.CollectionItems.Count))
+            {
+                return false;
+            }
+
             for (var i = 0; i < CollectionItems.Count; i++)
             {
                 if (CollectionItems[i].Equals(c.CollectionItems[i]))
@@ -200,7 +216,7 @@ namespace QueryMutator.Tests
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, CollectionItems);
+            return HashCode.Combine(Id, CollectionItems, CollectionItemDtos);
         }
     }
 
