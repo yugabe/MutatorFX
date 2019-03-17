@@ -9,12 +9,7 @@ namespace QueryMutator.Core
 
         public override Expression GenerateExpression(ParameterExpression parameter)
         {
-            return ReplaceMemberParameter(SourceExpression, parameter);
-        }
-        
-        protected MemberExpression ReplaceMemberParameter(MemberExpression expression, ParameterExpression target)
-        {
-            return Expression.Property(target, expression.Member as PropertyInfo);
+            return SourceExpression;
         }
     }
 }

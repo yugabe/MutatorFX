@@ -50,29 +50,30 @@ namespace QueryMutator.Core
 
     internal class MappingBuilder<TSource, TTarget> : IMappingBuilder<TSource, TTarget>
     {
+        public ParameterExpression SourceParameter { get; set; }
+
         public List<MemberBindingBase> Bindings { get; set; }
 
         public ValidationMode ValidationMode { get; set; }
 
         public MappingBuilder()
         {
+            SourceParameter = Expression.Parameter(typeof(TSource));
             Bindings = new List<MemberBindingBase>();
         }
 
         public IMapping<TSource, TTarget> Build()
         {
             var mapping = new Mapping<TSource, TTarget>();
-
-            var parameter = Expression.Parameter(typeof(TSource));
-
+            
             var bindings = Bindings
-                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression(parameter)))
+                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression(SourceParameter)))
                     .Where(p => p.Expression != null)
                     .Select(p => Expression.Bind(p.TargetMember, p.Expression));
 
             var body = Expression.MemberInit(Expression.New(typeof(TTarget)), bindings);
 
-            mapping.Expression = Expression.Lambda<Func<TSource, TTarget>>(body, parameter);
+            mapping.Expression = Expression.Lambda<Func<TSource, TTarget>>(body, SourceParameter);
 
             return mapping;
         }
@@ -91,7 +92,7 @@ namespace QueryMutator.Core
                         
                         Bindings.Add(new MemberBinding
                         {
-                            SourceExpression = Expression.Property(Expression.Parameter(typeof(TSource)), sourceProperty),
+                            SourceExpression = Expression.Property(SourceParameter, sourceProperty),
                             TargetMember = property
                         });
                     }
@@ -124,7 +125,7 @@ namespace QueryMutator.Core
         {
             Bindings.Add(new MemberBinding
             {
-                SourceExpression = mappingExpression.Body as MemberExpression,
+                SourceExpression = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo),
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 
