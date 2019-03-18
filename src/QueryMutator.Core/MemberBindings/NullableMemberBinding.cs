@@ -1,11 +1,10 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 
 namespace QueryMutator.Core
 {
-    public class ConstantMemberBinding : MemberBindingBase
+    public class NullableMemberBinding : MemberBindingBase
     {
-        public new ConstantExpression SourceExpression { get; set; }
-
         public override Expression GenerateExpression()
         {
             return SourceExpression;

@@ -7,7 +7,7 @@ namespace QueryMutator.Core
     {
         public new MemberExpression SourceExpression { get; set; }
 
-        public override Expression GenerateExpression(ParameterExpression parameter)
+        public override Expression GenerateExpression()
         {
             return SourceExpression;
         }

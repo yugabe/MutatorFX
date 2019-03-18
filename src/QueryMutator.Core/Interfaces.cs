@@ -131,28 +131,28 @@ namespace QueryMutator.Core
 
             return this;
         }
-        
-        public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember?>> mappingExpression) where TMember : struct
-        {
-            Bindings.Add(new NullableMemberBinding
-            {
-                SourceExpression = Expression.Coalesce(mappingExpression.Body, Expression.Default(typeof(TMember))),
-                TargetMember = (memberSelector.Body as MemberExpression).Member
-            });
-            return this;
-        }
 
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct
         {
             Bindings.Add(new NullableMemberBinding
             {
-                SourceExpression = Expression.Convert(mappingExpression.Body as MemberExpression, typeof(TMember?)),
+                SourceExpression = Expression.Convert(Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo), typeof(TMember?)),
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 
             return this;
         }
-        
+
+        public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember?>> mappingExpression) where TMember : struct
+        {
+            Bindings.Add(new NullableMemberBinding
+            {
+                SourceExpression = Expression.Coalesce(Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo), Expression.Default(typeof(TMember))),
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
+            return this;
+        }
+
         public IMappingBuilder<TSource, TTarget> MapMemberList<TMember, TMapSource>(Expression<Func<TTarget, IEnumerable<TMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TMapSource>>> mappingExpression)
         {
             var property = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo);
@@ -191,12 +191,52 @@ namespace QueryMutator.Core
         {
             Bindings.Add(new UsingMemberBinding
             {
-                SourceExpression = mapping.Expression.Body as MemberInitExpression,
-                SourceMember = (sourceMemberSelector.Body as MemberExpression).Member,
+                SourceExpression = ReplaceParameterChains(mapping.Expression.Body as MemberInitExpression, (sourceMemberSelector.Body as MemberExpression).Member as PropertyInfo),
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 
             return this;
+        }
+
+        private MemberInitExpression ReplaceParameterChains(MemberInitExpression expression, PropertyInfo sourceMember)
+        {
+            var bindings = new List<MemberAssignment>();
+
+            foreach (var binding in expression.Bindings.ToList())
+            {
+                var memberBinding = binding as MemberAssignment;
+                if (memberBinding.Expression is MemberExpression memberExpression)
+                {
+                    var properties = new List<PropertyInfo>();
+
+                    // Extract all of the nested properties from the expression
+                    Expression normalExpression = memberExpression;
+                    while (normalExpression.NodeType == ExpressionType.MemberAccess)
+                    {
+                        properties.Add((normalExpression as MemberExpression).Member as PropertyInfo);
+                        normalExpression = (normalExpression as MemberExpression).Expression;
+                    }
+
+                    properties.Add(sourceMember as PropertyInfo);
+                    properties.Reverse();
+
+                    // Construct a new expression with the correct parameter and child properties
+                    Expression body = SourceParameter;
+                    foreach (var property in properties)
+                    {
+                        body = Expression.Property(body, property);
+                    }
+
+                    bindings.Add(Expression.Bind(binding.Member, body));
+                }
+                else if (memberBinding.Expression is MemberInitExpression memberInitExpression)
+                {
+                    var newMemberInitExpression = ReplaceParameterChains(memberInitExpression, sourceMember);
+                    bindings.Add(Expression.Bind(binding.Member, newMemberInitExpression));
+                }
+            }
+
+            return Expression.MemberInit(expression.NewExpression, bindings);
         }
 
         public IMappingBuilder<TSource, TTarget> ValidateMapping(ValidationMode mode)
