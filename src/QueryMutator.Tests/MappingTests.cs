@@ -39,9 +39,18 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = null
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
-                
+
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
@@ -67,7 +76,7 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(1, dogs.Count);
 
                 var result = dogs.FirstOrDefault();
-
+                
                 var expected = new DogDto
                 {
                     Id = 1,
@@ -75,9 +84,18 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = null,
                     Parameterized = 0,
-                    SmallDog = null
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
-                
+
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
@@ -111,7 +129,16 @@ namespace QueryMutator.Tests
                     DtoProperty = 5,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = null
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -148,7 +175,16 @@ namespace QueryMutator.Tests
                     DtoProperty = constant,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = null
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -204,14 +240,44 @@ namespace QueryMutator.Tests
 
             var config = new MapperConfiguration(cfg =>
             {
-                var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>();
-
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMember(d => d.SmallDog, dd => new SmallDogDto { Id = dd.SmallDog.Id, Name = dd.SmallDog.Name })
+                    .MapMember(d => d.SmallDog, dd => new SmallDogDto { Id = dd.SmallDog.Id })
                 );
             });
             var mapper = config.CreateMapper();
             var dogMapping = mapper.GetMapping<Dog, DogDto>();
+            
+            using (var context = new DatabaseContext(options))
+            {
+                var dogs = context.Dogs.Select(dogMapping).ToList();
+
+                Assert.AreEqual(1, dogs.Count);
+
+                var result = dogs.FirstOrDefault();
+
+                var expected = new DogDto
+                {
+                    Id = 1,
+                    Name = "Dog1",
+                    DtoProperty = 0,
+                    Ignored = "Ignore this property!",
+                    Parameterized = 0,
+                    SmallDog = new SmallDogDto { Id = 1, Name = null }
+                };
+                
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+
+            config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<SmallDog, SmallDogDto>(mapping => mapping
+                    .MapMember(d => d.SmallSmallDog, dd => new SmallSmallDogDto { Id = dd.SmallSmallDog.Id })
+                );
+
+                cfg.CreateMapping<Dog, DogDto>();
+            });
+            mapper = config.CreateMapper();
+            dogMapping = mapper.GetMapping<Dog, DogDto>();
 
             using (var context = new DatabaseContext(options))
             {
@@ -228,9 +294,18 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = null
+                        }
+                    }
                 };
-                
+
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
@@ -240,17 +315,15 @@ namespace QueryMutator.Tests
         {
             var options = BuildDatabase(nameof(TestMapUsing));
 
+            // TODO add some property mapping that actually confirms that its different
+            // from the default mapping
             var config = new MapperConfiguration(cfg =>
             {
-                var smallSmallDogMapping = cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>();
+                cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>();
 
-                var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallSmallDog, dd => dd.SmallSmallDog, smallSmallDogMapping)
-                );
+                cfg.CreateMapping<SmallDog, SmallDogDto>();
 
-                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallDog, dd => dd.SmallDog, smallDogMapping)
-                );
+                cfg.CreateMapping<Dog, DogDto>();
             });
             var mapper = config.CreateMapper();
             var dogMapping = mapper.GetMapping<Dog, DogDto>();
@@ -322,7 +395,16 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 1 * param,
-                    SmallDog = null
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -345,7 +427,16 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 1 * @params.IntProperty,
-                    SmallDog = null
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -359,11 +450,8 @@ namespace QueryMutator.Tests
 
             var config = new MapperConfiguration(cfg =>
             {
-                var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>();
-
-                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallDog, dd => dd.SmallDog, smallDogMapping)
-                );
+                cfg.CreateMapping<SmallDog, SmallDogDto>();
+                cfg.CreateMapping<Dog, DogDto>();
             });
             var mapper = config.CreateMapper();
             var dogMapping = mapper.GetMapping<Dog, DogDto>();
@@ -399,7 +487,16 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -413,11 +510,8 @@ namespace QueryMutator.Tests
 
             var config = new MapperConfiguration(cfg =>
             {
-                var smallDogMapping = cfg.CreateMapping<SmallDog, SmallDogDto>();
-
-                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
-                    .MapMemberUsing(d => d.SmallDog, dd => dd.SmallDog, smallDogMapping)
-                );
+                cfg.CreateMapping<SmallDog, SmallDogDto>();
+                cfg.CreateMapping<Dog, DogDto>();
             });
             var mapper = config.CreateMapper();
             var dogMapping = mapper.GetMapping<Dog, DogDto>();
@@ -450,7 +544,16 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = new SmallDogDto { Id = 1, Name = "SmallDog1" }
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));

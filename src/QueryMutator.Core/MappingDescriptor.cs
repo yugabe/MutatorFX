@@ -10,6 +10,6 @@ namespace QueryMutator.Core
 
         public Type ParameterType { get; set; }
 
-        public object Mapping { get; set; }
+        public IMapping Mapping { get; set; }
     }
 }

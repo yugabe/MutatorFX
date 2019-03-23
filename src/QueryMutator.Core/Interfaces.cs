@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,15 +17,11 @@ namespace QueryMutator.Core
 
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct;
 
-        IMappingBuilder<TSource, TTarget> MapMemberList<TMember, TMapSource>(Expression<Func<TTarget, IEnumerable<TMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TMapSource>>> mappingExpression);
+        IMappingBuilder<TSource, TTarget> MapMemberList<TTargetMember, TSourceMember>(Expression<Func<TTarget, IEnumerable<TTargetMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TSourceMember>>> mappingExpression);
         
-        IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping);
-
         IMappingBuilder<TSource, TTarget> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector);
 
         IMappingBuilder<TSource, TTarget> ValidateMapping(ValidationMode mode);
-
-        IMapping<TSource, TTarget> Build();
     }
 
     public interface IMappingBuilder<TSource, TTarget, TParam>
@@ -32,9 +29,41 @@ namespace QueryMutator.Core
         IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression);
     }
 
+    internal class MappingBuilder
+    {
+        public Type SourceType { get; set; }
+
+        public Type TargetType { get; set; }
+
+        public IList<MappingBuilder> Dependencies { get; set; }
+
+        public virtual IMapping Build(IEnumerable<MappingDescriptor> dependencies)
+        {
+            return null; // TODO is there a better solution?
+        }
+    }
+    
+    internal class MappingBuilderEqualityComparer : EqualityComparer<MappingBuilder>
+    {
+        public override bool Equals(MappingBuilder b1, MappingBuilder b2)
+        {
+            return (b1 == null && b2 == null) || (b1 != null && b2 != null && b1.SourceType == b2.SourceType && b1.TargetType == b2.TargetType);
+        }
+
+        public override int GetHashCode(MappingBuilder obj)
+        {
+            return obj == null ? 0 : obj.SourceType.GetHashCode() ^ obj.TargetType.GetHashCode();
+        }
+    }
+
     internal class MappingBuilder<TSource, TTarget, TParam> : MappingBuilder<TSource, TTarget>, IMappingBuilder<TSource, TTarget, TParam>
     {
         public List<ParametrizedMemberBinding> ParametrizedBindings { get; set; }
+
+        public MappingBuilder(MapperConfigurationExpression config): base(config)
+        {
+                
+        }
 
         public new IMapping<TSource, TTarget, TParam> Build()
         {
@@ -70,26 +99,60 @@ namespace QueryMutator.Core
         }
     }
 
-    internal class MappingBuilder<TSource, TTarget> : IMappingBuilder<TSource, TTarget>
+    internal class MappingBuilder<TSource, TTarget> : MappingBuilder, IMappingBuilder<TSource, TTarget>
     {
+        public MapperConfigurationExpression Config { get; set; }
+
         public ParameterExpression SourceParameter { get; set; }
 
         public List<MemberBindingBase> Bindings { get; set; }
 
         public ValidationMode ValidationMode { get; set; }
 
-        public MappingBuilder()
+        public MappingBuilder(MapperConfigurationExpression config)
         {
-            SourceParameter = Expression.Parameter(typeof(TSource));
+            SourceType = typeof(TSource);
+            TargetType = typeof(TTarget);
+
+            Dependencies = new List<MappingBuilder>();
+
+            Config = config;
+
+            SourceParameter = Expression.Parameter(SourceType);
             Bindings = new List<MemberBindingBase>();
         }
 
-        public IMapping<TSource, TTarget> Build()
+        public override IMapping Build(IEnumerable<MappingDescriptor> dependencies)
         {
+            if(dependencies.Any())
+            {
+                var listBindings = Bindings.OfType<DependentListMemberBinding>();
+
+                foreach(var listBinding in listBindings)
+                {
+                    var dependentMapping = dependencies.First(m => m.SourceType == listBinding.SourceType && m.TargetType == listBinding.TargetType);
+
+                    var property = Expression.Property(SourceParameter, listBinding.SourceMember);
+                    var selectExpression = Expression.Call(typeof(Enumerable), "Select", new Type[] { listBinding.SourceType, listBinding.TargetType }, property, dependentMapping.Mapping.Expression);
+                    var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { listBinding.TargetType }, selectExpression);
+
+                    listBinding.SourceExpression = expression;
+                }
+
+                var complexBindings = Bindings.OfType<DependentComplexMemberBinding>();
+
+                foreach (var complexBinding in complexBindings)
+                {
+                    var dependentMapping = dependencies.First(m => m.SourceType == complexBinding.SourceType && m.TargetType == complexBinding.TargetType);
+
+                    complexBinding.SourceExpression = dependentMapping.Mapping.Expression.Body as MemberInitExpression;
+                }
+            }
+
             var mapping = new Mapping<TSource, TTarget>();
             
             var bindings = Bindings
-                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression()))
+                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression(SourceParameter)))
                     .Where(p => p.Expression != null)
                     .Select(p => Expression.Bind(p.TargetMember, p.Expression));
 
@@ -104,28 +167,98 @@ namespace QueryMutator.Core
         {
             var sourceProperties = typeof(TSource).GetProperties();
 
-            foreach(var property in typeof(TTarget).GetProperties())
+            foreach(var targetProperty in typeof(TTarget).GetProperties())
             {
-                if(!Bindings.Any(b => b.TargetMember.Name == property.Name))
+                if(!Bindings.Any(b => b.TargetMember.Name == targetProperty.Name))
                 {
-                    if(sourceProperties.Any(p => p.Name == property.Name && p.PropertyType == property.PropertyType))
+                    if(sourceProperties.Any(p => p.Name == targetProperty.Name))
                     {
-                        var sourceProperty = sourceProperties.First(p => p.Name == property.Name);
+                        var sourceProperty = sourceProperties.First(p => p.Name == targetProperty.Name);
                         
-                        Bindings.Add(new MemberBinding
+                        if(sourceProperty.PropertyType == targetProperty.PropertyType)
                         {
-                            SourceExpression = Expression.Property(SourceParameter, sourceProperty),
-                            TargetMember = property
-                        });
+                            Bindings.Add(new MemberBinding
+                            {
+                                SourceExpression = Expression.Property(SourceParameter, sourceProperty),
+                                TargetMember = targetProperty
+                            });
+                        }
+                        else if (typeof(ICollection).IsAssignableFrom(sourceProperty.PropertyType))
+                        {
+                            var sourceType = sourceProperty.PropertyType.GenericTypeArguments[0];
+                            var targetType = targetProperty.PropertyType.GenericTypeArguments[0];
+
+                            if(sourceType == targetType)
+                            {
+                                DefaultListMemberBinding(Expression.Property(SourceParameter, sourceProperty), targetProperty, targetType);
+                            }
+                            else
+                            {
+                                AddDependency(sourceType, targetType);
+
+                                Bindings.Add(new DependentListMemberBinding
+                                {
+                                    SourceType = sourceType,
+                                    TargetType = targetType,
+                                    SourceExpression = null,
+                                    SourceMember = sourceProperty,
+                                    TargetMember = targetProperty
+                                });
+                            }
+
+                            // TODO what if the type argument is another list?....
+                        }
+                        else if(sourceProperty.PropertyType.IsClass && sourceProperty.PropertyType != typeof(string))
+                        {
+                            AddDependency(sourceProperty.PropertyType, targetProperty.PropertyType);
+                            
+                            Bindings.Add(new DependentComplexMemberBinding
+                            {
+                                SourceType = sourceProperty.PropertyType,
+                                TargetType = targetProperty.PropertyType,
+                                SourceExpression = null,
+                                SourceMember = sourceProperty,
+                                TargetMember = targetProperty
+                            });
+                        }
                     }
                 }
             }
         }
 
+        private void AddDependency(Type sourceType, Type targetType)
+        {
+            var dependency = new MappingBuilder
+            {
+                SourceType = sourceType,
+                TargetType = targetType,
+                Dependencies = new List<MappingBuilder>()
+            };
+
+            Dependencies.Add(dependency);
+
+            if(!Config.DefaultBuilders.Any(d => d.SourceType == sourceType && d.TargetType == targetType))
+            {
+                Config.DefaultBuilders.Add(dependency);
+            }
+        }
+
+        private void DefaultListMemberBinding(MemberExpression sourceProperty, MemberInfo targetMember, Type targetMemberType)
+        {
+            var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { targetMemberType }, sourceProperty);
+
+            Bindings.Add(new MemberBinding
+            {
+                SourceExpression = expression,
+                TargetMember = targetMember
+            });
+        }
+
         public IMappingBuilder<TSource, TTarget> IgnoreMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector)
         {
-            Bindings.Add(new IgnoreMemberBinding
+            Bindings.Add(new MemberBinding
             {
+                SourceExpression = null,
                 TargetMember = (memberSelector.Body as MemberExpression).Member
             });
 
@@ -134,7 +267,7 @@ namespace QueryMutator.Core
 
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, TMember constant)
         {
-            Bindings.Add(new ConstantMemberBinding
+            Bindings.Add(new MemberBinding
             {
                 SourceExpression = Expression.Constant(constant, typeof(TMember)), // Second parameter is required to handle nullable types
                 TargetMember = (memberSelector.Body as MemberExpression).Member
@@ -145,18 +278,30 @@ namespace QueryMutator.Core
         
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression)
         {
-            Bindings.Add(new MemberBinding
+            var targetMember = (memberSelector.Body as MemberExpression).Member;
+            if (mappingExpression.Body.NodeType == ExpressionType.MemberAccess)
             {
-                SourceExpression = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo),
-                TargetMember = (memberSelector.Body as MemberExpression).Member
-            });
+                Bindings.Add(new MemberBinding
+                {
+                    SourceExpression = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo),
+                    TargetMember = targetMember
+                });
+            }
+            else if (mappingExpression.Body.NodeType == ExpressionType.MemberInit)
+            {
+                Bindings.Add(new ComplexMemberBinding
+                {
+                    SourceExpression = mappingExpression.Body as MemberInitExpression,
+                    TargetMember = targetMember
+                });
+            }
 
             return this;
         }
 
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct
         {
-            Bindings.Add(new NullableMemberBinding
+            Bindings.Add(new MemberBinding
             {
                 SourceExpression = Expression.Convert(Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo), typeof(TMember?)),
                 TargetMember = (memberSelector.Body as MemberExpression).Member
@@ -167,7 +312,7 @@ namespace QueryMutator.Core
 
         public IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMember?>> mappingExpression) where TMember : struct
         {
-            Bindings.Add(new NullableMemberBinding
+            Bindings.Add(new MemberBinding
             {
                 SourceExpression = Expression.Coalesce(Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo), Expression.Default(typeof(TMember))),
                 TargetMember = (memberSelector.Body as MemberExpression).Member
@@ -175,90 +320,30 @@ namespace QueryMutator.Core
             return this;
         }
 
-        public IMappingBuilder<TSource, TTarget> MapMemberList<TMember, TMapSource>(Expression<Func<TTarget, IEnumerable<TMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TMapSource>>> mappingExpression)
+        public IMappingBuilder<TSource, TTarget> MapMemberList<TTargetMember, TSourceMember>(Expression<Func<TTarget, IEnumerable<TTargetMember>>> memberSelector, Expression<Func<TSource, IEnumerable<TSourceMember>>> mappingExpression)
         {
-            var property = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo);
+            var targetMember = (memberSelector.Body as MemberExpression).Member;
+            var sourceMember = (mappingExpression.Body as MemberExpression).Member as PropertyInfo;
 
-            if (typeof(TMember) == typeof(TMapSource))
+            if (typeof(TTargetMember) == typeof(TSourceMember))
             {
-                var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { typeof(TMember) }, property);
-
-                Bindings.Add(new MemberListBinding
-                {
-                    SourceExpression = expression,
-                    TargetMember = (memberSelector.Body as MemberExpression).Member
-                });
+                DefaultListMemberBinding(Expression.Property(SourceParameter, sourceMember), targetMember, typeof(TTargetMember));
             }
             else
             {
-                // TODO this has to be replaced later
-                var builder = new MappingBuilder<TMapSource, TMember>();
-                builder.CreateDefaultBindings();
-                var mapping = builder.Build();
+                AddDependency(typeof(TSourceMember), typeof(TTargetMember));
                 
-                var selectExpression = Expression.Call(typeof(Enumerable), "Select", new Type[] { typeof(TMapSource), typeof(TMember) }, property, mapping.Expression);
-                var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { typeof(TMember) }, selectExpression);
-
-                Bindings.Add(new MemberListBinding
+                Bindings.Add(new DependentListMemberBinding
                 {
-                    SourceExpression = expression,
-                    TargetMember = (memberSelector.Body as MemberExpression).Member
+                    SourceType = typeof(TSourceMember),
+                    TargetType = typeof(TTargetMember),
+                    SourceExpression = null,
+                    SourceMember = sourceMember,
+                    TargetMember = targetMember
                 });
             }
 
             return this;
-        }
-
-        public IMappingBuilder<TSource, TTarget> MapMemberUsing<TMember, TMapSource>(Expression<Func<TTarget, TMember>> memberSelector, Expression<Func<TSource, TMapSource>> sourceMemberSelector, IMapping<TMapSource, TMember> mapping)
-        {
-            Bindings.Add(new UsingMemberBinding
-            {
-                SourceExpression = ReplaceParameterChains(mapping.Expression.Body as MemberInitExpression, (sourceMemberSelector.Body as MemberExpression).Member as PropertyInfo),
-                TargetMember = (memberSelector.Body as MemberExpression).Member
-            });
-
-            return this;
-        }
-
-        private MemberInitExpression ReplaceParameterChains(MemberInitExpression expression, PropertyInfo sourceMember)
-        {
-            var bindings = new List<MemberAssignment>();
-
-            foreach (var binding in expression.Bindings.ToList())
-            {
-                var memberBinding = binding as MemberAssignment;
-                if (memberBinding.Expression is MemberExpression memberExpression)
-                {
-                    var properties = new List<PropertyInfo>();
-
-                    // Extract all of the nested properties from the expression
-                    Expression normalExpression = memberExpression;
-                    while (normalExpression.NodeType == ExpressionType.MemberAccess)
-                    {
-                        properties.Add((normalExpression as MemberExpression).Member as PropertyInfo);
-                        normalExpression = (normalExpression as MemberExpression).Expression;
-                    }
-
-                    properties.Add(sourceMember as PropertyInfo);
-                    properties.Reverse();
-
-                    // Construct a new expression with the correct parameter and child properties
-                    Expression body = SourceParameter;
-                    foreach (var property in properties)
-                    {
-                        body = Expression.Property(body, property);
-                    }
-
-                    bindings.Add(Expression.Bind(binding.Member, body));
-                }
-                else if (memberBinding.Expression is MemberInitExpression memberInitExpression)
-                {
-                    var newMemberInitExpression = ReplaceParameterChains(memberInitExpression, sourceMember);
-                    bindings.Add(Expression.Bind(binding.Member, newMemberInitExpression));
-                }
-            }
-
-            return Expression.MemberInit(expression.NewExpression, bindings);
         }
 
         public IMappingBuilder<TSource, TTarget> ValidateMapping(ValidationMode mode)
@@ -269,96 +354,154 @@ namespace QueryMutator.Core
         }
     }
     
-    // TODO replace return values to void?
     public interface IMapperConfigurationExpression
     {
-        IMapping<TSource, TTarget> CreateMapping<TSource, TTarget>();
+        void CreateMapping<TSource, TTarget>();
 
-        IMapping<TSource, TTarget> CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory);
+        void CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory);
 
-        IMapping<TSource, TTarget, TParam> CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory);
+        void CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory);
     }
 
     internal class MapperConfigurationExpression : IMapperConfigurationExpression
     {
-        public List<MappingDescriptor> Mappings { get; set; }
+        public List<MappingBuilder> Builders { get; set; }
+
+        public List<MappingBuilder> DefaultBuilders { get; set; }
 
         public MapperConfigurationExpression()
         {
-            Mappings = new List<MappingDescriptor>();
+            Builders = new List<MappingBuilder>();
+            DefaultBuilders = new List<MappingBuilder>();
         }
 
-        public IMapping<TSource, TTarget> CreateMapping<TSource, TTarget>()
+        public void CreateMapping<TSource, TTarget>()
         {
-            var builder = new MappingBuilder<TSource, TTarget>();
+            // TODO throw if already exists
+
+            var builder = new MappingBuilder<TSource, TTarget>(this);
             builder.CreateDefaultBindings();
 
-            var mapping = builder.Build();
-
-            Mappings.Add(new MappingDescriptor
-            {
-                SourceType = typeof(TSource),
-                TargetType = typeof(TTarget),
-                ParameterType = null,
-                Mapping = mapping
-            });
-
-            return mapping;
+            Builders.Add(builder);
         }
 
-        public IMapping<TSource, TTarget> CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory)
+        public void CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory)
         {
-            var builder = new MappingBuilder<TSource, TTarget>();
+            // TODO throw if already exists
+
+            var builder = new MappingBuilder<TSource, TTarget>(this);
             mappingFactory(builder);
             builder.CreateDefaultBindings(); // Should be run after the explicit mappings
 
-            var mapping = builder.Build();
-
-            Mappings.Add(new MappingDescriptor
-            {
-                SourceType = typeof(TSource),
-                TargetType = typeof(TTarget),
-                ParameterType = null,
-                Mapping = mapping
-            });
-
-            return mapping;
+            Builders.Add(builder);
         }
 
-        public IMapping<TSource, TTarget, TParam> CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory)
+        public void CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory)
         {
-            var builder = new MappingBuilder<TSource, TTarget, TParam>();
+            // TODO throw if already exists
+
+            var builder = new MappingBuilder<TSource, TTarget, TParam>(this);
             mappingFactory(builder);
             builder.CreateDefaultBindings();
 
-            var mapping = builder.Build();
+            // TODO
+            //var mapping = builder.Build();
 
-            Mappings.Add(new MappingDescriptor
-            {
-                SourceType = typeof(TSource),
-                TargetType = typeof(TTarget),
-                ParameterType = typeof(TParam),
-                Mapping = mapping
-            });
-
-            return mapping;
+            //Mappings.Add(new MappingDescriptor
+            //{
+            //    SourceType = typeof(TSource),
+            //    TargetType = typeof(TTarget),
+            //    ParameterType = typeof(TParam),
+            //    Mapping = mapping
+            //});
         }
     }
 
+    // TODO multiple mapperconfigurations, single mapper instance?
     public class MapperConfiguration
     {
-        private List<MappingDescriptor> Mappings { get; set; }
+        private MapperConfigurationExpression Config { get; set; }
 
         public MapperConfiguration(Action<IMapperConfigurationExpression> expression)
         {
-            var configurationExpression = new MapperConfigurationExpression();
-            expression(configurationExpression);
-            Mappings = configurationExpression.Mappings;
+            Config = new MapperConfigurationExpression();
+            expression(Config);
         }
 
         public IMapper CreateMapper()
         {
-            return new Mapper { Mappings = Mappings };
+            var comparer = new MappingBuilderEqualityComparer();
+
+            // Check for circular dependency
+            Config.Builders.TopologicalSort(b => b.Dependencies, comparer);
+
+            var mappings = new List<MappingDescriptor>();
+
+            // Create all non-user defined mappings
+            CreateDefaultBuilders();
+            
+            var sortedBuilders = Config.Builders
+                .TopologicalSort(b => b.Dependencies, comparer)
+                .Distinct(comparer)
+                .ToList();
+            
+            foreach (var builder in sortedBuilders)
+            {
+                var dependencies = mappings.Where(m => builder.Dependencies.Any(d => d.SourceType == m.SourceType && d.TargetType == m.TargetType));
+
+                var mapping = builder.Build(dependencies);
+
+                mappings.Add(new MappingDescriptor
+                {
+                    SourceType = builder.SourceType,
+                    TargetType = builder.TargetType,
+                    ParameterType = null, // ? TODO
+                    Mapping = mapping
+                });
+            }
+
+            return new Mapper { Mappings = mappings };
         }
+
+        private void CreateDefaultBuilders()
+        {
+            var comparer = new MappingBuilderEqualityComparer();
+
+            Config.DefaultBuilders.RemoveAll(d => Config.Builders.Any(b => b.SourceType == d.SourceType && b.TargetType == d.TargetType));
+
+            var defaultBuilders = Config.DefaultBuilders
+                .Distinct(comparer)
+                .ToList(); // Creating a new instance here is important
+
+            foreach (var defaultBuilder in defaultBuilders)
+            {
+                var builderType = typeof(MappingBuilder<,>).MakeGenericType(new Type[] { defaultBuilder.SourceType, defaultBuilder.TargetType });
+                var createDefaultBindingsMethod = builderType.GetMethod("CreateDefaultBindings");
+
+                var builder = Activator.CreateInstance(builderType, new object[] { Config });
+                createDefaultBindingsMethod.Invoke(builder, null);
+
+                Config.Builders.Add(builder as MappingBuilder);
+
+                Config.DefaultBuilders.Remove(defaultBuilder);
+
+                // Replace the dummy dependency with the dynamically created one
+                var dependentBuilders = Config.Builders.Where(b => b.Dependencies.Any(d => d.SourceType == defaultBuilder.SourceType && d.TargetType == defaultBuilder.TargetType));
+                foreach (var dependentBuilder in dependentBuilders)
+                {
+                    var index = dependentBuilder.Dependencies.IndexOf(dependentBuilder.Dependencies.First(d => d.SourceType == defaultBuilder.SourceType && d.TargetType == defaultBuilder.TargetType));
+                    dependentBuilder.Dependencies[index] = builder as MappingBuilder;
+                }
+            }
+
+            // Check for circular dependency
+            Config.Builders.TopologicalSort(b => b.Dependencies, comparer);
+
+            if (Config.DefaultBuilders.Any())
+            {
+                CreateDefaultBuilders();
+            }
+        }
+
     }
 }

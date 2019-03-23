@@ -12,6 +12,6 @@ namespace QueryMutator.Core
 
         public MemberInfo TargetMember { get; set; }
 
-        public abstract Expression GenerateExpression();
+        public abstract Expression GenerateExpression(ParameterExpression parameter);
     }
 }

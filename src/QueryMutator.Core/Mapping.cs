@@ -5,14 +5,21 @@ using System.Text;
 
 namespace QueryMutator.Core
 {
-    public interface IMapping<TSource, TTarget>
+    public interface IMapping
     {
-        Expression<Func<TSource, TTarget>> Expression { get; }
+        LambdaExpression Expression { get; }
+    }
+
+    public interface IMapping<TSource, TTarget> : IMapping
+    {
+        new Expression<Func<TSource, TTarget>> Expression { get; }
     }
 
     internal class Mapping<TSource, TTarget> : IMapping<TSource, TTarget>
     {
         public Expression<Func<TSource, TTarget>> Expression { get; set; }
+
+        LambdaExpression IMapping.Expression => Expression; // TODO is there a better solution?
     }
 
     public interface IMapping<TSource, TTarget, TParam>

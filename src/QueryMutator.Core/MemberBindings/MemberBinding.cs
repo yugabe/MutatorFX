@@ -5,9 +5,7 @@ namespace QueryMutator.Core
 {
     public class MemberBinding : MemberBindingBase
     {
-        public new MemberExpression SourceExpression { get; set; }
-
-        public override Expression GenerateExpression()
+        public override Expression GenerateExpression(ParameterExpression parameter)
         {
             return SourceExpression;
         }
