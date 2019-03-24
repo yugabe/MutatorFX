@@ -503,62 +503,62 @@ namespace QueryMutator.Tests
             }
         }
 
-        [TestMethod]
-        public void TestAnonymousType()
-        {
-            var options = BuildDatabase(nameof(TestAnonymousType));
+        //[TestMethod]
+        //public void TestAnonymousType()
+        //{
+        //    var options = BuildDatabase(nameof(TestAnonymousType));
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMapping<SmallDog, SmallDogDto>();
-                cfg.CreateMapping<Dog, DogDto>();
-            });
-            var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+        //    var config = new MapperConfiguration(cfg =>
+        //    {
+        //        cfg.CreateMapping<SmallDog, SmallDogDto>();
+        //        cfg.CreateMapping<Dog, DogDto>();
+        //    });
+        //    var mapper = config.CreateMapper();
+        //    var dogMapping = mapper.GetMapping<Dog, DogDto>();
 
-            using (var context = new DatabaseContext(options))
-            {
-                var joined = context.Dogs
-                    .Select(d => new
-                    {
-                        d.Id,
-                        d.Name,
-                        d.EntityProperty,
-                        d.Ignored,
-                        SmallDog = new
-                        {
-                            d.SmallDog.Id,
-                            d.SmallDog.Name
-                        }
-                    })
-                    .Select(dogMapping).ToList();
+        //    using (var context = new DatabaseContext(options))
+        //    {
+        //        var joined = context.Dogs
+        //            .Select(d => new
+        //            {
+        //                d.Id,
+        //                d.Name,
+        //                d.EntityProperty,
+        //                d.Ignored,
+        //                SmallDog = new
+        //                {
+        //                    d.SmallDog.Id,
+        //                    d.SmallDog.Name
+        //                }
+        //            })
+        //            .Select(dogMapping).ToList();
 
-                Assert.AreEqual(1, joined.Count);
+        //        Assert.AreEqual(1, joined.Count);
 
-                var result = joined.FirstOrDefault();
+        //        var result = joined.FirstOrDefault();
 
-                var expected = new DogDto
-                {
-                    Id = 1,
-                    Name = "Dog1",
-                    DtoProperty = 0,
-                    Ignored = "Ignore this property!",
-                    Parameterized = 0,
-                    SmallDog = new SmallDogDto
-                    {
-                        Id = 1,
-                        Name = "SmallDog1",
-                        SmallSmallDog = new SmallSmallDogDto
-                        {
-                            Id = 1,
-                            Name = "SmallSmallDog1"
-                        }
-                    }
-                };
+        //        var expected = new DogDto
+        //        {
+        //            Id = 1,
+        //            Name = "Dog1",
+        //            DtoProperty = 0,
+        //            Ignored = "Ignore this property!",
+        //            Parameterized = 0,
+        //            SmallDog = new SmallDogDto
+        //            {
+        //                Id = 1,
+        //                Name = "SmallDog1",
+        //                SmallSmallDog = new SmallSmallDogDto
+        //                {
+        //                    Id = 1,
+        //                    Name = "SmallSmallDog1"
+        //                }
+        //            }
+        //        };
                 
-                Assert.AreEqual(true, expected.Equals(result));
-            }
-        }
+        //        Assert.AreEqual(true, expected.Equals(result));
+        //    }
+        //}
 
         [TestMethod]
         public void TestNullableMapping()

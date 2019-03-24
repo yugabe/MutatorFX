@@ -26,7 +26,10 @@ namespace QueryMutator.Core
     {
     }
 
-    internal class Mapping<TSource, TTarget, TParam> : IMapping<TSource, TTarget, TParam>
+    internal class Mapping<TSource, TTarget, TParam> : IMapping, IMapping<TSource, TTarget, TParam>
     {
+        public MappingBuilder<TSource, TTarget, TParam> Builder { get; set; }
+
+        LambdaExpression IMapping.Expression => null;
     }
 }

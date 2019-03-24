@@ -1,13 +1,15 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
+﻿using System;
+using System.Linq.Expressions;
 
 namespace QueryMutator.Core
 {
-    public class ParametrizedMemberBinding : MemberBindingBase
+    public class ParametrizedMemberBinding<TSource, TMember, TParam> : MemberBindingBase<TParam>
     {
-        public override Expression GenerateExpression(ParameterExpression parameter)
+        public Func<TParam, Expression<Func<TSource, TMember>>> ExpressionFactory { get; set; }
+        
+        public override Expression GenerateExpression(ParameterExpression target, TParam param)
         {
-            return SourceExpression;
+            return ExpressionFactory(param).ReplaceParameter(target).Body;
         }
     }
 }

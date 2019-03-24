@@ -5,24 +5,14 @@ namespace QueryMutator.Core
 {
     public static class QueryableExtensions
     {
-        public static IQueryable<T> Select<TSource, T>(this IQueryable source, IMapping<TSource, T> mapping)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static IQueryable<T> Select<TSource, T>(this IQueryable<TSource> source, IMapping<TSource, T> mapping)
+        public static IQueryable<TTarget> Select<TSource, TTarget>(this IQueryable<TSource> source, IMapping<TSource, TTarget> mapping)
         {
             return source.Select(mapping.Expression);
         }
-
-        public static IQueryable<T> Select<TSource, T, TParameter>(this IQueryable source, IMapping<TSource, T, TParameter> mapping, TParameter parameter)
+        
+        public static IQueryable<TTarget> Select<TSource, TTarget, TParameter>(this IQueryable<TSource> source, IMapping<TSource, TTarget, TParameter> mapping, TParameter parameter)
         {
-            throw new NotImplementedException();
-        }
-
-        public static IQueryable<T> Select<TSource, T, TParameter>(this IQueryable<TSource> source, IMapping<TSource, T, TParameter> mapping, TParameter parameter)
-        {
-            throw new NotImplementedException();
+            return source.Select((mapping as Mapping<TSource, TTarget, TParameter>).Builder.ToExpression(parameter));
         }
     }
 }

@@ -26,5 +26,4 @@ namespace QueryMutator.Core
             return mapping.Mapping as Mapping<TSource, TTarget, TParam>;
         }
     }
-
 }

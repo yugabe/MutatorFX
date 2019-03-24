@@ -29,7 +29,7 @@ namespace QueryMutator.Core
         IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression);
     }
 
-    internal class MappingBuilder
+    internal abstract class MappingBuilder
     {
         public Type SourceType { get; set; }
 
@@ -37,10 +37,7 @@ namespace QueryMutator.Core
 
         public IList<MappingBuilder> Dependencies { get; set; }
 
-        public virtual IMapping Build(IEnumerable<MappingDescriptor> dependencies)
-        {
-            return null; // TODO is there a better solution?
-        }
+        public abstract IMapping Build(IEnumerable<MappingDescriptor> dependencies);
     }
     
     internal class MappingBuilderEqualityComparer : EqualityComparer<MappingBuilder>
@@ -58,42 +55,50 @@ namespace QueryMutator.Core
 
     internal class MappingBuilder<TSource, TTarget, TParam> : MappingBuilder<TSource, TTarget>, IMappingBuilder<TSource, TTarget, TParam>
     {
-        public List<ParametrizedMemberBinding> ParametrizedBindings { get; set; }
+        public List<MemberBindingBase<TParam>> ParametrizedBindings { get; set; }
+
+        public List<MappingDescriptor> ParametrizedDependencies { get; set; }
 
         public MappingBuilder(MapperConfigurationExpression config): base(config)
         {
-                
+            ParametrizedBindings = new List<MemberBindingBase<TParam>>();
+            ParametrizedDependencies = new List<MappingDescriptor>();
         }
 
-        public new IMapping<TSource, TTarget, TParam> Build()
+        public override IMapping Build(IEnumerable<MappingDescriptor> dependencies)
         {
-            var mapping = new Mapping<TSource, TTarget, TParam>();
+            ParametrizedDependencies = dependencies.ToList();
 
-            //IEnumerable<(MemberInfo TargetMember, Func<TParam, Expression> ExpressionFactory)> bindings = Bindings
-            //        .Select(m => (m.TargetMember, (Func<TParam, Expression>)(p => m.GenerateExpression())))
-            //        .Concat(ParametrizedBindings.Select(m => (m.TargetMember, (Func<TParam, Expression>)(p => m.GenerateExpression()))))
-            //        .GroupBy(m => m.TargetMember)
-            //        .Select(m => m.Last());
+            return null;
+        }
 
-            //bindings = bindings
-            //        .Select(p => (p.TargetMember, Expression: p.ExpressionFactory(parameter)))
-            //        .Where(p => p.Expression != null)
-            //        .Select(p => Expression.Bind(p.TargetMember, p.Expression));
+        public Expression<Func<TSource, TTarget>> ToExpression(TParam param)
+        {
+            UpdateDependentBindings(ParametrizedDependencies);
+            
+            IEnumerable<(MemberInfo TargetMember, Func<TParam, Expression> ExpressionFactory)> bindings = Bindings
+                    .Select(m => (m.TargetMember, (Func<TParam, Expression>)(p => m.GenerateExpression(SourceParameter))))
+                    .Concat(ParametrizedBindings.Select(m => (m.TargetMember, (Func<TParam, Expression>)(p => m.GenerateExpression(SourceParameter, p)))))
+                    .GroupBy(m => m.TargetMember)
+                    .Select(m => m.Last());
 
-            //var body = Expression.MemberInit(Expression.New(typeof(TTarget)), bindings);
+            var memberBindings = bindings
+                    .Select(p => (p.TargetMember, Expression: p.ExpressionFactory(param)))
+                    .Where(p => p.Expression != null)
+                    .Select(p => Expression.Bind(p.TargetMember, p.Expression));
+            
+            var body = Expression.MemberInit(Expression.New(typeof(TTarget)), memberBindings);
 
-            //mapping.Expression = Expression.Lambda<Func<TSource, TTarget>>(body, SourceParameter);
-
-            return mapping;
+            return Expression.Lambda<Func<TSource, TTarget>>(body, SourceParameter);
         }
 
         public IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression)
         {
-            //Bindings.Add(new ParametrizedMemberBinding
-            //{
-            //    SourceExpression = Expression.Property(SourceParameter, (mappingExpression.Body as MemberExpression).Member as PropertyInfo),
-            //    TargetMember = (memberSelector.Body as MemberExpression).Member
-            //});
+            ParametrizedBindings.Add(new ParametrizedMemberBinding<TSource, TMember, TParam>
+            {
+                ExpressionFactory = mappingExpression,
+                TargetMember = (memberSelector.Body as MemberExpression).Member
+            });
 
             return this;
         }
@@ -109,26 +114,47 @@ namespace QueryMutator.Core
 
         public ValidationMode ValidationMode { get; set; }
 
-        public MappingBuilder(MapperConfigurationExpression config)
+        public MappingBuilder()
         {
             SourceType = typeof(TSource);
             TargetType = typeof(TTarget);
 
             Dependencies = new List<MappingBuilder>();
-
-            Config = config;
-
+            
             SourceParameter = Expression.Parameter(SourceType);
             Bindings = new List<MemberBindingBase>();
         }
 
+        public MappingBuilder(MapperConfigurationExpression config) : this()
+        {
+            Config = config;
+        }
+
         public override IMapping Build(IEnumerable<MappingDescriptor> dependencies)
         {
-            if(dependencies.Any())
+            UpdateDependentBindings(dependencies);
+
+            var mapping = new Mapping<TSource, TTarget>();
+            
+            var bindings = Bindings
+                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression(SourceParameter)))
+                    .Where(p => p.Expression != null)
+                    .Select(p => Expression.Bind(p.TargetMember, p.Expression));
+
+            var body = Expression.MemberInit(Expression.New(typeof(TTarget)), bindings);
+
+            mapping.Expression = Expression.Lambda<Func<TSource, TTarget>>(body, SourceParameter);
+
+            return mapping;
+        }
+
+        protected void UpdateDependentBindings(IEnumerable<MappingDescriptor> dependencies)
+        {
+            if (dependencies.Any())
             {
                 var listBindings = Bindings.OfType<DependentListMemberBinding>();
 
-                foreach(var listBinding in listBindings)
+                foreach (var listBinding in listBindings)
                 {
                     var dependentMapping = dependencies.First(m => m.SourceType == listBinding.SourceType && m.TargetType == listBinding.TargetType);
 
@@ -148,19 +174,6 @@ namespace QueryMutator.Core
                     complexBinding.SourceExpression = dependentMapping.Mapping.Expression.Body as MemberInitExpression;
                 }
             }
-
-            var mapping = new Mapping<TSource, TTarget>();
-            
-            var bindings = Bindings
-                    .Select(p => (p.TargetMember, Expression: p.GenerateExpression(SourceParameter)))
-                    .Where(p => p.Expression != null)
-                    .Select(p => Expression.Bind(p.TargetMember, p.Expression));
-
-            var body = Expression.MemberInit(Expression.New(typeof(TTarget)), bindings);
-
-            mapping.Expression = Expression.Lambda<Func<TSource, TTarget>>(body, SourceParameter);
-
-            return mapping;
         }
 
         public void CreateDefaultBindings()
@@ -228,12 +241,7 @@ namespace QueryMutator.Core
 
         private void AddDependency(Type sourceType, Type targetType)
         {
-            var dependency = new MappingBuilder
-            {
-                SourceType = sourceType,
-                TargetType = targetType,
-                Dependencies = new List<MappingBuilder>()
-            };
+            var dependency = Activator.CreateInstance(typeof(MappingBuilder<,>).MakeGenericType(new Type[] { sourceType, targetType })) as MappingBuilder;
 
             Dependencies.Add(dependency);
 
@@ -363,16 +371,32 @@ namespace QueryMutator.Core
         void CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory);
     }
 
+    internal class ParametrizedBuilderDescriptor
+    {
+        public Type SourceType { get; set; }
+
+        public Type TargetType { get; set; }
+
+        public Type ParameterType { get; set; }
+
+        public IMapping Mapping { get; set; }
+
+        public MappingBuilder Builder { get; set; }
+    }
+
     internal class MapperConfigurationExpression : IMapperConfigurationExpression
     {
         public List<MappingBuilder> Builders { get; set; }
 
         public List<MappingBuilder> DefaultBuilders { get; set; }
 
+        public List<ParametrizedBuilderDescriptor> ParametrizedBuilders { get; set; }
+
         public MapperConfigurationExpression()
         {
             Builders = new List<MappingBuilder>();
             DefaultBuilders = new List<MappingBuilder>();
+            ParametrizedBuilders = new List<ParametrizedBuilderDescriptor>();
         }
 
         public void CreateMapping<TSource, TTarget>()
@@ -402,18 +426,16 @@ namespace QueryMutator.Core
 
             var builder = new MappingBuilder<TSource, TTarget, TParam>(this);
             mappingFactory(builder);
-            builder.CreateDefaultBindings();
+            builder.CreateDefaultBindings(); // Should be run after the explicit mappings
 
-            // TODO
-            //var mapping = builder.Build();
-
-            //Mappings.Add(new MappingDescriptor
-            //{
-            //    SourceType = typeof(TSource),
-            //    TargetType = typeof(TTarget),
-            //    ParameterType = typeof(TParam),
-            //    Mapping = mapping
-            //});
+            ParametrizedBuilders.Add(new ParametrizedBuilderDescriptor
+            {
+                SourceType = typeof(TSource),
+                TargetType = typeof(TTarget),
+                ParameterType = typeof(TParam),
+                Mapping = new Mapping<TSource, TTarget, TParam> { Builder = builder },
+                Builder = builder
+            });
         }
     }
 
@@ -455,12 +477,31 @@ namespace QueryMutator.Core
                 {
                     SourceType = builder.SourceType,
                     TargetType = builder.TargetType,
-                    ParameterType = null, // ? TODO
+                    ParameterType = null,
                     Mapping = mapping
                 });
             }
 
-            return new Mapper { Mappings = mappings };
+            foreach(var parametrizedBuilder in Config.ParametrizedBuilders)
+            {
+                var dependencies = mappings.Where(m => parametrizedBuilder.Builder.Dependencies.Any(d => d.SourceType == m.SourceType && d.TargetType == m.TargetType));
+
+                // This just stores the dependencies for later use
+                parametrizedBuilder.Builder.Build(dependencies);
+
+                mappings.Add(new MappingDescriptor
+                {
+                    SourceType = parametrizedBuilder.SourceType,
+                    TargetType = parametrizedBuilder.TargetType,
+                    ParameterType = parametrizedBuilder.ParameterType,
+                    Mapping = parametrizedBuilder.Mapping,
+                });
+            }
+            
+            return new Mapper
+            {
+                Mappings = mappings
+            };
         }
 
         private void CreateDefaultBuilders()
@@ -502,6 +543,5 @@ namespace QueryMutator.Core
                 CreateDefaultBuilders();
             }
         }
-
     }
 }
