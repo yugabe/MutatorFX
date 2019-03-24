@@ -11,6 +11,8 @@ namespace QueryMutator.Core
 
         public List<ParametrizedBuilderDescriptor> ParametrizedBuilders { get; set; }
 
+        public ValidationMode ValidationMode { get; set; }
+
         public MapperConfigurationExpression()
         {
             Builders = new List<MappingBuilderBase>();

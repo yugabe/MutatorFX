@@ -195,42 +195,48 @@ namespace QueryMutator.Tests
         [ExpectedException(typeof(QueryMutatorValidationException))]
         public void TestSourceValidation()
         {
-            var options = BuildDatabase(nameof(TestSourceValidation));
-            
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
                     .ValidateMapping(ValidationMode.Source)
                 );
             });
-            var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+            config.CreateMapper();
+        }
 
-            using (var context = new DatabaseContext(options))
+        [TestMethod]
+        [ExpectedException(typeof(QueryMutatorValidationException))]
+        public void TestGlobalSourceValidation()
+        {
+            var config = new MapperConfiguration(cfg =>
             {
-                var dogs = context.Dogs.Select(dogMapping).ToList();
-            }
+                cfg.CreateMapping<Dog, DogDto>();
+            }, new MapperConfigurationOptions { ValidationMode = ValidationMode.Source });
+            config.CreateMapper();
         }
 
         [TestMethod]
         [ExpectedException(typeof(QueryMutatorValidationException))]
         public void TestDestinationValidation()
         {
-            var options = BuildDatabase(nameof(TestDestinationValidation));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
                     .ValidateMapping(ValidationMode.Destination)
                 );
             });
-            var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+            config.CreateMapper();
+        }
 
-            using (var context = new DatabaseContext(options))
+        [TestMethod]
+        [ExpectedException(typeof(QueryMutatorValidationException))]
+        public void TestGlobalDestinationValidation()
+        {
+            var config = new MapperConfiguration(cfg =>
             {
-                var dogs = context.Dogs.Select(dogMapping).ToList();
-            }
+                cfg.CreateMapping<Dog, DogDto>();
+            }, new MapperConfigurationOptions { ValidationMode = ValidationMode.Destination });
+            config.CreateMapper();
         }
 
         [TestMethod]

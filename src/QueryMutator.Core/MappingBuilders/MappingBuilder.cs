@@ -26,11 +26,13 @@ namespace QueryMutator.Core
 
             SourceParameter = Expression.Parameter(SourceType);
             Bindings = new List<MemberBindingBase>();
+            ValidationMode = ValidationMode.None;
         }
 
         public MappingBuilder(MapperConfigurationExpression config) : this()
         {
             Config = config;
+            ValidationMode = config.ValidationMode;
         }
 
         public override IMapping Build(IEnumerable<MappingDescriptor> dependencies)
@@ -138,6 +140,21 @@ namespace QueryMutator.Core
                             });
                         }
                     }
+                }
+            }
+
+            if (ValidationMode == ValidationMode.Source)
+            {
+                if (typeof(TSource).GetProperties().Any(p => !Bindings.Any(b => b.TargetMember.Name == p.Name)))
+                {
+                    throw new QueryMutatorValidationException("Not all source properties are mapped!");
+                }
+            }
+            else if (ValidationMode == ValidationMode.Destination)
+            {
+                if (typeof(TTarget).GetProperties().Any(p => !Bindings.Any(b => b.TargetMember.Name == p.Name)))
+                {
+                    throw new QueryMutatorValidationException("Not all destination properties are mapped!");
                 }
             }
         }

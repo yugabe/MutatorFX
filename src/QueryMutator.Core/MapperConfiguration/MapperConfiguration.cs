@@ -10,9 +10,13 @@ namespace QueryMutator.Core
     {
         private MapperConfigurationExpression Config { get; set; }
 
-        public MapperConfiguration(Action<IMapperConfigurationExpression> expression)
+        public MapperConfiguration(Action<IMapperConfigurationExpression> expression, MapperConfigurationOptions options = null)
         {
-            Config = new MapperConfigurationExpression();
+            Config = new MapperConfigurationExpression
+            {
+                ValidationMode = options?.ValidationMode ?? ValidationMode.None
+            };
+
             expression(Config);
         }
 
