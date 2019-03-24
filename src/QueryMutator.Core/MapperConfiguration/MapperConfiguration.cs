@@ -22,7 +22,7 @@ namespace QueryMutator.Core
 
         public IMapper CreateMapper()
         {
-            var comparer = new MappingBuilderEqualityComparer();
+            var comparer = EqualityComparer<MappingBuilderBase>.Default;
 
             // Check for circular dependency
             Config.Builders.TopologicalSort(b => b.Dependencies, comparer);
@@ -76,9 +76,9 @@ namespace QueryMutator.Core
 
         private void CreateDefaultBuilders()
         {
-            var comparer = new MappingBuilderEqualityComparer();
+            var comparer = EqualityComparer<MappingBuilderBase>.Default;
 
-            Config.DefaultBuilders.RemoveAll(d => Config.Builders.Any(b => b.SourceType == d.SourceType && b.TargetType == d.TargetType));
+            Config.DefaultBuilders.RemoveAll(d => Config.Builders.Any(b => b.Equals(d)));
 
             var defaultBuilders = Config.DefaultBuilders
                 .Distinct(comparer)
@@ -97,10 +97,10 @@ namespace QueryMutator.Core
                 Config.DefaultBuilders.Remove(defaultBuilder);
 
                 // Replace the dummy dependency with the dynamically created one
-                var dependentBuilders = Config.Builders.Where(b => b.Dependencies.Any(d => d.SourceType == defaultBuilder.SourceType && d.TargetType == defaultBuilder.TargetType));
+                var dependentBuilders = Config.Builders.Where(b => b.Dependencies.Any(d => d.Equals(defaultBuilder)));
                 foreach (var dependentBuilder in dependentBuilders)
                 {
-                    var index = dependentBuilder.Dependencies.IndexOf(dependentBuilder.Dependencies.First(d => d.SourceType == defaultBuilder.SourceType && d.TargetType == defaultBuilder.TargetType));
+                    var index = dependentBuilder.Dependencies.IndexOf(dependentBuilder.Dependencies.First(d => d.Equals(defaultBuilder)));
                     dependentBuilder.Dependencies[index] = builder as MappingBuilderBase;
                 }
             }
