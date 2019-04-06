@@ -21,7 +21,7 @@ namespace QueryMutator.Core
         IMappingBuilder<TSource, TTarget> ValidateMapping(ValidationMode mode);
     }
 
-    public interface IMappingBuilder<TSource, TTarget, TParam>
+    public interface IMappingBuilder<TSource, TTarget, TParam> : IMappingBuilder<TSource, TTarget>
     {
         IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression);
     }

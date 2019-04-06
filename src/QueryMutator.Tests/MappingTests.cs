@@ -374,6 +374,7 @@ namespace QueryMutator.Tests
             {
                 cfg.CreateMapping<Dog, DogDto, int>(mapping => mapping
                     .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p)
+                    .IgnoreMember(d => d.Ignored)
                     );
 
                 cfg.CreateMapping<Dog, DogDto, DogMapperParamaters>(mapping => mapping
@@ -399,7 +400,7 @@ namespace QueryMutator.Tests
                     Id = 1,
                     Name = "Dog1",
                     DtoProperty = 0,
-                    Ignored = "Ignore this property!",
+                    Ignored = null,
                     Parameterized = 1 * param,
                     SmallDog = new SmallDogDto
                     {
@@ -474,11 +475,7 @@ namespace QueryMutator.Tests
                             Name = d.Name,
                             EntityProperty = d.EntityProperty,
                             Ignored = d.Ignored,
-                            SmallDog = new SmallDog
-                            {
-                                Id = s.Id,
-                                Name = s.Name
-                            }
+                            SmallDog = s
                         })
                     .Select(dogMapping).ToList();
                 
