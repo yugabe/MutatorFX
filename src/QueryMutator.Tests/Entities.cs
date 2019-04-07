@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QueryMutator.Tests
 {
-    public class Dog
+    public class ParentEntity
     {
         public int Id { get; set; }
 
@@ -14,21 +14,21 @@ namespace QueryMutator.Tests
 
         public string Ignored { get; set; }
 
-        public int? SmallDogId { get; set; }
-        public SmallDog SmallDog { get; set; }
+        public int? NestedEntityId { get; set; }
+        public NestedEntity NestedEntity { get; set; }
     }
 
-    public class SmallDog
+    public class NestedEntity
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public int? SmallSmallDogId { get; set; }
-        public SmallSmallDog SmallSmallDog { get; set; }
+        public int? NestedNestedEntityId { get; set; }
+        public NestedNestedEntity NestedNestedEntity { get; set; }
     }
 
-    public class SmallSmallDog
+    public class NestedNestedEntity
     {
         public int Id { get; set; }
 
@@ -46,15 +46,15 @@ namespace QueryMutator.Tests
         public int NotNullableProperty { get; set; }
     }
 
-    public class NullableParent
+    public class NullableParentEntity
     {
         public int Id { get; set; }
 
-        public int NullableChildId { get; set; }
-        public NullableChild NullableChild { get; set; }
+        public int NestedNullableEntityId { get; set; }
+        public NestedNullableEntity NestedNullableEntity { get; set; }
     }
 
-    public class NullableChild
+    public class NestedNullableEntity
     {
         public int Id { get; set; }
 
@@ -92,49 +92,26 @@ namespace QueryMutator.Tests
         public Collection Collection { get; set; }
     }
 
-    public class DependentCollectionParent
+    public class DependentNestedCollectionParent
     {
         public int Id { get; set; }
 
-        public int DependentCollectionId { get; set; }
-        public DependentCollection DependentCollection { get; set; }
+        public int DependentNestedCollectionId { get; set; }
+        public DependentNestedCollection DependentNestedCollection { get; set; }
     }
 
-    public class DependentCollection
+    public class DependentNestedCollection
     {
         public int Id { get; set; }
 
-        public ICollection<DependentCollectionItem> DependentCollectionItems { get; set; }
+        public ICollection<DependentNestedCollectionItem> DependentNestedCollectionItems { get; set; }
     }
 
-    public class DependentCollectionItem
+    public class DependentNestedCollectionItem
     {
         public int Id { get; set; }
 
-        public int DependentCollectionId { get; set; }
-        public DependentCollection DependentCollection { get; set; }
-    }
-
-    public class NewDependentCollectionParent
-    {
-        public int Id { get; set; }
-
-        public int NewDependentCollectionId { get; set; }
-        public NewDependentCollection NewDependentCollection { get; set; }
-    }
-
-    public class NewDependentCollection
-    {
-        public int Id { get; set; }
-
-        public ICollection<NewDependentCollectionItem> NewDependentCollectionItems { get; set; }
-    }
-
-    public class NewDependentCollectionItem
-    {
-        public int Id { get; set; }
-
-        public int NewDependentCollectionId { get; set; }
-        public NewDependentCollection NewDependentCollection { get; set; }
+        public int DependentNestedCollectionId { get; set; }
+        public DependentNestedCollection DependentNestedCollection { get; set; }
     }
 }

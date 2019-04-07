@@ -7,17 +7,17 @@ namespace QueryMutator.Tests
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Dog> Dogs { get; set; }
+        public DbSet<ParentEntity> ParentEntities { get; set; }
 
-        public DbSet<SmallDog> SmallDogs { get; set; }
+        public DbSet<NestedEntity> NestedEntities { get; set; }
 
-        public DbSet<SmallSmallDog> SmallSmallDogs { get; set; }
+        public DbSet<NestedNestedEntity> NestedNestedEntities { get; set; }
 
         public DbSet<NullableEntity> NullableEntities { get; set; }
 
-        public DbSet<NullableParent> NullableParents { get; set; }
+        public DbSet<NullableParentEntity> NullableParentEntities { get; set; }
 
-        public DbSet<NullableChild> NullableChildren { get; set; }
+        public DbSet<NestedNullableEntity> NestedNullableEntities { get; set; }
 
         public DbSet<CollectionParent> CollectionParents { get; set; }
 
@@ -25,18 +25,12 @@ namespace QueryMutator.Tests
 
         public DbSet<CollectionItem> CollectionItems { get; set; }
 
-        public DbSet<DependentCollectionParent> DependentCollectionParents { get; set; }
+        public DbSet<DependentNestedCollectionParent> DependentNestedCollectionParents { get; set; }
 
-        public DbSet<DependentCollection> DependentCollections { get; set; }
+        public DbSet<DependentNestedCollection> DependentNestedCollections { get; set; }
 
-        public DbSet<DependentCollectionItem> DependentCollectionItems { get; set; }
-
-        public DbSet<NewDependentCollectionParent> NewDependentCollectionParents { get; set; }
-
-        public DbSet<NewDependentCollection> NewDependentCollections { get; set; }
-
-        public DbSet<NewDependentCollectionItem> NewDependentCollectionItems { get; set; }
-
+        public DbSet<DependentNestedCollectionItem> DependentNestedCollectionItems { get; set; }
+        
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -44,26 +38,26 @@ namespace QueryMutator.Tests
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Dog>().HasData(new Dog
+            modelBuilder.Entity<ParentEntity>().HasData(new ParentEntity
             {
                 Id = 1,
-                Name = "Dog1",
+                Name = "Entity1",
                 EntityProperty = 5,
                 Ignored = "Ignore this property!",
-                SmallDogId = 1
+                NestedEntityId = 1
             });
 
-            modelBuilder.Entity<SmallDog>().HasData(new SmallDog
+            modelBuilder.Entity<NestedEntity>().HasData(new NestedEntity
             {
                 Id = 1,
-                Name = "SmallDog1",
-                SmallSmallDogId = 1
+                Name ="NestedEntity1",
+                NestedNestedEntityId = 1
             });
 
-            modelBuilder.Entity<SmallSmallDog>().HasData(new SmallDog
+            modelBuilder.Entity<NestedNestedEntity>().HasData(new NestedEntity
             {
                 Id = 1,
-                Name = "SmallSmallDog1"
+                Name = "NestedNestedEntity1"
             });
 
             modelBuilder.Entity<NullableEntity>().HasData(new NullableEntity
@@ -74,7 +68,7 @@ namespace QueryMutator.Tests
                 NotNullableProperty = 10
             });
             
-            modelBuilder.Entity<NullableChild>().HasData(new NullableChild
+            modelBuilder.Entity<NestedNullableEntity>().HasData(new NestedNullableEntity
             {
                 Id = 1,
                 NotNullableToNullable = 10,
@@ -83,10 +77,10 @@ namespace QueryMutator.Tests
                 NullableWithValueToNotNullable = 20
             });
 
-            modelBuilder.Entity<NullableParent>().HasData(new NullableParent
+            modelBuilder.Entity<NullableParentEntity>().HasData(new NullableParentEntity
             {
                 Id = 1,
-                NullableChildId = 1
+                NestedNullableEntityId = 1
             });
 
             modelBuilder.Entity<CollectionParent>().HasData(new CollectionParent
@@ -118,50 +112,27 @@ namespace QueryMutator.Tests
                 CollectionId = 1,
             });
 
-            modelBuilder.Entity<DependentCollection>().HasData(new DependentCollection
+            modelBuilder.Entity<DependentNestedCollection>().HasData(new DependentNestedCollection
             {
                 Id = 1,
             });
 
-            modelBuilder.Entity<DependentCollectionParent>().HasData(new DependentCollectionParent
+            modelBuilder.Entity<DependentNestedCollectionParent>().HasData(new DependentNestedCollectionParent
             {
                 Id = 1,
-                DependentCollectionId = 1
+                DependentNestedCollectionId = 1
             });
 
-            modelBuilder.Entity<DependentCollectionItem>().HasData(new DependentCollectionItem
+            modelBuilder.Entity<DependentNestedCollectionItem>().HasData(new DependentNestedCollectionItem
             {
                 Id = 1,
-                DependentCollectionId = 1,
+                DependentNestedCollectionId = 1,
             });
 
-            modelBuilder.Entity<DependentCollectionItem>().HasData(new DependentCollectionItem
+            modelBuilder.Entity<DependentNestedCollectionItem>().HasData(new DependentNestedCollectionItem
             {
                 Id = 2,
-                DependentCollectionId = 1,
-            });
-
-            modelBuilder.Entity<NewDependentCollection>().HasData(new NewDependentCollection
-            {
-                Id = 1,
-            });
-
-            modelBuilder.Entity<NewDependentCollectionParent>().HasData(new NewDependentCollectionParent
-            {
-                Id = 1,
-                NewDependentCollectionId = 1
-            });
-
-            modelBuilder.Entity<NewDependentCollectionItem>().HasData(new NewDependentCollectionItem
-            {
-                Id = 1,
-                NewDependentCollectionId = 1,
-            });
-
-            modelBuilder.Entity<NewDependentCollectionItem>().HasData(new NewDependentCollectionItem
-            {
-                Id = 2,
-                NewDependentCollectionId = 1,
+                DependentNestedCollectionId = 1,
             });
         }
     }

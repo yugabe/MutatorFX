@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMutator.Tests
 {
-    public class DogDto
+    public class ParentEntityDto
     {
         public int Id { get; set; }
 
@@ -17,16 +15,11 @@ namespace QueryMutator.Tests
 
         public int Parameterized { get; set; }
 
-        public SmallDogDto SmallDog { get; set; }
+        public NestedEntityDto NestedEntity { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is DogDto d))
+            if (obj == null || !(obj is ParentEntityDto d))
             {
                 return false;
             }
@@ -36,41 +29,40 @@ namespace QueryMutator.Tests
                 return false;
             }
 
-            if ((SmallDog == null && d.SmallDog != null) || (SmallDog != null && d.SmallDog == null))
+            if ((NestedEntity == null && d.NestedEntity != null) || (NestedEntity != null && d.NestedEntity == null))
             {
                 return false;
             }
 
-            if (SmallDog != null && d.SmallDog != null)
+            if (NestedEntity != null && d.NestedEntity != null)
             {
-                return SmallDog.Equals(d.SmallDog);
+                return NestedEntity.Equals(d.NestedEntity);
             }
 
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, Name, DtoProperty, Ignored, Parameterized, SmallDog);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, Name, DtoProperty, Ignored, Parameterized, NestedEntity.GetHashCode());
     }
 
-    public class SmallDogDto
+    public class ParentEntityParamaters
+    {
+        public int IntProperty { get; set; }
+
+        public string StringProperty { get; set; }
+    }
+
+    public class NestedEntityDto
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public SmallSmallDogDto SmallSmallDog { get; set; }
+        public NestedNestedEntityDto NestedNestedEntity { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            
-            if (!(obj is SmallDogDto d))
+            if (obj == null || !(obj is NestedEntityDto d))
             {
                 return false;
             }
@@ -80,9 +72,9 @@ namespace QueryMutator.Tests
                 return false;
             }
 
-            if (SmallSmallDog != null && d.SmallSmallDog != null)
+            if (NestedNestedEntity != null && d.NestedNestedEntity != null)
             {
-                return SmallSmallDog.Equals(d.SmallSmallDog);
+                return NestedNestedEntity.Equals(d.NestedNestedEntity);
             }
 
             return true;
@@ -94,7 +86,7 @@ namespace QueryMutator.Tests
         }
     }
 
-    public class SmallSmallDogDto
+    public class NestedNestedEntityDto
     {
         public int Id { get; set; }
 
@@ -102,12 +94,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is SmallSmallDogDto d))
+            if (obj == null || !(obj is NestedNestedEntityDto d))
             {
                 return false;
             }
@@ -115,17 +102,7 @@ namespace QueryMutator.Tests
             return (Id == d.Id) && (Name == d.Name);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, Name);
-        }
-    }
-
-    public class DogMapperParamaters
-    {
-        public int IntProperty { get; set; }
-
-        public string StringProperty { get; set; }
+        public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
     public class NullableEntityDto
@@ -144,12 +121,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            
-            if (!(obj is NullableEntityDto n))
+            if (obj == null || !(obj is NullableEntityDto n))
             {
                 return false;
             }
@@ -159,40 +131,29 @@ namespace QueryMutator.Tests
                   && (NotNullableProperty2 == n.NotNullableProperty2);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, NullableProperty, NullableProperty2, NotNullableProperty);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, NullableProperty, NullableProperty2, NullableProperty3, NotNullableProperty, NotNullableProperty2);
     }
 
-    public class NullableParentDto
+    public class NullableParentEntityDto
     {
         public int Id { get; set; }
 
-        public NullableChildDto NullableChild { get; set; }
+        public NestedNullableEntityDto NestedNullableEntity { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || !(obj is NullableParentEntityDto n))
             {
                 return false;
             }
 
-            if (!(obj is NullableParentDto n))
-            {
-                return false;
-            }
-
-            return Id == n.Id && NullableChild.Equals(n.NullableChild);
+            return Id == n.Id && NestedNullableEntity.Equals(n.NestedNullableEntity);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, NullableChild.GetHashCode());
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, NestedNullableEntity.GetHashCode());
     }
 
-    public class NullableChildDto
+    public class NestedNullableEntityDto
     {
         public int Id { get; set; }
 
@@ -206,12 +167,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is NullableChildDto n))
+            if (obj == null || !(obj is NestedNullableEntityDto n))
             {
                 return false;
             }
@@ -220,10 +176,7 @@ namespace QueryMutator.Tests
                   && (NullableToNotNullable == n.NullableToNotNullable) && (NullableWithValueToNotNullable == n.NullableWithValueToNotNullable);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, NotNullableToNullable, NullableToNullable, NullableToNotNullable, NullableWithValueToNotNullable);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, NotNullableToNullable, NullableToNullable, NullableToNotNullable, NullableWithValueToNotNullable);
     }
 
     public class CollectionParentDto
@@ -234,12 +187,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is CollectionParentDto c))
+            if (obj == null || !(obj is CollectionParentDto c))
             {
                 return false;
             }
@@ -262,13 +210,10 @@ namespace QueryMutator.Tests
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, Collections);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, Collections.GetHashCode());
     }
 
-    public class CollectionParent2Dto
+    public class OtherCollectionParentDto
     {
         public int Id { get; set; }
 
@@ -276,12 +221,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is CollectionParent2Dto c))
+            if (obj == null || !(obj is OtherCollectionParentDto c))
             {
                 return false;
             }
@@ -302,10 +242,7 @@ namespace QueryMutator.Tests
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, Collections);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, Collections.GetHashCode());
     }
 
     public class CollectionDto
@@ -318,12 +255,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            
-            if (!(obj is CollectionDto c))
+            if (obj == null || !(obj is CollectionDto c))
             {
                 return false;
             }
@@ -359,10 +291,7 @@ namespace QueryMutator.Tests
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, CollectionItems, CollectionItemDtos);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, CollectionItemDtos.GetHashCode(), CollectionItems.GetHashCode());
     }
 
     public class CollectionItemDto
@@ -371,12 +300,7 @@ namespace QueryMutator.Tests
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            
-            if (!(obj is CollectionItemDto c))
+            if (obj == null || !(obj is CollectionItemDto c))
             {
                 return false;
             }
@@ -384,65 +308,49 @@ namespace QueryMutator.Tests
             return Id == c.Id;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id);
     }
 
-    public class DependentCollectionParentDto
+    public class DependentNestedCollectionParentDto
     {
         public int Id { get; set; }
 
-        public DependentCollectionDto DependentCollection { get; set; }
+        public DependentNestedCollectionDto DependentNestedCollection { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || !(obj is DependentNestedCollectionParentDto c))
             {
                 return false;
             }
 
-            if (!(obj is DependentCollectionParentDto c))
-            {
-                return false;
-            }
-
-            return Id == c.Id && DependentCollection.Equals(c.DependentCollection);
+            return Id == c.Id && DependentNestedCollection.Equals(c.DependentNestedCollection);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, DependentCollection.GetHashCode());
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, DependentNestedCollection.GetHashCode());
     }
     
-    public class DependentCollectionDto
+    public class DependentNestedCollectionDto
     {
         public int Id { get; set; }
 
-        public IList<DependentCollectionItemDto> DependentCollectionItems { get; set; }
+        public IList<DependentNestedCollectionItemDto> DependentNestedCollectionItems { get; set; }
         
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || !(obj is DependentNestedCollectionDto c))
             {
                 return false;
             }
 
-            if (!(obj is DependentCollectionDto c))
+            if ((Id != c.Id) || (DependentNestedCollectionItems.Count != c.DependentNestedCollectionItems.Count))
             {
                 return false;
             }
 
-            if ((Id != c.Id) || (DependentCollectionItems.Count != c.DependentCollectionItems.Count))
+            for (var i = 0; i < DependentNestedCollectionItems.Count; i++)
             {
-                return false;
-            }
-
-            for (var i = 0; i < DependentCollectionItems.Count; i++)
-            {
-                if (!DependentCollectionItems[i].Equals(c.DependentCollectionItems[i]))
+                if (!DependentNestedCollectionItems[i].Equals(c.DependentNestedCollectionItems[i]))
                 {
                     return false;
                 }
@@ -451,24 +359,16 @@ namespace QueryMutator.Tests
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, DependentCollectionItems);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, DependentNestedCollectionItems.GetHashCode());
     }
 
-    public class DependentCollectionItemDto
+    public class DependentNestedCollectionItemDto
     {
         public int Id { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is DependentCollectionItemDto c))
+            if (obj == null || !(obj is DependentNestedCollectionItemDto c))
             {
                 return false;
             }
@@ -476,67 +376,51 @@ namespace QueryMutator.Tests
             return Id == c.Id;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id);
     }
 
-    public class NewDependentCollectionParentDto
+    public class OtherDependentNestedCollectionParentDto
     {
         public int Id { get; set; }
 
-        public NewDependentCollectionDto NewDependentCollection { get; set; }
+        public OtherDependentNestedCollectionDto DependentNestedCollection { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || !(obj is OtherDependentNestedCollectionParentDto c))
             {
                 return false;
             }
 
-            if (!(obj is NewDependentCollectionParentDto c))
-            {
-                return false;
-            }
-
-            return Id == c.Id && NewDependentCollection.Equals(c.NewDependentCollection);
+            return Id == c.Id && DependentNestedCollection.Equals(c.DependentNestedCollection);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, NewDependentCollection.GetHashCode());
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, DependentNestedCollection.GetHashCode());
     }
 
-    public class NewDependentCollectionDto
+    public class OtherDependentNestedCollectionDto
     {
         public int Id { get; set; }
 
-        public IList<NewDependentCollectionItem> NewDependentCollectionItems { get; set; }
+        public IList<DependentNestedCollectionItem> DependentNestedCollectionItems { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || !(obj is OtherDependentNestedCollectionDto c))
             {
                 return false;
             }
 
-            if (!(obj is NewDependentCollectionDto c))
+            if ((Id != c.Id) || (DependentNestedCollectionItems.Count != c.DependentNestedCollectionItems.Count))
             {
                 return false;
             }
 
-            if ((Id != c.Id) || (NewDependentCollectionItems.Count != c.NewDependentCollectionItems.Count))
+            for (var i = 0; i < DependentNestedCollectionItems.Count; i++)
             {
-                return false;
-            }
-
-            for (var i = 0; i < NewDependentCollectionItems.Count; i++)
-            {
-                var item = NewDependentCollectionItems[i];
-                var other = c.NewDependentCollectionItems[i];
-                if (item.Id != other.Id || item.NewDependentCollectionId != other.NewDependentCollectionId)
+                var item = DependentNestedCollectionItems[i];
+                var other = c.DependentNestedCollectionItems[i];
+                if (item.Id != other.Id || item.DependentNestedCollectionId != other.DependentNestedCollectionId)
                 {
                     return false;
                 }
@@ -545,9 +429,6 @@ namespace QueryMutator.Tests
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, NewDependentCollectionItems);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, DependentNestedCollectionItems.GetHashCode());
     }
 }
