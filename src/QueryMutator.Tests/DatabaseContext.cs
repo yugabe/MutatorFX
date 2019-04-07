@@ -31,6 +31,12 @@ namespace QueryMutator.Tests
 
         public DbSet<DependentCollectionItem> DependentCollectionItems { get; set; }
 
+        public DbSet<NewDependentCollectionParent> NewDependentCollectionParents { get; set; }
+
+        public DbSet<NewDependentCollection> NewDependentCollections { get; set; }
+
+        public DbSet<NewDependentCollectionItem> NewDependentCollectionItems { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -133,6 +139,29 @@ namespace QueryMutator.Tests
             {
                 Id = 2,
                 DependentCollectionId = 1,
+            });
+
+            modelBuilder.Entity<NewDependentCollection>().HasData(new NewDependentCollection
+            {
+                Id = 1,
+            });
+
+            modelBuilder.Entity<NewDependentCollectionParent>().HasData(new NewDependentCollectionParent
+            {
+                Id = 1,
+                NewDependentCollectionId = 1
+            });
+
+            modelBuilder.Entity<NewDependentCollectionItem>().HasData(new NewDependentCollectionItem
+            {
+                Id = 1,
+                NewDependentCollectionId = 1,
+            });
+
+            modelBuilder.Entity<NewDependentCollectionItem>().HasData(new NewDependentCollectionItem
+            {
+                Id = 2,
+                NewDependentCollectionId = 1,
             });
         }
     }

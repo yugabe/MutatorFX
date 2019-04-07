@@ -767,6 +767,44 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
+        public void TestUsingNewNewDependentCollectionMapping()
+        {
+            var options = BuildDatabase(nameof(TestUsingNewNewDependentCollectionMapping));
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<NewDependentCollectionParent, NewDependentCollectionParentDto>();
+            });
+            var mapper = config.CreateMapper();
+            var collectionMapping = mapper.GetMapping<NewDependentCollectionParent, NewDependentCollectionParentDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var collectionParents = context.NewDependentCollectionParents.Select(collectionMapping).ToList();
+
+                Assert.AreEqual(1, collectionParents.Count);
+
+                var result = collectionParents.FirstOrDefault();
+
+                var expected = new NewDependentCollectionParentDto
+                {
+                    Id = 1,
+                    NewDependentCollection = new NewDependentCollectionDto
+                    {
+                        Id = 1,
+                        NewDependentCollectionItems = new List<NewDependentCollectionItem>
+                        {
+                            new NewDependentCollectionItem { Id = 1, NewDependentCollectionId = 1 },
+                            new NewDependentCollectionItem { Id = 2, NewDependentCollectionId = 1 },
+                        }
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
         public void TestUsingCollectionMapping()
         {
             var options = BuildDatabase(nameof(TestUsingCollectionMapping));

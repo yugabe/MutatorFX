@@ -481,4 +481,73 @@ namespace QueryMutator.Tests
             return HashCode.Combine(Id);
         }
     }
+
+    public class NewDependentCollectionParentDto
+    {
+        public int Id { get; set; }
+
+        public NewDependentCollectionDto NewDependentCollection { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (!(obj is NewDependentCollectionParentDto c))
+            {
+                return false;
+            }
+
+            return Id == c.Id && NewDependentCollection.Equals(c.NewDependentCollection);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, NewDependentCollection.GetHashCode());
+        }
+    }
+
+    public class NewDependentCollectionDto
+    {
+        public int Id { get; set; }
+
+        public IList<NewDependentCollectionItem> NewDependentCollectionItems { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (!(obj is NewDependentCollectionDto c))
+            {
+                return false;
+            }
+
+            if ((Id != c.Id) || (NewDependentCollectionItems.Count != c.NewDependentCollectionItems.Count))
+            {
+                return false;
+            }
+
+            for (var i = 0; i < NewDependentCollectionItems.Count; i++)
+            {
+                var item = NewDependentCollectionItems[i];
+                var other = c.NewDependentCollectionItems[i];
+                if (item.Id != other.Id || item.NewDependentCollectionId != other.NewDependentCollectionId)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, NewDependentCollectionItems);
+        }
+    }
 }

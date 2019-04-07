@@ -114,4 +114,27 @@ namespace QueryMutator.Tests
         public int DependentCollectionId { get; set; }
         public DependentCollection DependentCollection { get; set; }
     }
+
+    public class NewDependentCollectionParent
+    {
+        public int Id { get; set; }
+
+        public int NewDependentCollectionId { get; set; }
+        public NewDependentCollection NewDependentCollection { get; set; }
+    }
+
+    public class NewDependentCollection
+    {
+        public int Id { get; set; }
+
+        public ICollection<NewDependentCollectionItem> NewDependentCollectionItems { get; set; }
+    }
+
+    public class NewDependentCollectionItem
+    {
+        public int Id { get; set; }
+
+        public int NewDependentCollectionId { get; set; }
+        public NewDependentCollection NewDependentCollection { get; set; }
+    }
 }

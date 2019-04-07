@@ -25,33 +25,58 @@ namespace QueryMutator.Core
                 var memberBinding = binding as MemberAssignment;
                 if (memberBinding.Expression is MemberExpression memberExpression)
                 {
-                    var body = ReplaceParameterChains(memberExpression, parameter);
-                    bindings.Add(Expression.Bind(memberBinding.Member, body));
+                    bindings.Add(Expression.Bind(memberBinding.Member, ReplacePropertyChains(memberExpression, parameter)));
                 }
                 else if (memberBinding.Expression is MemberInitExpression memberInitExpression)
                 {
-                    var newMemberInitExpression = ReplaceParameters(memberInitExpression, parameter);
-                    bindings.Add(Expression.Bind(memberBinding.Member, newMemberInitExpression));
+                    bindings.Add(Expression.Bind(memberBinding.Member, ReplaceParameters(memberInitExpression, parameter)));
                 }
                 else if (memberBinding.Expression.NodeType == ExpressionType.Coalesce)
                 {
                     var coalesceExpression = memberBinding.Expression as BinaryExpression;
-                    var body = ReplaceParameterChains(coalesceExpression.Left as MemberExpression, parameter);
-                    bindings.Add(Expression.Bind(memberBinding.Member, Expression.Coalesce(body, coalesceExpression.Right)));
+                    coalesceExpression = coalesceExpression.Update(ReplacePropertyChains(coalesceExpression.Left as MemberExpression, parameter), coalesceExpression.Conversion, coalesceExpression.Right);
+                    bindings.Add(Expression.Bind(memberBinding.Member, coalesceExpression));
                 }
                 else if (memberBinding.Expression.NodeType == ExpressionType.Convert)
                 {
                     var convertExpression = memberBinding.Expression as UnaryExpression;
-                    var body = ReplaceParameterChains(convertExpression.Operand as MemberExpression, parameter);
-                    bindings.Add(Expression.Bind(memberBinding.Member, Expression.Convert(body, convertExpression.Type)));
+                    convertExpression = convertExpression.Update(ReplacePropertyChains(convertExpression.Operand as MemberExpression, parameter));
+                    bindings.Add(Expression.Bind(memberBinding.Member, convertExpression));
                 }
-                // TODO handle list member inits (tolist, select + tolist)
+                else if (memberBinding.Expression.NodeType == ExpressionType.Call)
+                {
+                    var methodCallExpression = memberBinding.Expression as MethodCallExpression;
+                    var argument = methodCallExpression.Arguments.FirstOrDefault();
+                    if(argument != null)
+                    {
+                        // In this case the expression is Select() then ToList()
+                        if(argument.NodeType == ExpressionType.Call)
+                        {
+                            var innerMethodCallExpression = argument as MethodCallExpression;
+                            if(innerMethodCallExpression.Arguments.FirstOrDefault() is MemberExpression memberArgument)
+                            {
+                                // Replace the property chains in the first argument and leave the rest
+                                var newArguments = new[] { ReplacePropertyChains(memberArgument, parameter) }.Concat(innerMethodCallExpression.Arguments.Skip(1));
+                                innerMethodCallExpression = innerMethodCallExpression.Update(innerMethodCallExpression.Object, newArguments);
+                                methodCallExpression = methodCallExpression.Update(methodCallExpression.Object, new[] { innerMethodCallExpression });
+                                bindings.Add(Expression.Bind(memberBinding.Member, methodCallExpression));
+                            }
+                        }
+                        // In this case there is only a ToList() call
+                        else if(argument.NodeType == ExpressionType.MemberAccess)
+                        {
+                            var newArguments = new[] { ReplacePropertyChains(argument as MemberExpression, parameter) };
+                            methodCallExpression = methodCallExpression.Update(methodCallExpression.Object, newArguments);
+                            bindings.Add(Expression.Bind(memberBinding.Member, methodCallExpression));
+                        }
+                    }
+                }
             }
 
             return Expression.MemberInit(expression.NewExpression, bindings);
         }
 
-        private Expression ReplaceParameterChains(MemberExpression memberExpression, ParameterExpression parameter)
+        private Expression ReplacePropertyChains(MemberExpression memberExpression, ParameterExpression parameter)
         {
             var properties = new List<PropertyInfo>();
 
