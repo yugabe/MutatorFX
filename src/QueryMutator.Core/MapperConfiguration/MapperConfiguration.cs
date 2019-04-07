@@ -5,7 +5,6 @@ using System.Text;
 
 namespace QueryMutator.Core
 {
-    // TODO multiple mapperconfigurations, single mapper instance?
     public class MapperConfiguration
     {
         private MapperConfigurationExpression Config { get; set; }

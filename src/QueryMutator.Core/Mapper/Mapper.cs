@@ -17,13 +17,27 @@ namespace QueryMutator.Core
         public IMapping<TSource, TTarget> GetMapping<TSource, TTarget>()
         {
             var mapping = Mappings.FirstOrDefault(m => m.SourceType == typeof(TSource) && m.TargetType == typeof(TTarget) && m.ParameterType == null);
-            return mapping.Mapping as Mapping<TSource, TTarget>;
+            if(mapping != null)
+            {
+                return mapping.Mapping as Mapping<TSource, TTarget>;
+            }
+            else
+            {
+                throw new MappingNotFoundException("Specified mapping was not found");
+            }
         }
 
         public IMapping<TSource, TTarget, TParam> GetMapping<TSource, TTarget, TParam>()
         {
             var mapping = Mappings.FirstOrDefault(m => m.SourceType == typeof(TSource) && m.TargetType == typeof(TTarget) && m.ParameterType == typeof(TParam));
-            return mapping.Mapping as Mapping<TSource, TTarget, TParam>;
+            if (mapping != null)
+            {
+                return mapping.Mapping as Mapping<TSource, TTarget, TParam>;
+            }
+            else
+            {
+                throw new MappingNotFoundException("Specified mapping was not found");
+            }
         }
     }
 }

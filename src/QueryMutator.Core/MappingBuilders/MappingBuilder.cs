@@ -64,8 +64,8 @@ namespace QueryMutator.Core
                     var dependentMapping = dependencies.First(m => m.SourceType == listBinding.SourceType && m.TargetType == listBinding.TargetType);
 
                     var property = Expression.Property(SourceParameter, listBinding.SourceMember);
-                    var selectExpression = Expression.Call(typeof(Enumerable), "Select", new Type[] { listBinding.SourceType, listBinding.TargetType }, property, dependentMapping.Mapping.Expression);
-                    var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { listBinding.TargetType }, selectExpression);
+                    var selectExpression = Expression.Call(typeof(Enumerable), nameof(Enumerable.Select), new Type[] { listBinding.SourceType, listBinding.TargetType }, property, dependentMapping.Mapping.Expression);
+                    var expression = Expression.Call(typeof(Enumerable), nameof(Enumerable.ToList), new Type[] { listBinding.TargetType }, selectExpression);
 
                     listBinding.SourceExpression = expression;
                 }
@@ -101,7 +101,20 @@ namespace QueryMutator.Core
                                 TargetMember = targetProperty
                             });
                         }
-                        else if (typeof(ICollection).IsAssignableFrom(sourceProperty.PropertyType))
+                        else if (sourceProperty.PropertyType.IsClass && sourceProperty.PropertyType != typeof(string))
+                        {
+                            AddDependency(sourceProperty.PropertyType, targetProperty.PropertyType);
+
+                            Bindings.Add(new DependentComplexMemberBinding
+                            {
+                                SourceType = sourceProperty.PropertyType,
+                                TargetType = targetProperty.PropertyType,
+                                SourceExpression = null,
+                                SourceMember = sourceProperty,
+                                TargetMember = targetProperty
+                            });
+                        }
+                        else if (sourceProperty.PropertyType.IsGenericType && typeof(ICollection<>).IsAssignableFrom(sourceProperty.PropertyType.GetGenericTypeDefinition()))
                         {
                             var sourceType = sourceProperty.PropertyType.GenericTypeArguments[0];
                             var targetType = targetProperty.PropertyType.GenericTypeArguments[0];
@@ -126,16 +139,19 @@ namespace QueryMutator.Core
 
                             // TODO what if the type argument is another list?....
                         }
-                        else if (sourceProperty.PropertyType.IsClass && sourceProperty.PropertyType != typeof(string))
+                        else if (Nullable.GetUnderlyingType(sourceProperty.PropertyType) != null)
                         {
-                            AddDependency(sourceProperty.PropertyType, targetProperty.PropertyType);
-
-                            Bindings.Add(new DependentComplexMemberBinding
+                            Bindings.Add(new MemberBinding
                             {
-                                SourceType = sourceProperty.PropertyType,
-                                TargetType = targetProperty.PropertyType,
-                                SourceExpression = null,
-                                SourceMember = sourceProperty,
+                                SourceExpression = Expression.Coalesce(Expression.Property(SourceParameter, sourceProperty), Expression.Default(targetProperty.PropertyType)),
+                                TargetMember = targetProperty
+                            });
+                        }
+                        else if (Nullable.GetUnderlyingType(targetProperty.PropertyType) != null)
+                        {
+                            Bindings.Add(new MemberBinding
+                            {
+                                SourceExpression = Expression.Convert(Expression.Property(SourceParameter, sourceProperty), targetProperty.PropertyType),
                                 TargetMember = targetProperty
                             });
                         }
@@ -147,14 +163,14 @@ namespace QueryMutator.Core
             {
                 if (typeof(TSource).GetProperties().Any(p => !Bindings.Any(b => b.TargetMember.Name == p.Name)))
                 {
-                    throw new QueryMutatorValidationException("Not all source properties are mapped!");
+                    throw new MappingValidationException("Not all source properties are mapped!");
                 }
             }
             else if (ValidationMode == ValidationMode.Destination)
             {
                 if (typeof(TTarget).GetProperties().Any(p => !Bindings.Any(b => b.TargetMember.Name == p.Name)))
                 {
-                    throw new QueryMutatorValidationException("Not all destination properties are mapped!");
+                    throw new MappingValidationException("Not all destination properties are mapped!");
                 }
             }
         }
@@ -173,7 +189,7 @@ namespace QueryMutator.Core
 
         private void DefaultListMemberBinding(MemberExpression sourceProperty, MemberInfo targetMember, Type targetMemberType)
         {
-            var expression = Expression.Call(typeof(Enumerable), "ToList", new Type[] { targetMemberType }, sourceProperty);
+            var expression = Expression.Call(typeof(Enumerable), nameof(Enumerable.ToList), new Type[] { targetMemberType }, sourceProperty);
 
             Bindings.Add(new MemberBinding
             {

@@ -27,7 +27,7 @@ namespace QueryMutator.Core
             {
                 if (inProcess)
                 {
-                    throw new QueryMutatorValidationException("Cyclic dependency found.");
+                    throw new MappingValidationException("Cyclic dependency found.");
                 }
             }
             else

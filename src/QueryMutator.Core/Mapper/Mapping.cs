@@ -19,7 +19,7 @@ namespace QueryMutator.Core
     {
         public Expression<Func<TSource, TTarget>> Expression { get; set; }
 
-        LambdaExpression IMapping.Expression => Expression; // TODO is there a better solution?
+        LambdaExpression IMapping.Expression => Expression;
     }
 
     public interface IMapping<TSource, TTarget, TParam>

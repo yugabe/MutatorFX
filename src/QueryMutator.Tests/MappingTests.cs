@@ -15,8 +15,7 @@ namespace QueryMutator.Tests
         public void TestBasicMapping()
         {
             var options = BuildDatabase(nameof(TestBasicMapping));
-
-            // TODO test collection default mapping?
+            
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<Dog, DogDto>();
@@ -64,6 +63,7 @@ namespace QueryMutator.Tests
             {
                 cfg.CreateMapping<Dog, DogDto>(mapping => mapping
                     .IgnoreMember(d => d.Ignored)
+                    .IgnoreMember(d => d.SmallDog)
                 );
             });
             var mapper = config.CreateMapper();
@@ -84,16 +84,7 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = null,
                     Parameterized = 0,
-                    SmallDog = new SmallDogDto
-                    {
-                        Id = 1,
-                        Name = "SmallDog1",
-                        SmallSmallDog = new SmallSmallDogDto
-                        {
-                            Id = 1,
-                            Name = "SmallSmallDog1"
-                        }
-                    }
+                    SmallDog = null
                 };
 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -192,7 +183,35 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(QueryMutatorValidationException))]
+        [ExpectedException(typeof(MappingNotFoundException))]
+        public void TestMappingNotFound()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<SmallDog, SmallDogDto>();
+            });
+            var mapper = config.CreateMapper();
+
+            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingNotFoundException))]
+        public void TestParameterMappingNotFound()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<Dog, DogDto, int>(mapping => mapping
+                    .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p)
+                );
+            });
+            var mapper = config.CreateMapper();
+
+            var dogMapping = mapper.GetMapping<Dog, DogDto, string>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingValidationException))]
         public void TestSourceValidation()
         {
             var config = new MapperConfiguration(cfg =>
@@ -205,7 +224,19 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(QueryMutatorValidationException))]
+        public void TestSourceValidationSuccess()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>(mapping => mapping
+                    .ValidateMapping(ValidationMode.Source)
+                );
+            });
+            config.CreateMapper();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingValidationException))]
         public void TestGlobalSourceValidation()
         {
             var config = new MapperConfiguration(cfg =>
@@ -216,7 +247,7 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(QueryMutatorValidationException))]
+        [ExpectedException(typeof(MappingValidationException))]
         public void TestDestinationValidation()
         {
             var config = new MapperConfiguration(cfg =>
@@ -229,7 +260,19 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(QueryMutatorValidationException))]
+        public void TestDestinationValidationSuccess()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>(mapping => mapping
+                    .ValidateMapping(ValidationMode.Destination)
+                );
+            });
+            config.CreateMapper();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingValidationException))]
         public void TestGlobalDestinationValidation()
         {
             var config = new MapperConfiguration(cfg =>
@@ -268,7 +311,11 @@ namespace QueryMutator.Tests
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
-                    SmallDog = new SmallDogDto { Id = 1, Name = null }
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = null
+                    }
                 };
                 
                 Assert.AreEqual(true, expected.Equals(result));
@@ -276,14 +323,119 @@ namespace QueryMutator.Tests
 
             config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMapping<SmallDog, SmallDogDto>(mapping => mapping
-                    .MapMember(d => d.SmallSmallDog, dd => new SmallSmallDogDto { Id = dd.SmallSmallDog.Id })
+                cfg.CreateMapping<Dog, DogDto>(mapping => mapping
+                    .MapMember(d => d.SmallDog, dd => new SmallDogDto
+                    {
+                        Id = dd.SmallDog.Id,
+                        Name = dd.SmallDog.Name,
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = dd.SmallDog.SmallSmallDog.Id,
+                            Name = dd.SmallDog.SmallSmallDog.Name,
+                        }
+                    })
                 );
 
                 cfg.CreateMapping<Dog, DogDto>();
             });
             mapper = config.CreateMapper();
             dogMapping = mapper.GetMapping<Dog, DogDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var dogs = context.Dogs.Select(dogMapping).ToList();
+
+                Assert.AreEqual(1, dogs.Count);
+
+                var result = dogs.FirstOrDefault();
+
+                var expected = new DogDto
+                {
+                    Id = 1,
+                    Name = "Dog1",
+                    DtoProperty = 0,
+                    Ignored = "Ignore this property!",
+                    Parameterized = 0,
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = "SmallDog1",
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
+        public void TestMapUsing()
+        {
+            var options = BuildDatabase(nameof(TestMapUsing));
+            
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>();
+
+                cfg.CreateMapping<SmallDog, SmallDogDto>(mapping => mapping
+                    .IgnoreMember(d => d.Name)
+                );
+
+                cfg.CreateMapping<Dog, DogDto>();
+            });
+            var mapper = config.CreateMapper();
+            var dogMapping = mapper.GetMapping<Dog, DogDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var dogs = context.Dogs.Select(dogMapping).ToList();
+
+                Assert.AreEqual(1, dogs.Count);
+
+                var result = dogs.FirstOrDefault();
+
+                var expected = new DogDto
+                {
+                    Id = 1,
+                    Name = "Dog1",
+                    DtoProperty = 0,
+                    Ignored = "Ignore this property!",
+                    Parameterized = 0,
+                    SmallDog = new SmallDogDto
+                    {
+                        Id = 1,
+                        Name = null,
+                        SmallSmallDog = new SmallSmallDogDto
+                        {
+                            Id = 1,
+                            Name = "SmallSmallDog1"
+                        }
+                    }
+                };
+                
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+        
+        [TestMethod]
+        public void TestMapUsingChild()
+        {
+            var options = BuildDatabase(nameof(TestMapUsingChild));
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<SmallDog, SmallDogDto>(mapping => mapping
+                    .MapMember(d => d.SmallSmallDog, dd => new SmallSmallDogDto { Id = dd.SmallSmallDog.Id })
+                );
+
+                cfg.CreateMapping<Dog, DogDto>();
+            });
+            var mapper = config.CreateMapper();
+            var dogMapping = mapper.GetMapping<Dog, DogDto>();
 
             using (var context = new DatabaseContext(options))
             {
@@ -317,55 +469,6 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
-        public void TestMapUsing()
-        {
-            var options = BuildDatabase(nameof(TestMapUsing));
-
-            // TODO add some property mapping that actually confirms that its different
-            // from the default mapping
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMapping<SmallSmallDog, SmallSmallDogDto>();
-
-                cfg.CreateMapping<SmallDog, SmallDogDto>();
-
-                cfg.CreateMapping<Dog, DogDto>();
-            });
-            var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<Dog, DogDto>();
-
-            using (var context = new DatabaseContext(options))
-            {
-                var dogs = context.Dogs.Select(dogMapping).ToList();
-
-                Assert.AreEqual(1, dogs.Count);
-
-                var result = dogs.FirstOrDefault();
-
-                var expected = new DogDto
-                {
-                    Id = 1,
-                    Name = "Dog1",
-                    DtoProperty = 0,
-                    Ignored = "Ignore this property!",
-                    Parameterized = 0,
-                    SmallDog = new SmallDogDto
-                    {
-                        Id = 1,
-                        Name = "SmallDog1",
-                        SmallSmallDog = new SmallSmallDogDto
-                        {
-                            Id = 1,
-                            Name = "SmallSmallDog1"
-                        }
-                    }
-                };
-                
-                Assert.AreEqual(true, expected.Equals(result));
-            }
-        }
-
-        [TestMethod]
         public void TestMapWithParameter()
         {
             var options = BuildDatabase(nameof(TestMapWithParameter));
@@ -375,12 +478,12 @@ namespace QueryMutator.Tests
                 cfg.CreateMapping<Dog, DogDto, int>(mapping => mapping
                     .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p)
                     .IgnoreMember(d => d.Ignored)
-                    );
+                );
 
                 cfg.CreateMapping<Dog, DogDto, DogMapperParamaters>(mapping => mapping
                     .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p.IntProperty)
                     .MapMemberWithParameter(d => d.Name, p => dd => dd.Name + p.StringProperty)
-                    );
+                );
             });
             var mapper = config.CreateMapper();
             var dogMappingWithParameter = mapper.GetMapping<Dog, DogDto, int>();
@@ -457,7 +560,6 @@ namespace QueryMutator.Tests
 
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMapping<SmallDog, SmallDogDto>();
                 cfg.CreateMapping<Dog, DogDto>();
             });
             var mapper = config.CreateMapper();
@@ -505,64 +607,7 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
-
-        //[TestMethod]
-        //public void TestAnonymousType()
-        //{
-        //    var options = BuildDatabase(nameof(TestAnonymousType));
-
-        //    var config = new MapperConfiguration(cfg =>
-        //    {
-        //        cfg.CreateMapping<SmallDog, SmallDogDto>();
-        //        cfg.CreateMapping<Dog, DogDto>();
-        //    });
-        //    var mapper = config.CreateMapper();
-        //    var dogMapping = mapper.GetMapping<Dog, DogDto>();
-
-        //    using (var context = new DatabaseContext(options))
-        //    {
-        //        var joined = context.Dogs
-        //            .Select(d => new
-        //            {
-        //                d.Id,
-        //                d.Name,
-        //                d.EntityProperty,
-        //                d.Ignored,
-        //                SmallDog = new
-        //                {
-        //                    d.SmallDog.Id,
-        //                    d.SmallDog.Name
-        //                }
-        //            })
-        //            .Select(dogMapping).ToList();
-
-        //        Assert.AreEqual(1, joined.Count);
-
-        //        var result = joined.FirstOrDefault();
-
-        //        var expected = new DogDto
-        //        {
-        //            Id = 1,
-        //            Name = "Dog1",
-        //            DtoProperty = 0,
-        //            Ignored = "Ignore this property!",
-        //            Parameterized = 0,
-        //            SmallDog = new SmallDogDto
-        //            {
-        //                Id = 1,
-        //                Name = "SmallDog1",
-        //                SmallSmallDog = new SmallSmallDogDto
-        //                {
-        //                    Id = 1,
-        //                    Name = "SmallSmallDog1"
-        //                }
-        //            }
-        //        };
-                
-        //        Assert.AreEqual(true, expected.Equals(result));
-        //    }
-        //}
-
+        
         [TestMethod]
         public void TestNullableMapping()
         {
@@ -605,6 +650,43 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
+        public void TestUsingNullableMapping()
+        {
+            var options = BuildDatabase(nameof(TestUsingNullableMapping));
+            
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<NullableParent, NullableParentDto>();
+            });
+            var mapper = config.CreateMapper();
+            var nullableMapping = mapper.GetMapping<NullableParent, NullableParentDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var nullableDtos = context.NullableParents.Select(nullableMapping).ToList();
+
+                Assert.AreEqual(1, nullableDtos.Count);
+
+                var result = nullableDtos.FirstOrDefault();
+
+                var expected = new NullableParentDto
+                {
+                    Id = 1,
+                    NullableChild = new NullableChildDto
+                    {
+                        Id = 1,
+                        NotNullableToNullable = 10,
+                        NullableToNullable = null,
+                        NullableToNotNullable = 0,
+                        NullableWithValueToNotNullable = 20
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
         public void TestCollectionMapping()
         {
             var options = BuildDatabase(nameof(TestCollectionMapping));
@@ -620,13 +702,11 @@ namespace QueryMutator.Tests
             });
             var mapper = config.CreateMapper();
             var collectionMapping = mapper.GetMapping<Collection, CollectionDto>();
-            
+
             using (var context = new DatabaseContext(options))
             {
                 var collections = context.Collections.Select(collectionMapping).ToList();
-
-                Assert.AreEqual(1, collections.Count);
-
+                
                 var result = collections.FirstOrDefault();
 
                 var expected = new CollectionDto
@@ -634,13 +714,109 @@ namespace QueryMutator.Tests
                     Id = 1,
                     CollectionItemDtos = new List<CollectionItemDto>
                     {
-                        new CollectionItemDto { Id = 0 },
                         new CollectionItemDto { Id = 1 },
+                        new CollectionItemDto { Id = 2 },
                     },
                     CollectionItems = new List<CollectionItem>
                     {
-                        new CollectionItem { Id = 0 },
-                        new CollectionItem { Id = 1 },
+                        new CollectionItem { Id = 1, CollectionId = 1 },
+                        new CollectionItem { Id = 2, CollectionId = 1 },
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+        
+        [TestMethod]
+        public void TestUsingDependentCollectionMapping()
+        {
+            var options = BuildDatabase(nameof(TestUsingDependentCollectionMapping));
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<DependentCollectionParent, DependentCollectionParentDto>();
+            });
+            var mapper = config.CreateMapper();
+            var collectionMapping = mapper.GetMapping<DependentCollectionParent, DependentCollectionParentDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var collectionParents = context.DependentCollectionParents.Select(collectionMapping).ToList();
+
+                Assert.AreEqual(1, collectionParents.Count);
+
+                var result = collectionParents.FirstOrDefault();
+
+                var expected = new DependentCollectionParentDto
+                {
+                    Id = 1,
+                    DependentCollection = new DependentCollectionDto
+                    {
+                        Id = 1,
+                        DependentCollectionItems = new List<DependentCollectionItemDto>
+                        {
+                            new DependentCollectionItemDto { Id = 1 },
+                            new DependentCollectionItemDto { Id = 2 },
+                        }
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
+        public void TestUsingCollectionMapping()
+        {
+            var options = BuildDatabase(nameof(TestUsingCollectionMapping));
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<CollectionParent, CollectionParentDto>();
+
+                cfg.CreateMapping<CollectionParent, CollectionParent2Dto>();
+            });
+            var mapper = config.CreateMapper();
+            var collectionMapping = mapper.GetMapping<CollectionParent, CollectionParentDto>();
+            var collectionMapping2 = mapper.GetMapping<CollectionParent, CollectionParent2Dto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var collectionParents = context.CollectionParents.Select(collectionMapping).ToList();
+
+                Assert.AreEqual(1, collectionParents.Count);
+
+                var result = collectionParents.FirstOrDefault();
+
+                var expected = new CollectionParentDto
+                {
+                    Id = 1,
+                    Collections = new List<Collection>
+                    {
+                        new Collection { Id = 1, CollectionParentId = 1 },
+                        new Collection { Id = 2, CollectionParentId = 1 },
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+
+            using (var context = new DatabaseContext(options))
+            {
+                var collectionParents = context.CollectionParents.Select(collectionMapping2).ToList();
+
+                Assert.AreEqual(1, collectionParents.Count);
+
+                var result = collectionParents.FirstOrDefault();
+
+                var expected = new CollectionParent2Dto
+                {
+                    Id = 1,
+                    Collections = new List<CollectionDto>
+                    {
+                        new CollectionDto { Id = 1 },
+                        new CollectionDto { Id = 2 },
                     }
                 };
 

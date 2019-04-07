@@ -15,9 +15,21 @@ namespace QueryMutator.Tests
 
         public DbSet<NullableEntity> NullableEntities { get; set; }
 
+        public DbSet<NullableParent> NullableParents { get; set; }
+
+        public DbSet<NullableChild> NullableChildren { get; set; }
+
+        public DbSet<CollectionParent> CollectionParents { get; set; }
+
         public DbSet<Collection> Collections { get; set; }
 
         public DbSet<CollectionItem> CollectionItems { get; set; }
+
+        public DbSet<DependentCollectionParent> DependentCollectionParents { get; set; }
+
+        public DbSet<DependentCollection> DependentCollections { get; set; }
+
+        public DbSet<DependentCollectionItem> DependentCollectionItems { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -55,10 +67,37 @@ namespace QueryMutator.Tests
                 NullablePropertyWithValue = 20,
                 NotNullableProperty = 10
             });
+            
+            modelBuilder.Entity<NullableChild>().HasData(new NullableChild
+            {
+                Id = 1,
+                NotNullableToNullable = 10,
+                NullableToNullable = null,
+                NullableToNotNullable = null,
+                NullableWithValueToNotNullable = 20
+            });
+
+            modelBuilder.Entity<NullableParent>().HasData(new NullableParent
+            {
+                Id = 1,
+                NullableChildId = 1
+            });
+
+            modelBuilder.Entity<CollectionParent>().HasData(new CollectionParent
+            {
+                Id = 1
+            });
 
             modelBuilder.Entity<Collection>().HasData(new Collection
             {
-                Id = 1
+                Id = 1,
+                CollectionParentId = 1,
+            });
+
+            modelBuilder.Entity<Collection>().HasData(new Collection
+            {
+                Id = 2,
+                CollectionParentId = 1,
             });
 
             modelBuilder.Entity<CollectionItem>().HasData(new CollectionItem
@@ -71,6 +110,29 @@ namespace QueryMutator.Tests
             {
                 Id = 2,
                 CollectionId = 1,
+            });
+
+            modelBuilder.Entity<DependentCollection>().HasData(new DependentCollection
+            {
+                Id = 1,
+            });
+
+            modelBuilder.Entity<DependentCollectionParent>().HasData(new DependentCollectionParent
+            {
+                Id = 1,
+                DependentCollectionId = 1
+            });
+
+            modelBuilder.Entity<DependentCollectionItem>().HasData(new DependentCollectionItem
+            {
+                Id = 1,
+                DependentCollectionId = 1,
+            });
+
+            modelBuilder.Entity<DependentCollectionItem>().HasData(new DependentCollectionItem
+            {
+                Id = 2,
+                DependentCollectionId = 1,
             });
         }
     }
