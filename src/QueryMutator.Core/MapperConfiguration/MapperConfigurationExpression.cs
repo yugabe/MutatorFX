@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QueryMutator.Core
 {
@@ -22,7 +23,10 @@ namespace QueryMutator.Core
 
         public void CreateMapping<TSource, TTarget>()
         {
-            // TODO throw if already exists
+            if (Builders.Any(b => b.SourceType == typeof(TSource) && b.TargetType == typeof(TTarget)))
+            {
+                throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
+            }
 
             var builder = new MappingBuilder<TSource, TTarget>(this);
             builder.CreateDefaultBindings();
@@ -32,7 +36,10 @@ namespace QueryMutator.Core
 
         public void CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory)
         {
-            // TODO throw if already exists
+            if (Builders.Any(b => b.SourceType == typeof(TSource) && b.TargetType == typeof(TTarget)))
+            {
+                throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
+            }
 
             var builder = new MappingBuilder<TSource, TTarget>(this);
             mappingFactory(builder);
@@ -43,7 +50,10 @@ namespace QueryMutator.Core
 
         public void CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory)
         {
-            // TODO throw if already exists
+            if (ParametrizedBuilders.Any(b => b.SourceType == typeof(TSource) && b.TargetType == typeof(TTarget) && b.ParameterType == typeof(TParam)))
+            {
+                throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
+            }
 
             var builder = new MappingBuilder<TSource, TTarget, TParam>(this);
             mappingFactory(builder);

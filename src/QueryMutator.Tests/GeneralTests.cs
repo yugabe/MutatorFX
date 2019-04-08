@@ -232,8 +232,6 @@ namespace QueryMutator.Tests
                         }
                     })
                 );
-
-                cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             mapper = config.CreateMapper();
             dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
@@ -589,6 +587,67 @@ namespace QueryMutator.Tests
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             }, new MapperConfigurationOptions { ValidationMode = ValidationMode.Destination });
+            config.CreateMapper();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingAlreadyExistsException))]
+        public void MappingAlreadyExists()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<ParentEntity, ParentEntityDto>();
+
+                cfg.CreateMapping<ParentEntity, ParentEntityDto>();
+            });
+            config.CreateMapper();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingAlreadyExistsException))]
+        public void MappingWithActionAlreadyExists()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<ParentEntity, ParentEntityDto>();
+
+                cfg.CreateMapping<ParentEntity, ParentEntityDto>(mapping => mapping
+                    .MapMember(d => d.DtoProperty, dd => dd.EntityProperty)
+                );
+            });
+            config.CreateMapper();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingAlreadyExistsException))]
+        public void MappingWithParameterAlreadyExists()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<ParentEntity, ParentEntityDto, int>(mapping => mapping
+                    .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p)
+                );
+
+                cfg.CreateMapping<ParentEntity, ParentEntityDto, int>(mapping => mapping
+                    .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p)
+                );
+            });
+            config.CreateMapper();
+        }
+
+        [TestMethod]
+        public void MappingWithParameterDoesNotExists()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<ParentEntity, ParentEntityDto, int>(mapping => mapping
+                    .MapMemberWithParameter(d => d.Parameterized, p => dd => dd.Id * p)
+                );
+
+                cfg.CreateMapping<ParentEntity, ParentEntityDto, string>(mapping => mapping
+                    .MapMemberWithParameter(d => d.Name, p => dd => dd.Name + p)
+                );
+            });
             config.CreateMapper();
         }
     }
