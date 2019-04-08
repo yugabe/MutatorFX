@@ -18,15 +18,15 @@ namespace QueryMutator.Tests
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -63,15 +63,15 @@ namespace QueryMutator.Tests
                 );
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -109,15 +109,15 @@ namespace QueryMutator.Tests
                 );
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -146,15 +146,15 @@ namespace QueryMutator.Tests
                 );
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -191,15 +191,15 @@ namespace QueryMutator.Tests
                 );
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -234,15 +234,15 @@ namespace QueryMutator.Tests
                 );
             });
             mapper = config.CreateMapper();
-            dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -286,9 +286,9 @@ namespace QueryMutator.Tests
 
             using (var context = new DatabaseContext(options))
             {
-                var collections = context.Collections.Select(collectionMapping).ToList();
+                var collectionDtos = context.Collections.Select(collectionMapping).ToList();
 
-                var result = collections.FirstOrDefault();
+                var result = collectionDtos.FirstOrDefault();
 
                 var expected = new CollectionDto
                 {
@@ -327,17 +327,17 @@ namespace QueryMutator.Tests
                 );
             });
             var mapper = config.CreateMapper();
-            var dogMappingWithParameter = mapper.GetMapping<ParentEntity, ParentEntityDto, int>();
-            var dogMappingWithParameters = mapper.GetMapping<ParentEntity, ParentEntityDto, ParentEntityParamaters>();
+            var parentMappingWithParameter = mapper.GetMapping<ParentEntity, ParentEntityDto, int>();
+            var parentMappingWithParameters = mapper.GetMapping<ParentEntity, ParentEntityDto, ParentEntityParamaters>();
 
             using (var context = new DatabaseContext(options))
             {
                 var param = 5;
-                var dogs = context.ParentEntities.Select(dogMappingWithParameter, param).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMappingWithParameter, param).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -365,11 +365,11 @@ namespace QueryMutator.Tests
                     IntProperty = 10,
                     StringProperty = "_suffix"
                 };
-                dogs = context.ParentEntities.Select(dogMappingWithParameters, @params).ToList();
+                parentDtos = context.ParentEntities.Select(parentMappingWithParameters, @params).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                result = dogs.FirstOrDefault();
+                result = parentDtos.FirstOrDefault();
 
                 expected = new ParentEntityDto
                 {
@@ -404,11 +404,11 @@ namespace QueryMutator.Tests
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var joined = context.ParentEntities
+                var parentDtos = context.ParentEntities
                     .Join(context.NestedEntities,
                         d => d.NestedEntityId,
                         s => s.Id,
@@ -420,11 +420,11 @@ namespace QueryMutator.Tests
                             Ignored = d.Ignored,
                             NestedEntity = s
                         })
-                    .Select(dogMapping).ToList();
+                    .Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, joined.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = joined.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -491,6 +491,33 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
+        public void AttributeMapping()
+        {
+            var options = DatabaseHelper.GetDatabaseOptions(nameof(AttributeMapping));
+            
+            var config = new MapperConfiguration(cfg => { }, new MapperConfigurationOptions { UseAttributeMapping = true });
+            var mapper = config.CreateMapper();
+            var attributeMapping = mapper.GetMapping<AttributeEntity, AttributeEntityDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var attributeDtos = context.AttributeEntities.Select(attributeMapping).ToList();
+
+                Assert.AreEqual(1, attributeDtos.Count);
+
+                var result = attributeDtos.FirstOrDefault();
+
+                var expected = new AttributeEntityDto
+                {
+                    Id = 1,
+                    Name = "AttributeEntity1"
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(MappingNotFoundException))]
         public void MappingNotFound()
         {
@@ -500,7 +527,7 @@ namespace QueryMutator.Tests
             });
             var mapper = config.CreateMapper();
 
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
         }
 
         [TestMethod]
@@ -515,7 +542,17 @@ namespace QueryMutator.Tests
             });
             var mapper = config.CreateMapper();
 
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto, string>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto, string>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingNotFoundException))]
+        public void AttributeMappingNotEnabled()
+        {
+            var config = new MapperConfiguration(cfg => { });
+            var mapper = config.CreateMapper();
+
+            var parentMapping = mapper.GetMapping<AttributeEntity, AttributeEntityDto>();
         }
 
         [TestMethod]
@@ -633,6 +670,17 @@ namespace QueryMutator.Tests
                 );
             });
             config.CreateMapper();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MappingAlreadyExistsException))]
+        public void AttributeMappingAlreadyExists()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<AttributeEntity, AttributeEntityDto>();
+            }, new MapperConfigurationOptions { UseAttributeMapping = true });
+            var mapper = config.CreateMapper();
         }
 
         [TestMethod]

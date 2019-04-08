@@ -24,15 +24,15 @@ namespace QueryMutator.Tests
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -71,15 +71,15 @@ namespace QueryMutator.Tests
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             var mapper = config.CreateMapper();
-            var dogMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
+            var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
             using (var context = new DatabaseContext(options))
             {
-                var dogs = context.ParentEntities.Select(dogMapping).ToList();
+                var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
-                Assert.AreEqual(1, dogs.Count);
+                Assert.AreEqual(1, parentDtos.Count);
 
-                var result = dogs.FirstOrDefault();
+                var result = parentDtos.FirstOrDefault();
 
                 var expected = new ParentEntityDto
                 {
@@ -154,7 +154,7 @@ namespace QueryMutator.Tests
             });
             var mapper = config.CreateMapper();
             var collectionMapping = mapper.GetMapping<CollectionParent, CollectionParentDto>();
-            var collectionMapping2 = mapper.GetMapping<CollectionParent, OtherCollectionParentDto>();
+            var otherCollectionMapping = mapper.GetMapping<CollectionParent, OtherCollectionParentDto>();
 
             using (var context = new DatabaseContext(options))
             {
@@ -179,7 +179,7 @@ namespace QueryMutator.Tests
 
             using (var context = new DatabaseContext(options))
             {
-                var collectionParents = context.CollectionParents.Select(collectionMapping2).ToList();
+                var collectionParents = context.CollectionParents.Select(otherCollectionMapping).ToList();
 
                 Assert.AreEqual(1, collectionParents.Count);
 
@@ -212,7 +212,7 @@ namespace QueryMutator.Tests
             });
             var mapper = config.CreateMapper();
             var collectionMapping = mapper.GetMapping<DependentNestedCollectionParent, DependentNestedCollectionParentDto>();
-            var collectionMapping2 = mapper.GetMapping<DependentNestedCollectionParent, OtherDependentNestedCollectionParentDto>();
+            var otherCollectionMapping = mapper.GetMapping<DependentNestedCollectionParent, OtherDependentNestedCollectionParentDto>();
 
             using (var context = new DatabaseContext(options))
             {
@@ -241,7 +241,7 @@ namespace QueryMutator.Tests
 
             using (var context = new DatabaseContext(options))
             {
-                var collectionParents = context.DependentNestedCollectionParents.Select(collectionMapping2).ToList();
+                var collectionParents = context.DependentNestedCollectionParents.Select(otherCollectionMapping).ToList();
 
                 Assert.AreEqual(1, collectionParents.Count);
 

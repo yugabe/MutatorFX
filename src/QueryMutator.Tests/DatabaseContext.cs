@@ -30,7 +30,9 @@ namespace QueryMutator.Tests
         public DbSet<DependentNestedCollection> DependentNestedCollections { get; set; }
 
         public DbSet<DependentNestedCollectionItem> DependentNestedCollectionItems { get; set; }
-        
+
+        public DbSet<AttributeEntity> AttributeEntities { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -133,6 +135,12 @@ namespace QueryMutator.Tests
             {
                 Id = 2,
                 DependentNestedCollectionId = 1,
+            });
+
+            modelBuilder.Entity<AttributeEntity>().HasData(new AttributeEntity
+            {
+                Id = 1,
+                Name = "AttributeEntity1",
             });
         }
     }

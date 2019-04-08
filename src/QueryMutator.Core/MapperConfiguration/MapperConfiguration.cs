@@ -9,6 +9,8 @@ namespace QueryMutator.Core
     {
         private MapperConfigurationExpression Config { get; set; }
 
+        private bool UseAttributeMapping { get; set; }
+
         public MapperConfiguration(Action<IMapperConfigurationExpression> expression, MapperConfigurationOptions options = null)
         {
             Config = new MapperConfigurationExpression
@@ -16,11 +18,18 @@ namespace QueryMutator.Core
                 ValidationMode = options?.ValidationMode ?? ValidationMode.None
             };
 
+            UseAttributeMapping = options?.UseAttributeMapping ?? false;
+
             expression(Config);
         }
 
         public IMapper CreateMapper()
         {
+            if (UseAttributeMapping)
+            {
+                CreateAttributeBuilders();
+            }
+
             var comparer = EqualityComparer<MappingBuilderBase>.Default;
 
             // Check for circular dependency
@@ -73,6 +82,34 @@ namespace QueryMutator.Core
             };
         }
 
+        private void CreateAttributeBuilders()
+        {
+            var definingAssemblyName = typeof(MapFromAttribute).Assembly.GetName().Name;
+
+            // Check assemblies that aren't system dlls and reference this assembly
+            // Note: parallel query can be implemented if this is slow
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.GlobalAssemblyCache && a.GetReferencedAssemblies().Any(r => r.Name == definingAssemblyName)))
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    var attribute = type.GetCustomAttributes(typeof(MapFromAttribute), false).FirstOrDefault();
+                    if (attribute != null)
+                    {
+                        var sourceType = (attribute as MapFromAttribute).SourceType;
+                        if (Config.Builders.Any(b => b.SourceType == sourceType && b.TargetType == type))
+                        {
+                            throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
+                        }
+
+                        var builder = CreateMappingBuilder(sourceType, type);
+
+                        Config.Builders.Add(builder);
+                    }
+                }
+            }
+        }
+
         private void CreateDefaultBuilders()
         {
             var comparer = EqualityComparer<MappingBuilderBase>.Default;
@@ -85,13 +122,9 @@ namespace QueryMutator.Core
 
             foreach (var defaultBuilder in defaultBuilders)
             {
-                var builderType = typeof(MappingBuilder<,>).MakeGenericType(new Type[] { defaultBuilder.SourceType, defaultBuilder.TargetType });
-                var createDefaultBindingsMethod = builderType.GetMethod("CreateDefaultBindings");
+                var builder = CreateMappingBuilder(defaultBuilder.SourceType, defaultBuilder.TargetType);
 
-                var builder = Activator.CreateInstance(builderType, new object[] { Config });
-                createDefaultBindingsMethod.Invoke(builder, null);
-
-                Config.Builders.Add(builder as MappingBuilderBase);
+                Config.Builders.Add(builder);
 
                 Config.DefaultBuilders.Remove(defaultBuilder);
 
@@ -100,7 +133,7 @@ namespace QueryMutator.Core
                 foreach (var dependentBuilder in dependentBuilders)
                 {
                     var index = dependentBuilder.Dependencies.IndexOf(dependentBuilder.Dependencies.First(d => d.Equals(defaultBuilder)));
-                    dependentBuilder.Dependencies[index] = builder as MappingBuilderBase;
+                    dependentBuilder.Dependencies[index] = builder;
                 }
             }
 
@@ -111,6 +144,17 @@ namespace QueryMutator.Core
             {
                 CreateDefaultBuilders();
             }
+        }
+
+        private MappingBuilderBase CreateMappingBuilder(Type sourceType, Type targetType)
+        {
+            var builderType = typeof(MappingBuilder<,>).MakeGenericType(new Type[] { sourceType, targetType });
+            var createDefaultBindingsMethod = builderType.GetMethod("CreateDefaultBindings");
+
+            var builder = Activator.CreateInstance(builderType, new object[] { Config });
+            createDefaultBindingsMethod.Invoke(builder, null);
+
+            return builder as MappingBuilderBase;
         }
     }
 }

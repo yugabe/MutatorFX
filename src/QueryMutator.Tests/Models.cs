@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QueryMutator.Core;
+using System;
 using System.Collections.Generic;
 
 namespace QueryMutator.Tests
@@ -80,10 +81,7 @@ namespace QueryMutator.Tests
             return true;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, Name);
-        }
+        public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
     public class NestedNestedEntityDto
@@ -431,4 +429,25 @@ namespace QueryMutator.Tests
 
         public override int GetHashCode() => HashCode.Combine(Id, DependentNestedCollectionItems.GetHashCode());
     }
+
+    [MapFrom(typeof(AttributeEntity))]
+    public class AttributeEntityDto
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is AttributeEntityDto d))
+            {
+                return false;
+            }
+            
+            return Id == d.Id && Name == d.Name;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id, Name);
+    }
+
 }

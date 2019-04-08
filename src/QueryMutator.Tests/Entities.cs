@@ -114,4 +114,11 @@ namespace QueryMutator.Tests
         public int DependentNestedCollectionId { get; set; }
         public DependentNestedCollection DependentNestedCollection { get; set; }
     }
+
+    public class AttributeEntity
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+    }
 }
