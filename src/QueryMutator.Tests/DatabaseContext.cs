@@ -33,6 +33,12 @@ namespace QueryMutator.Tests
 
         public DbSet<AttributeEntity> AttributeEntities { get; set; }
 
+        public DbSet<FlattenedParent> FlattenedParents { get; set; }
+
+        public DbSet<FlattenedChild> FlattenedChildren { get; set; }
+
+        public DbSet<FlattenedChildChild> FlattenedChildChildren { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -43,7 +49,7 @@ namespace QueryMutator.Tests
             modelBuilder.Entity<ParentEntity>().HasData(new ParentEntity
             {
                 Id = 1,
-                Name = "Entity1",
+                Name = "Entity",
                 EntityProperty = 5,
                 Ignored = "Ignore this property!",
                 NestedEntityId = 1
@@ -52,14 +58,14 @@ namespace QueryMutator.Tests
             modelBuilder.Entity<NestedEntity>().HasData(new NestedEntity
             {
                 Id = 1,
-                Name ="NestedEntity1",
+                Name ="NestedEntity",
                 NestedNestedEntityId = 1
             });
 
             modelBuilder.Entity<NestedNestedEntity>().HasData(new NestedEntity
             {
                 Id = 1,
-                Name = "NestedNestedEntity1"
+                Name = "NestedNestedEntity"
             });
 
             modelBuilder.Entity<NullableEntity>().HasData(new NullableEntity
@@ -140,7 +146,25 @@ namespace QueryMutator.Tests
             modelBuilder.Entity<AttributeEntity>().HasData(new AttributeEntity
             {
                 Id = 1,
-                Name = "AttributeEntity1",
+                Name = "AttributeEntity",
+            });
+
+            modelBuilder.Entity<FlattenedChildChild>().HasData(new FlattenedChildChild
+            {
+                Id = 1,
+                Name = "FlattenedChildChild"
+            });
+
+            modelBuilder.Entity<FlattenedChild>().HasData(new FlattenedChild
+            {
+                Id = 1,
+                ChildId = 1
+            });
+
+            modelBuilder.Entity<FlattenedParent>().HasData(new FlattenedParent
+            {
+                Id = 1,
+                ChildId = 1
             });
         }
     }

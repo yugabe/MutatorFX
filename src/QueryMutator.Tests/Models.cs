@@ -450,4 +450,23 @@ namespace QueryMutator.Tests
         public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
+    public class FlattenedParentDto
+    {
+        public int Id { get; set; }
+
+        public string ChildChildName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is FlattenedParentDto c))
+            {
+                return false;
+            }
+
+            return Id == c.Id && ChildChildName == c.ChildChildName;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id, ChildChildName);
+    }
+
 }

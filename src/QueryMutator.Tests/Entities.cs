@@ -121,4 +121,27 @@ namespace QueryMutator.Tests
 
         public string Name { get; set; }
     }
+
+    public class FlattenedParent
+    {
+        public int Id { get; set; }
+
+        public int ChildId { get; set; }
+        public FlattenedChild Child { get; set; }
+    }
+
+    public class FlattenedChild
+    {
+        public int Id { get; set; }
+        
+        public int ChildId { get; set; }
+        public FlattenedChildChild Child { get; set; }
+    }
+
+    public class FlattenedChildChild
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+    }
 }

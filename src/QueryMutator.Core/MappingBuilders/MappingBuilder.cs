@@ -156,6 +156,11 @@ namespace QueryMutator.Core
                             });
                         }
                     }
+                    else
+                    {
+                        // If flattened properties exist, map them (e.g. ChildName -> Child.Name)
+                        CheckPropertyFlattening(sourceProperties, targetProperty, targetProperty.Name, SourceParameter);
+                    }
                 }
             }
 
@@ -171,6 +176,30 @@ namespace QueryMutator.Core
                 if (typeof(TTarget).GetProperties().Any(p => !Bindings.Any(b => b.TargetMember.Name == p.Name)))
                 {
                     throw new MappingValidationException("Not all destination properties are mapped!");
+                }
+            }
+        }
+
+        private void CheckPropertyFlattening(IEnumerable<PropertyInfo> sourceProperties, PropertyInfo targetProperty, string currentName, Expression propertyChain)
+        {
+            if (sourceProperties.Any(p => p.Name == currentName))
+            {
+                var sourceProperty = sourceProperties.FirstOrDefault(p => p.Name == currentName && p.PropertyType == targetProperty.PropertyType);
+                if(sourceProperty != null)
+                {
+                    Bindings.Add(new MemberBinding
+                    {
+                        SourceExpression = Expression.Property(propertyChain, sourceProperty),
+                        TargetMember = targetProperty
+                    });
+                }
+            }
+            else if (sourceProperties.Any(p => currentName.StartsWith(p.Name)))
+            {
+                foreach (var property in sourceProperties.Where(p => currentName.StartsWith(p.Name)))
+                {
+                    var newName = currentName.Substring(property.Name.Length);
+                    CheckPropertyFlattening(property.PropertyType.GetProperties(), targetProperty, newName, Expression.Property(propertyChain, property));
                 }
             }
         }

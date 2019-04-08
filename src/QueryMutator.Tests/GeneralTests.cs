@@ -31,18 +31,18 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -76,18 +76,18 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 5,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -122,7 +122,7 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = null,
                     Parameterized = 0,
@@ -159,18 +159,18 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = constant,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -204,7 +204,7 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
@@ -247,18 +247,18 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -342,18 +342,18 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = null,
                     Parameterized = 1 * param,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -374,18 +374,18 @@ namespace QueryMutator.Tests
                 expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1" + @params.StringProperty,
+                    Name = "Entity" + @params.StringProperty,
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 1 * @params.IntProperty,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -429,18 +429,18 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -494,7 +494,7 @@ namespace QueryMutator.Tests
         public void AttributeMapping()
         {
             var options = DatabaseHelper.GetDatabaseOptions(nameof(AttributeMapping));
-            
+
             var config = new MapperConfiguration(cfg => { }, new MapperConfigurationOptions { UseAttributeMapping = true });
             var mapper = config.CreateMapper();
             var attributeMapping = mapper.GetMapping<AttributeEntity, AttributeEntityDto>();
@@ -510,7 +510,37 @@ namespace QueryMutator.Tests
                 var expected = new AttributeEntityDto
                 {
                     Id = 1,
-                    Name = "AttributeEntity1"
+                    Name = "AttributeEntity"
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
+        public void PropertyFlattening()
+        {
+            var options = DatabaseHelper.GetDatabaseOptions(nameof(PropertyFlattening));
+
+            var config = new MapperConfiguration(cfg => 
+            {
+                cfg.CreateMapping<FlattenedParent, FlattenedParentDto>();
+            });
+            var mapper = config.CreateMapper();
+            var flattenedMapping = mapper.GetMapping<FlattenedParent, FlattenedParentDto>();
+
+            using (var context = new DatabaseContext(options))
+            {
+                var flattenedDtos = context.FlattenedParents.Select(flattenedMapping).ToList();
+
+                Assert.AreEqual(1, flattenedDtos.Count);
+
+                var result = flattenedDtos.FirstOrDefault();
+
+                var expected = new FlattenedParentDto
+                {
+                    Id = 1,
+                    ChildChildName = "FlattenedChildChild"
                 };
 
                 Assert.AreEqual(true, expected.Equals(result));

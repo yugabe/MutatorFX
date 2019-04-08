@@ -37,7 +37,7 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
@@ -48,7 +48,7 @@ namespace QueryMutator.Tests
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
-                            Name = "NestedNestedEntity1"
+                            Name = "NestedNestedEntity"
                         }
                     }
                 };
@@ -84,14 +84,14 @@ namespace QueryMutator.Tests
                 var expected = new ParentEntityDto
                 {
                     Id = 1,
-                    Name = "Entity1",
+                    Name = "Entity",
                     DtoProperty = 0,
                     Ignored = "Ignore this property!",
                     Parameterized = 0,
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity1",
+                        Name ="NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
