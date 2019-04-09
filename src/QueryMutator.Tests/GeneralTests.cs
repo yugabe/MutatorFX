@@ -8,11 +8,15 @@ namespace QueryMutator.Tests
     [TestClass]
     public class GeneralTests
     {
+        [ClassInitialize]
+        public static void CreateDatabase(TestContext context)
+        {
+            DatabaseHelper.CreateDatabase("QMTESTDB");
+        }
+
         [TestMethod]
         public void DefaultMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(DefaultMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
@@ -20,7 +24,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -54,8 +58,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void ExplicitMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(ExplicitMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>(mapping => mapping
@@ -65,7 +67,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -99,8 +101,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void IgnoreMember()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(IgnoreMember));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>(mapping => mapping
@@ -111,7 +111,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -136,8 +136,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void ConstantMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(ConstantMapping));
-
             var constant = 15;
             var config = new MapperConfiguration(cfg =>
             {
@@ -148,7 +146,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -182,8 +180,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void NestedMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(NestedMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>(mapping => mapping
@@ -193,7 +189,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -236,7 +232,7 @@ namespace QueryMutator.Tests
             mapper = config.CreateMapper();
             parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -270,8 +266,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void CollectionMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(CollectionMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<CollectionItem, CollectionItemDto>();
@@ -284,7 +278,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var collectionMapping = mapper.GetMapping<Collection, CollectionDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var collectionDtos = context.Collections.Select(collectionMapping).ToList();
 
@@ -312,8 +306,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void MappingWithParameter()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(MappingWithParameter));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto, int>(mapping => mapping
@@ -330,7 +322,7 @@ namespace QueryMutator.Tests
             var parentMappingWithParameter = mapper.GetMapping<ParentEntity, ParentEntityDto, int>();
             var parentMappingWithParameters = mapper.GetMapping<ParentEntity, ParentEntityDto, ParentEntityParamaters>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var param = 5;
                 var parentDtos = context.ParentEntities.Select(parentMappingWithParameter, param).ToList();
@@ -397,8 +389,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void JoinResultMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(JoinResultMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
@@ -406,7 +396,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities
                     .Join(context.NestedEntities,
@@ -452,8 +442,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void NullableMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(NullableMapping));
-
             var constant = 15;
             var config = new MapperConfiguration(cfg =>
             {
@@ -468,7 +456,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var nullableMapping = mapper.GetMapping<NullableEntity, NullableEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var nullableDtos = context.NullableEntities.Select(nullableMapping).ToList();
 
@@ -489,17 +477,15 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
-
+        
         [TestMethod]
         public void AttributeMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(AttributeMapping));
-
             var config = new MapperConfiguration(cfg => { }, new MapperConfigurationOptions { UseAttributeMapping = true });
             var mapper = config.CreateMapper();
             var attributeMapping = mapper.GetMapping<AttributeEntity, AttributeEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var attributeDtos = context.AttributeEntities.Select(attributeMapping).ToList();
 
@@ -520,8 +506,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void PropertyFlattening()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(PropertyFlattening));
-
             var config = new MapperConfiguration(cfg => 
             {
                 cfg.CreateMapping<FlattenedParent, FlattenedParentDto>();
@@ -529,7 +513,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var flattenedMapping = mapper.GetMapping<FlattenedParent, FlattenedParentDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var flattenedDtos = context.FlattenedParents.Select(flattenedMapping).ToList();
 

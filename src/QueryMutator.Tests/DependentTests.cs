@@ -8,11 +8,15 @@ namespace QueryMutator.Tests
     [TestClass]
     public class DependentTests
     {
+        [ClassInitialize]
+        public static void CreateDatabase(TestContext context)
+        {
+            DatabaseHelper.CreateDatabase("QMTESTDB");
+        }
+
         [TestMethod]
         public void DependentMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(DependentMapping));
-            
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<NestedNestedEntity, NestedNestedEntityDto>();
@@ -26,7 +30,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -60,8 +64,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void DependentNestedMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(DependentNestedMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<NestedEntity, NestedEntityDto>(mapping => mapping
@@ -73,7 +75,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var parentMapping = mapper.GetMapping<ParentEntity, ParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var parentDtos = context.ParentEntities.Select(parentMapping).ToList();
 
@@ -107,8 +109,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void DependentNullableMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(DependentNullableMapping));
-            
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<NullableParentEntity, NullableParentEntityDto>();
@@ -116,7 +116,7 @@ namespace QueryMutator.Tests
             var mapper = config.CreateMapper();
             var nullableMapping = mapper.GetMapping<NullableParentEntity, NullableParentEntityDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var nullableDtos = context.NullableParentEntities.Select(nullableMapping).ToList();
 
@@ -144,8 +144,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void DependentCollectionMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(DependentCollectionMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<CollectionParent, CollectionParentDto>();
@@ -156,7 +154,7 @@ namespace QueryMutator.Tests
             var collectionMapping = mapper.GetMapping<CollectionParent, CollectionParentDto>();
             var otherCollectionMapping = mapper.GetMapping<CollectionParent, OtherCollectionParentDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var collectionParents = context.CollectionParents.Select(collectionMapping).ToList();
 
@@ -177,7 +175,7 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var collectionParents = context.CollectionParents.Select(otherCollectionMapping).ToList();
 
@@ -202,8 +200,6 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void DependentNestedCollectionMapping()
         {
-            var options = DatabaseHelper.GetDatabaseOptions(nameof(DependentNestedCollectionMapping));
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<DependentNestedCollectionParent, DependentNestedCollectionParentDto>();
@@ -214,7 +210,7 @@ namespace QueryMutator.Tests
             var collectionMapping = mapper.GetMapping<DependentNestedCollectionParent, DependentNestedCollectionParentDto>();
             var otherCollectionMapping = mapper.GetMapping<DependentNestedCollectionParent, OtherDependentNestedCollectionParentDto>();
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var collectionParents = context.DependentNestedCollectionParents.Select(collectionMapping).ToList();
 
@@ -239,7 +235,7 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
 
-            using (var context = new DatabaseContext(options))
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var collectionParents = context.DependentNestedCollectionParents.Select(otherCollectionMapping).ToList();
 
