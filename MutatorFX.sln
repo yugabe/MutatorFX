@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "test\Core.Tests\Core.Tests.csproj", "{321AF9CE-DC57-4F0B-8AFA-FAC1952A9DE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core.Old", "src\QueryMutator\QueryMutator.Core\QueryMutator.Core.Old.csproj", "{AD83C100-229C-42B2-B78F-360AB6AF74A3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMutator.Core", "src\ExcelMutator\ExcelMutator.Core\ExcelMutator.Core.csproj", "{0F913C63-E471-44EB-8684-D054CA364C07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMutator.NetCore.Tests", "Tests\ExcelMutator\ExcelMutator.NetCore.Tests\ExcelMutator.NetCore.Tests.csproj", "{6C0BD6A6-CDE3-45FD-AA7A-3B0240008092}"
