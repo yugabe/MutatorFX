@@ -185,7 +185,7 @@ namespace QueryMutator.Core
             if (sourceProperties.Any(p => p.Name == currentName))
             {
                 var sourceProperty = sourceProperties.FirstOrDefault(p => p.Name == currentName && p.PropertyType == targetProperty.PropertyType);
-                if(sourceProperty != null)
+                if (sourceProperty != null)
                 {
                     Bindings.Add(new MemberBinding
                     {
@@ -325,6 +325,19 @@ namespace QueryMutator.Core
 
             return this;
         }
+
+        #region Operator overloads
+
+        // These overloads are necessary for the topological sort method to determine equality
+
+        public override bool Equals(object obj)
+        {
+            return obj is MappingBuilder<TSource, TTarget>;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(SourceType.GetHashCode(), TargetType.GetHashCode());
+
+        #endregion
     }
 
     internal class MappingBuilder<TSource, TTarget, TParam> : MappingBuilder<TSource, TTarget>, IMappingBuilder<TSource, TTarget, TParam>
@@ -376,6 +389,19 @@ namespace QueryMutator.Core
 
             return this;
         }
+
+        #region Operator overloads
+
+        // These overloads are necessary for the topological sort method to determine equality
+
+        public override bool Equals(object obj)
+        {
+            return obj is MappingBuilder<TSource, TTarget, TParam>;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(SourceType.GetHashCode(), TargetType.GetHashCode(), typeof(TParam).GetHashCode());
+
+        #endregion
     }
 
 }

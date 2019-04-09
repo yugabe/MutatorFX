@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace QueryMutator.Core
@@ -44,7 +45,10 @@ namespace QueryMutator.Core
                 }
 
                 visited[item] = false;
-                sorted.Add(item);
+                if (!sorted.Any(s => s.Equals(item)))
+                {
+                    sorted.Add(item);
+                }
             }
         }
     }
