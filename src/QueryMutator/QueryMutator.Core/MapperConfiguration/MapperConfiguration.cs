@@ -35,7 +35,7 @@ namespace QueryMutator.Core
             // Check for circular dependency
             Config.Builders.TopologicalSort(b => b.Dependencies, comparer);
 
-            var mappings = new List<MappingDescriptor>();
+            var mappings = new Dictionary<MappingKey, IMapping>();
 
             // Create all non-user defined mappings
             CreateDefaultBuilders();
@@ -47,35 +47,23 @@ namespace QueryMutator.Core
 
             foreach (var builder in sortedBuilders)
             {
-                var dependencies = mappings.Where(m => builder.Dependencies.Any(d => d.SourceType == m.SourceType && d.TargetType == m.TargetType));
+                var dependencies = mappings.Where(m => builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
 
                 var mapping = builder.Build(dependencies);
 
-                mappings.Add(new MappingDescriptor
-                {
-                    SourceType = builder.SourceType,
-                    TargetType = builder.TargetType,
-                    ParameterType = null,
-                    Mapping = mapping
-                });
+                mappings.TryAdd(new MappingKey(builder.SourceType, builder.TargetType), mapping);
             }
 
             foreach (var parametrizedBuilder in Config.ParametrizedBuilders)
             {
-                var dependencies = mappings.Where(m => parametrizedBuilder.Builder.Dependencies.Any(d => d.SourceType == m.SourceType && d.TargetType == m.TargetType));
+                var dependencies = mappings.Where(m => parametrizedBuilder.Builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
 
                 // This just stores the dependencies for later use
                 parametrizedBuilder.Builder.Build(dependencies);
 
-                mappings.Add(new MappingDescriptor
-                {
-                    SourceType = parametrizedBuilder.SourceType,
-                    TargetType = parametrizedBuilder.TargetType,
-                    ParameterType = parametrizedBuilder.ParameterType,
-                    Mapping = parametrizedBuilder.Mapping,
-                });
+                mappings.TryAdd(new MappingKey(parametrizedBuilder.SourceType, parametrizedBuilder.TargetType, parametrizedBuilder.ParameterType), parametrizedBuilder.Mapping);
             }
-
+            
             return new Mapper
             {
                 Mappings = mappings

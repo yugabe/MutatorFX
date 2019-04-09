@@ -11,7 +11,7 @@ namespace QueryMutator.Core
 
         public IList<MappingBuilderBase> Dependencies { get; set; }
 
-        public abstract IMapping Build(IEnumerable<MappingDescriptor> dependencies);
+        public abstract IMapping Build(Dictionary<MappingKey, IMapping> dependencies);
 
         public bool Equals(MappingBuilderBase other)
         {

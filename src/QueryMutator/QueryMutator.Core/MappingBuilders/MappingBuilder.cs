@@ -35,7 +35,7 @@ namespace QueryMutator.Core
             ValidationMode = config.ValidationMode;
         }
 
-        public override IMapping Build(IEnumerable<MappingDescriptor> dependencies)
+        public override IMapping Build(Dictionary<MappingKey, IMapping> dependencies)
         {
             UpdateDependentBindings(dependencies);
 
@@ -53,7 +53,7 @@ namespace QueryMutator.Core
             return mapping;
         }
 
-        protected void UpdateDependentBindings(IEnumerable<MappingDescriptor> dependencies)
+        protected void UpdateDependentBindings(Dictionary<MappingKey, IMapping> dependencies)
         {
             if (dependencies.Any())
             {
@@ -61,10 +61,10 @@ namespace QueryMutator.Core
 
                 foreach (var listBinding in listBindings)
                 {
-                    var dependentMapping = dependencies.First(m => m.SourceType == listBinding.SourceType && m.TargetType == listBinding.TargetType);
+                    dependencies.TryGetValue(new MappingKey(listBinding.SourceType, listBinding.TargetType), out var dependentMapping);
 
                     var property = Expression.Property(SourceParameter, listBinding.SourceMember);
-                    var selectExpression = Expression.Call(typeof(Enumerable), nameof(Enumerable.Select), new Type[] { listBinding.SourceType, listBinding.TargetType }, property, dependentMapping.Mapping.Expression);
+                    var selectExpression = Expression.Call(typeof(Enumerable), nameof(Enumerable.Select), new Type[] { listBinding.SourceType, listBinding.TargetType }, property, dependentMapping.Expression);
                     var expression = Expression.Call(typeof(Enumerable), nameof(Enumerable.ToList), new Type[] { listBinding.TargetType }, selectExpression);
 
                     listBinding.SourceExpression = expression;
@@ -74,9 +74,9 @@ namespace QueryMutator.Core
 
                 foreach (var complexBinding in complexBindings)
                 {
-                    var dependentMapping = dependencies.First(m => m.SourceType == complexBinding.SourceType && m.TargetType == complexBinding.TargetType);
+                    dependencies.TryGetValue(new MappingKey(complexBinding.SourceType, complexBinding.TargetType), out var dependentMapping);
 
-                    complexBinding.SourceExpression = dependentMapping.Mapping.Expression.Body as MemberInitExpression;
+                    complexBinding.SourceExpression = dependentMapping.Expression.Body as MemberInitExpression;
                 }
             }
         }
@@ -330,18 +330,18 @@ namespace QueryMutator.Core
     internal class MappingBuilder<TSource, TTarget, TParam> : MappingBuilder<TSource, TTarget>, IMappingBuilder<TSource, TTarget, TParam>
     {
         public List<MemberBindingBase<TParam>> ParametrizedBindings { get; set; }
-
-        public List<MappingDescriptor> ParametrizedDependencies { get; set; }
+        
+        public Dictionary<MappingKey, IMapping> ParametrizedDependencies { get; set; }
 
         public MappingBuilder(MapperConfigurationExpression config) : base(config)
         {
             ParametrizedBindings = new List<MemberBindingBase<TParam>>();
-            ParametrizedDependencies = new List<MappingDescriptor>();
+            ParametrizedDependencies = new Dictionary<MappingKey, IMapping>();
         }
 
-        public override IMapping Build(IEnumerable<MappingDescriptor> dependencies)
+        public override IMapping Build(Dictionary<MappingKey, IMapping> dependencies)
         {
-            ParametrizedDependencies = dependencies.ToList();
+            ParametrizedDependencies = dependencies;
 
             return null;
         }

@@ -12,14 +12,13 @@ namespace QueryMutator.Core
 
     internal class Mapper : IMapper
     {
-        public List<MappingDescriptor> Mappings { get; set; }
+        public Dictionary<MappingKey, IMapping> Mappings { get; set; }
 
         public IMapping<TSource, TTarget> GetMapping<TSource, TTarget>()
         {
-            var mapping = Mappings.FirstOrDefault(m => m.SourceType == typeof(TSource) && m.TargetType == typeof(TTarget) && m.ParameterType == null);
-            if(mapping != null)
+            if (Mappings.TryGetValue(new MappingKey(typeof(TSource), typeof(TTarget)), out var mapping))
             {
-                return mapping.Mapping as Mapping<TSource, TTarget>;
+                return mapping as Mapping<TSource, TTarget>;
             }
             else
             {
@@ -29,10 +28,9 @@ namespace QueryMutator.Core
 
         public IMapping<TSource, TTarget, TParam> GetMapping<TSource, TTarget, TParam>()
         {
-            var mapping = Mappings.FirstOrDefault(m => m.SourceType == typeof(TSource) && m.TargetType == typeof(TTarget) && m.ParameterType == typeof(TParam));
-            if (mapping != null)
+            if (Mappings.TryGetValue(new MappingKey(typeof(TSource), typeof(TTarget), typeof(TParam)), out var mapping))
             {
-                return mapping.Mapping as Mapping<TSource, TTarget, TParam>;
+                return mapping as Mapping<TSource, TTarget, TParam>;
             }
             else
             {
