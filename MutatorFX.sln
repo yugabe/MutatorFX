@@ -41,13 +41,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kraken.AspNetCore.EntityFra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kraken.AspNetCore.EntityFrameworkCore.SqlServer", "src\Kraken\Kraken.AspNetCore.EntityFrameworkCore.SqlServer\Kraken.AspNetCore.EntityFrameworkCore.SqlServer.csproj", "{0F4059F5-57E5-48A4-88B1-CA7F7CA2A448}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core", "src\QueryMutator.Core\QueryMutator.Core.csproj", "{4BCEE50D-2C86-4877-925E-79365E1E89C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Core", "src\QueryMutator\QueryMutator.Core\QueryMutator.Core.csproj", "{4BCEE50D-2C86-4877-925E-79365E1E89C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Tests", "src\QueryMutator.Tests\QueryMutator.Tests.csproj", "{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Tests", "src\QueryMutator\QueryMutator.Tests\QueryMutator.Tests.csproj", "{54D51F77-E5B9-49CC-91DC-8B6CB6632E18}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Benchmarks", "src\QueryMutator.Benchmarks\QueryMutator.Benchmarks.csproj", "{6E6173F0-015D-47EF-A3D8-72469B9A6F37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryMutator.Benchmarks", "src\QueryMutator\QueryMutator.Benchmarks\QueryMutator.Benchmarks.csproj", "{6E6173F0-015D-47EF-A3D8-72469B9A6F37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMutator.TestDatabase", "src\QueryMutator.TestDatabase\QueryMutator.TestDatabase.csproj", "{EE0726D4-2950-4E7F-9F6B-808F20939AD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMutator.TestDatabase", "src\QueryMutator\QueryMutator.TestDatabase\QueryMutator.TestDatabase.csproj", "{EE0726D4-2950-4E7F-9F6B-808F20939AD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
