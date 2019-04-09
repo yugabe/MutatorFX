@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace QueryMutator.Tests
+namespace QueryMutator.TestDatabase
 {
     public static class DatabaseHelper
     {

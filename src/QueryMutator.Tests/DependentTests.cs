@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QueryMutator.Core;
+using QueryMutator.TestDatabase;
 
 namespace QueryMutator.Tests
 {

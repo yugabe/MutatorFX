@@ -1,8 +1,8 @@
-﻿using QueryMutator.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using QueryMutator.Core;
 
-namespace QueryMutator.Tests
+namespace QueryMutator.TestDatabase
 {
     public class ParentEntityDto
     {
