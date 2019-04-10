@@ -78,28 +78,27 @@ namespace QueryMutator.Core
 
         private Expression ReplacePropertyChains(MemberExpression memberExpression, ParameterExpression parameter)
         {
-            var properties = new List<PropertyInfo>();
+            var properties = new Stack<PropertyInfo>();
 
             // Extract all of the nested properties from the expression
             Expression normalExpression = memberExpression;
             while (normalExpression.NodeType == ExpressionType.MemberAccess)
             {
-                properties.Add((normalExpression as MemberExpression).Member as PropertyInfo);
+                properties.Push((normalExpression as MemberExpression).Member as PropertyInfo);
                 normalExpression = (normalExpression as MemberExpression).Expression;
             }
 
             // The source member is null when the property is explicitly mapped
             if (SourceMember != null)
             {
-                properties.Add(SourceMember);
+                properties.Push(SourceMember);
             }
-            properties.Reverse();
-
+            
             // Construct a new expression with the correct parameter and child properties
             Expression body = parameter;
-            foreach (var property in properties)
+            while(properties.Count > 0)
             {
-                body = Expression.Property(body, property);
+                body = Expression.Property(body, properties.Pop());
             }
 
             return body;
