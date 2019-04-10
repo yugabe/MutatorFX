@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace QueryMutator.Core
+﻿namespace QueryMutator.Core
 {
     internal class ParametrizedBuilderDescriptor
     {
@@ -8,5 +6,4 @@ namespace QueryMutator.Core
 
         public MappingBuilderBase Builder { get; set; }
     }
-
 }

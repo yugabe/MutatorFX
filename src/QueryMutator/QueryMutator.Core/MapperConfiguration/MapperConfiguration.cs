@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QueryMutator.Core
 {
@@ -40,9 +39,9 @@ namespace QueryMutator.Core
             // Create all non-user defined mappings
             CreateDefaultBuilders();
             
-            foreach (var dummyBuilder in Config.BuilderDescriptors.TopologicalSort(b => b.Dependencies, comparer))
+            foreach (var builderDescriptor in Config.BuilderDescriptors.TopologicalSort(b => b.Dependencies, comparer))
             {
-                Config.Builders.TryGetValue(new MappingKey(dummyBuilder.SourceType, dummyBuilder.TargetType), out var builder);
+                Config.Builders.TryGetValue(new MappingKey(builderDescriptor.SourceType, builderDescriptor.TargetType), out var builder);
 
                 var dependencies = mappings.Where(m => builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
 
@@ -71,7 +70,7 @@ namespace QueryMutator.Core
         {
             var definingAssemblyName = typeof(MapFromAttribute).Assembly.GetName().Name;
 
-            // Check assemblies that aren't system dlls and reference this assembly
+            // Check only those assemblies which aren't system dlls and also reference this assembly
             // Note: parallel query can be implemented if this is slow
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.GlobalAssemblyCache && a.GetReferencedAssemblies().Any(r => r.Name == definingAssemblyName)))

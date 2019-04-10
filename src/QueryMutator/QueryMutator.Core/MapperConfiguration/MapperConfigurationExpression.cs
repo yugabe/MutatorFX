@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace QueryMutator.Core
 {
@@ -33,7 +32,6 @@ namespace QueryMutator.Core
             builder.CreateDefaultBindings();
 
             Builders.Add(key, builder);
-            
             BuilderDescriptors.Add(new BuilderDescriptor(typeof(TSource), typeof(TTarget), builder.Dependencies, true));
         }
 
@@ -50,7 +48,6 @@ namespace QueryMutator.Core
             builder.CreateDefaultBindings(); // Should be run after the explicit mappings
 
             Builders.Add(key, builder);
-
             BuilderDescriptors.Add(new BuilderDescriptor(typeof(TSource), typeof(TTarget), builder.Dependencies, true));
         }
 
