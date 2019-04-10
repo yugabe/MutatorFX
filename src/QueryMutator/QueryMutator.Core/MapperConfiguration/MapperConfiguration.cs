@@ -41,13 +41,14 @@ namespace QueryMutator.Core
             
             foreach (var builderDescriptor in Config.BuilderDescriptors.TopologicalSort(b => b.Dependencies, comparer))
             {
-                Config.Builders.TryGetValue(new MappingKey(builderDescriptor.SourceType, builderDescriptor.TargetType), out var builder);
+                var key = new MappingKey(builderDescriptor.SourceType, builderDescriptor.TargetType);
+                Config.Builders.TryGetValue(key, out var builder);
 
                 var dependencies = mappings.Where(m => builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
 
                 var mapping = builder.Build(dependencies);
 
-                mappings.TryAdd(new MappingKey(builder.SourceType, builder.TargetType), mapping);
+                mappings.TryAdd(key, mapping);
             }
 
             foreach (var parametrizedBuilder in Config.ParametrizedBuilders)
