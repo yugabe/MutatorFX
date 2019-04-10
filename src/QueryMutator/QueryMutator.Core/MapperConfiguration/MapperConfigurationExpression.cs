@@ -6,24 +6,25 @@ namespace QueryMutator.Core
 {
     internal class MapperConfigurationExpression : IMapperConfigurationExpression
     {
-        public List<MappingBuilderBase> Builders { get; set; }
-
-        public List<MappingBuilderBase> DefaultBuilders { get; set; }
-
-        public List<ParametrizedBuilderDescriptor> ParametrizedBuilders { get; set; }
+        public List<BuilderDescriptor> BuilderDescriptors { get; set; }
+        
+        public Dictionary<MappingKey, MappingBuilderBase> Builders { get; set; }
+        
+        public Dictionary<MappingKey, ParametrizedBuilderDescriptor> ParametrizedBuilders { get; set; }
 
         public ValidationMode ValidationMode { get; set; }
 
         public MapperConfigurationExpression()
         {
-            Builders = new List<MappingBuilderBase>();
-            DefaultBuilders = new List<MappingBuilderBase>();
-            ParametrizedBuilders = new List<ParametrizedBuilderDescriptor>();
+            BuilderDescriptors = new List<BuilderDescriptor>();
+            Builders = new Dictionary<MappingKey, MappingBuilderBase>();
+            ParametrizedBuilders = new Dictionary<MappingKey, ParametrizedBuilderDescriptor>();
         }
 
         public void CreateMapping<TSource, TTarget>()
         {
-            if (Builders.Any(b => b.SourceType == typeof(TSource) && b.TargetType == typeof(TTarget)))
+            var key = new MappingKey(typeof(TSource), typeof(TTarget));
+            if (Builders.ContainsKey(key))
             {
                 throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
             }
@@ -31,12 +32,15 @@ namespace QueryMutator.Core
             var builder = new MappingBuilder<TSource, TTarget>(this);
             builder.CreateDefaultBindings();
 
-            Builders.Add(builder);
+            Builders.Add(key, builder);
+            
+            BuilderDescriptors.Add(new BuilderDescriptor(typeof(TSource), typeof(TTarget), builder.Dependencies, true));
         }
 
         public void CreateMapping<TSource, TTarget>(Action<IMappingBuilder<TSource, TTarget>> mappingFactory)
         {
-            if (Builders.Any(b => b.SourceType == typeof(TSource) && b.TargetType == typeof(TTarget)))
+            var key = new MappingKey(typeof(TSource), typeof(TTarget));
+            if (Builders.ContainsKey(key))
             {
                 throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
             }
@@ -45,12 +49,15 @@ namespace QueryMutator.Core
             mappingFactory(builder);
             builder.CreateDefaultBindings(); // Should be run after the explicit mappings
 
-            Builders.Add(builder);
+            Builders.Add(key, builder);
+
+            BuilderDescriptors.Add(new BuilderDescriptor(typeof(TSource), typeof(TTarget), builder.Dependencies, true));
         }
 
         public void CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory)
         {
-            if (ParametrizedBuilders.Any(b => b.SourceType == typeof(TSource) && b.TargetType == typeof(TTarget) && b.ParameterType == typeof(TParam)))
+            var key = new MappingKey(typeof(TSource), typeof(TTarget), typeof(TParam));
+            if (ParametrizedBuilders.ContainsKey(key))
             {
                 throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
             }
@@ -59,11 +66,8 @@ namespace QueryMutator.Core
             mappingFactory(builder);
             builder.CreateDefaultBindings(); // Should be run after the explicit mappings
 
-            ParametrizedBuilders.Add(new ParametrizedBuilderDescriptor
+            ParametrizedBuilders.Add(key, new ParametrizedBuilderDescriptor
             {
-                SourceType = typeof(TSource),
-                TargetType = typeof(TTarget),
-                ParameterType = typeof(TParam),
                 Mapping = new Mapping<TSource, TTarget, TParam> { Builder = builder },
                 Builder = builder
             });

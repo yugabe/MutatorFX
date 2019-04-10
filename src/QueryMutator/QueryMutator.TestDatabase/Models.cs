@@ -450,6 +450,53 @@ namespace QueryMutator.TestDatabase
         public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
+    [MapFrom(typeof(AttributeParent))]
+    public class AttributeParentDto
+    {
+        public int Id { get; set; }
+        
+        public AttributeChildDto AttributeChild { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is AttributeParentDto d))
+            {
+                return false;
+            }
+
+            if (Id != d.Id)
+            {
+                return false;
+            }
+
+            if (AttributeChild != null && d.AttributeChild != null)
+            {
+                return AttributeChild.Equals(d.AttributeChild);
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id);
+    }
+
+    public class AttributeChildDto
+    {
+        public int Id { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is AttributeChildDto d))
+            {
+                return false;
+            }
+
+            return Id == d.Id;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id);
+    }
+
     public class FlattenedParentDto
     {
         public int Id { get; set; }

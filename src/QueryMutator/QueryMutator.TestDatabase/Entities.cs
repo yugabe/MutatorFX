@@ -120,6 +120,19 @@ namespace QueryMutator.TestDatabase
         public string Name { get; set; }
     }
 
+    public class AttributeParent
+    {
+        public int Id { get; set; }
+
+        public int AttributeChildId { get; set; }
+        public AttributeChild AttributeChild { get; set; }
+    }
+
+    public class AttributeChild
+    {
+        public int Id { get; set; }
+    }
+
     public class FlattenedParent
     {
         public int Id { get; set; }

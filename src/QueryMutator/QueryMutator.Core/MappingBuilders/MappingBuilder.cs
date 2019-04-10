@@ -22,7 +22,7 @@ namespace QueryMutator.Core
             SourceType = typeof(TSource);
             TargetType = typeof(TTarget);
 
-            Dependencies = new List<MappingBuilderBase>();
+            Dependencies = new List<BuilderDescriptor>();
 
             SourceParameter = Expression.Parameter(SourceType);
             Bindings = new List<MemberBindingBase>();
@@ -206,13 +206,13 @@ namespace QueryMutator.Core
 
         private void AddDependency(Type sourceType, Type targetType)
         {
-            var dependency = Activator.CreateInstance(typeof(MappingBuilder<,>).MakeGenericType(new Type[] { sourceType, targetType })) as MappingBuilderBase;
+            var dependency = new BuilderDescriptor(sourceType, targetType);
 
             Dependencies.Add(dependency);
 
-            if (!Config.DefaultBuilders.Any(d => d.SourceType == sourceType && d.TargetType == targetType))
+            if (!Config.BuilderDescriptors.Any(d => d.SourceType == sourceType && d.TargetType == targetType))
             {
-                Config.DefaultBuilders.Add(dependency);
+                Config.BuilderDescriptors.Add(dependency);
             }
         }
 
@@ -325,19 +325,6 @@ namespace QueryMutator.Core
 
             return this;
         }
-
-        #region Operator overloads
-
-        // These overloads are necessary for the topological sort method to determine equality
-
-        public override bool Equals(object obj)
-        {
-            return obj is MappingBuilder<TSource, TTarget>;
-        }
-
-        public override int GetHashCode() => HashCode.Combine(SourceType.GetHashCode(), TargetType.GetHashCode());
-
-        #endregion
     }
 
     internal class MappingBuilder<TSource, TTarget, TParam> : MappingBuilder<TSource, TTarget>, IMappingBuilder<TSource, TTarget, TParam>
@@ -389,19 +376,6 @@ namespace QueryMutator.Core
 
             return this;
         }
-
-        #region Operator overloads
-
-        // These overloads are necessary for the topological sort method to determine equality
-
-        public override bool Equals(object obj)
-        {
-            return obj is MappingBuilder<TSource, TTarget, TParam>;
-        }
-
-        public override int GetHashCode() => HashCode.Combine(SourceType.GetHashCode(), TargetType.GetHashCode(), typeof(TParam).GetHashCode());
-
-        #endregion
     }
 
 }

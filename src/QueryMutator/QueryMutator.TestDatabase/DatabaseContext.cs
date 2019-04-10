@@ -30,6 +30,10 @@ namespace QueryMutator.TestDatabase
 
         public DbSet<AttributeEntity> AttributeEntities { get; set; }
 
+        public DbSet<AttributeParent> AttributeParents { get; set; }
+
+        public DbSet<AttributeChild> AttributeChildren { get; set; }
+
         public DbSet<FlattenedParent> FlattenedParents { get; set; }
 
         public DbSet<FlattenedChild> FlattenedChildren { get; set; }
@@ -144,6 +148,17 @@ namespace QueryMutator.TestDatabase
             {
                 Id = 1,
                 Name = "AttributeEntity",
+            });
+
+            modelBuilder.Entity<AttributeChild>().HasData(new AttributeChild
+            {
+                Id = 1
+            });
+
+            modelBuilder.Entity<AttributeParent>().HasData(new AttributeParent
+            {
+                Id = 1,
+                AttributeChildId = 1
             });
 
             modelBuilder.Entity<FlattenedChildChild>().HasData(new FlattenedChildChild

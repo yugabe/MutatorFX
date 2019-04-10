@@ -261,5 +261,34 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
+
+        [TestMethod]
+        public void DependentAttributeMapping()
+        {
+            var config = new MapperConfiguration(cfg => { }, new MapperConfigurationOptions { UseAttributeMapping = true });
+            var mapper = config.CreateMapper();
+            var attributeMapping = mapper.GetMapping<AttributeParent, AttributeParentDto>();
+
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
+            {
+                var attributeDtos = context.AttributeParents.Select(attributeMapping).ToList();
+
+                Assert.AreEqual(1, attributeDtos.Count);
+
+                var result = attributeDtos.FirstOrDefault();
+
+                var expected = new AttributeParentDto
+                {
+                    Id = 1,
+                    AttributeChild = new AttributeChildDto
+                    {
+                        Id = 1
+                    }
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
     }
 }

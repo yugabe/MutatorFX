@@ -30,23 +30,20 @@ namespace QueryMutator.Core
                 CreateAttributeBuilders();
             }
 
-            var comparer = EqualityComparer<MappingBuilderBase>.Default;
+            var comparer = EqualityComparer<BuilderDescriptor>.Default;
 
             // Check for circular dependency
-            Config.Builders.TopologicalSort(b => b.Dependencies, comparer);
+            Config.BuilderDescriptors.TopologicalSort(b => b.Dependencies, comparer);
 
             var mappings = new Dictionary<MappingKey, IMapping>();
-
+            
             // Create all non-user defined mappings
             CreateDefaultBuilders();
-
-            var sortedBuilders = Config.Builders
-                .TopologicalSort(b => b.Dependencies, comparer)
-                .Distinct(comparer)
-                .ToList();
-
-            foreach (var builder in sortedBuilders)
+            
+            foreach (var dummyBuilder in Config.BuilderDescriptors.TopologicalSort(b => b.Dependencies, comparer))
             {
+                Config.Builders.TryGetValue(new MappingKey(dummyBuilder.SourceType, dummyBuilder.TargetType), out var builder);
+
                 var dependencies = mappings.Where(m => builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
 
                 var mapping = builder.Build(dependencies);
@@ -56,12 +53,12 @@ namespace QueryMutator.Core
 
             foreach (var parametrizedBuilder in Config.ParametrizedBuilders)
             {
-                var dependencies = mappings.Where(m => parametrizedBuilder.Builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
+                var dependencies = mappings.Where(m => parametrizedBuilder.Value.Builder.Dependencies.Any(d => d.SourceType == m.Key.SourceType && d.TargetType == m.Key.TargetType)).ToDictionary(i => i.Key, i => i.Value);
 
                 // This just stores the dependencies for later use
-                parametrizedBuilder.Builder.Build(dependencies);
+                parametrizedBuilder.Value.Builder.Build(dependencies);
 
-                mappings.TryAdd(new MappingKey(parametrizedBuilder.SourceType, parametrizedBuilder.TargetType, parametrizedBuilder.ParameterType), parametrizedBuilder.Mapping);
+                mappings.TryAdd(parametrizedBuilder.Key, parametrizedBuilder.Value.Mapping);
             }
             
             return new Mapper
@@ -85,14 +82,18 @@ namespace QueryMutator.Core
                     if (attribute != null)
                     {
                         var sourceType = (attribute as MapFromAttribute).SourceType;
-                        if (Config.Builders.Any(b => b.SourceType == sourceType && b.TargetType == type))
+
+                        var key = new MappingKey(sourceType, type);
+                        if (Config.Builders.ContainsKey(key))
                         {
                             throw new MappingAlreadyExistsException("Another mapping already exists with the supplied types");
                         }
 
                         var builder = CreateMappingBuilder(sourceType, type);
 
-                        Config.Builders.Add(builder);
+                        Config.Builders.Add(key, builder);
+
+                        Config.BuilderDescriptors.Add(new BuilderDescriptor(builder.SourceType, builder.TargetType, builder.Dependencies, true));
                     }
                 }
             }
@@ -100,35 +101,20 @@ namespace QueryMutator.Core
 
         private void CreateDefaultBuilders()
         {
-            var comparer = EqualityComparer<MappingBuilderBase>.Default;
-
-            Config.DefaultBuilders.RemoveAll(d => Config.Builders.Any(b => b.Equals(d)));
-
-            var defaultBuilders = Config.DefaultBuilders
-                .Distinct(comparer)
-                .ToList(); // Creating a new instance here is important
-
-            foreach (var defaultBuilder in defaultBuilders)
+            foreach (var defaultBuilder in Config.BuilderDescriptors.Where(b => !b.Built).ToList())
             {
                 var builder = CreateMappingBuilder(defaultBuilder.SourceType, defaultBuilder.TargetType);
 
-                Config.Builders.Add(builder);
+                Config.Builders.Add(new MappingKey(defaultBuilder.SourceType, defaultBuilder.TargetType), builder);
 
-                Config.DefaultBuilders.Remove(defaultBuilder);
-
-                // Replace the dummy dependency with the dynamically created one
-                var dependentBuilders = Config.Builders.Where(b => b.Dependencies.Any(d => d.Equals(defaultBuilder)));
-                foreach (var dependentBuilder in dependentBuilders)
-                {
-                    var index = dependentBuilder.Dependencies.IndexOf(dependentBuilder.Dependencies.First(d => d.Equals(defaultBuilder)));
-                    dependentBuilder.Dependencies[index] = builder;
-                }
+                defaultBuilder.Built = true;
+                defaultBuilder.Dependencies = builder.Dependencies;
             }
 
             // Check for circular dependency
-            Config.Builders.TopologicalSort(b => b.Dependencies, comparer);
+            Config.BuilderDescriptors.TopologicalSort(b => b.Dependencies, EqualityComparer<BuilderDescriptor>.Default);
 
-            if (Config.DefaultBuilders.Any())
+            if (Config.BuilderDescriptors.Any(b => !b.Built))
             {
                 CreateDefaultBuilders();
             }
