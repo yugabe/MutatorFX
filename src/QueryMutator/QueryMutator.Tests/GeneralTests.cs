@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QueryMutator.Core;
 using QueryMutator.TestDatabase;
@@ -20,6 +21,12 @@ namespace QueryMutator.Tests
         {
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMapping<NestedNestedEntity, NestedNestedEntityDto>();
+
+                cfg.CreateMapping<NestedEntity, NestedEntityDto>(mapping => mapping
+                    .IgnoreMember(d => d.Name)
+                );
+
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             var mapper = config.CreateMapper();
@@ -43,7 +50,7 @@ namespace QueryMutator.Tests
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name ="NestedEntity",
+                        Name = null,
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,

@@ -20,12 +20,6 @@ namespace QueryMutator.Tests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMapping<NestedNestedEntity, NestedNestedEntityDto>();
-
-                cfg.CreateMapping<NestedEntity, NestedEntityDto>(mapping => mapping
-                    .IgnoreMember(d => d.Name)
-                );
-
                 cfg.CreateMapping<ParentEntity, ParentEntityDto>();
             });
             var mapper = config.CreateMapper();
@@ -49,7 +43,7 @@ namespace QueryMutator.Tests
                     NestedEntity = new NestedEntityDto
                     {
                         Id = 1,
-                        Name = null,
+                        Name = "NestedEntity",
                         NestedNestedEntity = new NestedNestedEntityDto
                         {
                             Id = 1,
@@ -57,7 +51,7 @@ namespace QueryMutator.Tests
                         }
                     }
                 };
-                
+
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
