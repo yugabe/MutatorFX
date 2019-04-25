@@ -7,27 +7,20 @@ namespace QueryMutator.Core
     public class MapperConfiguration
     {
         private MapperConfigurationExpression Config { get; set; }
-
-        private bool UseAttributeMapping { get; set; }
-
+        
         public MapperConfiguration(Action<IMapperConfigurationExpression> expression, MapperConfigurationOptions options = null)
         {
             Config = new MapperConfigurationExpression
             {
                 ValidationMode = options?.ValidationMode ?? ValidationMode.None
             };
-
-            UseAttributeMapping = options?.UseAttributeMapping ?? false;
-
+            
             expression(Config);
         }
 
         public IMapper CreateMapper()
         {
-            if (UseAttributeMapping)
-            {
-                CreateAttributeBuilders();
-            }
+            CreateAttributeBuilders();
 
             var comparer = EqualityComparer<BuilderDescriptor>.Default;
 
@@ -69,12 +62,7 @@ namespace QueryMutator.Core
 
         private void CreateAttributeBuilders()
         {
-            var definingAssemblyName = typeof(MapFromAttribute).Assembly.GetName().Name;
-
-            // Check only those assemblies which aren't system dlls and also reference this assembly
-            // Note: parallel query can be implemented if this is slow
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => !a.GlobalAssemblyCache && a.GetReferencedAssemblies().Any(r => r.Name == definingAssemblyName)))
+            foreach(var assembly in Config.AttributeAssemblies)
             {
                 foreach (var type in assembly.GetTypes())
                 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace QueryMutator.Core
 {
@@ -11,6 +12,8 @@ namespace QueryMutator.Core
         
         public Dictionary<MappingKey, ParametrizedBuilderDescriptor> ParametrizedBuilders { get; set; }
 
+        public IEnumerable<Assembly> AttributeAssemblies { get; set; }
+
         public ValidationMode ValidationMode { get; set; }
 
         public MapperConfigurationExpression()
@@ -18,6 +21,7 @@ namespace QueryMutator.Core
             BuilderDescriptors = new List<BuilderDescriptor>();
             Builders = new Dictionary<MappingKey, MappingBuilderBase>();
             ParametrizedBuilders = new Dictionary<MappingKey, ParametrizedBuilderDescriptor>();
+            AttributeAssemblies = new List<Assembly>();
         }
 
         public void CreateMapping<TSource, TTarget>()
@@ -68,6 +72,11 @@ namespace QueryMutator.Core
                 Mapping = new Mapping<TSource, TTarget, TParam> { Builder = builder },
                 Builder = builder
             });
+        }
+
+        public void UseAttributeMapping(IEnumerable<Assembly> assemblies)
+        {
+            AttributeAssemblies = assemblies;
         }
     }
 }

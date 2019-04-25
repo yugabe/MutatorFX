@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QueryMutator.Core;
 using QueryMutator.TestDatabase;
@@ -259,7 +260,10 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void DependentAttributeMapping()
         {
-            var config = new MapperConfiguration(cfg => { }, new MapperConfigurationOptions { UseAttributeMapping = true });
+            var config = new MapperConfiguration(cfg => 
+            {
+                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+            });
             var mapper = config.CreateMapper();
             var attributeMapping = mapper.GetMapping<AttributeParent, AttributeParentDto>();
 
@@ -283,6 +287,5 @@ namespace QueryMutator.Tests
                 Assert.AreEqual(true, expected.Equals(result));
             }
         }
-
     }
 }
