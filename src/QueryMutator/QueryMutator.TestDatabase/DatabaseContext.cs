@@ -40,6 +40,10 @@ namespace QueryMutator.TestDatabase
 
         public DbSet<FlattenedChildChild> FlattenedChildChildren { get; set; }
 
+        public DbSet<ComplexBenchmarkParentEntity> ComplexBenchmarkParentEntities { get; set; }
+
+        public DbSet<ComplexBenchmarkChildEntity> ComplexBenchmarkChildEntities { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -177,6 +181,40 @@ namespace QueryMutator.TestDatabase
             {
                 Id = 1,
                 ChildId = 1
+            });
+
+            modelBuilder.Entity<ComplexBenchmarkParentEntity>().HasData(new ComplexBenchmarkParentEntity
+            {
+                Id = 1,
+                Name = "Sample customer",
+                Credit = 235.4m,
+            });
+
+            modelBuilder.Entity<ComplexBenchmarkChildEntity>().HasData(new ComplexBenchmarkChildEntity
+            {
+                Id = 1,
+                Country = "Country1",
+                City = "City1",
+                Street = "Street1",
+                ParentId = 1
+            });
+
+            modelBuilder.Entity<ComplexBenchmarkChildEntity>().HasData(new ComplexBenchmarkChildEntity
+            {
+                Id = 2,
+                Country = "Country2",
+                City = "City2",
+                Street = "Street2",
+                ParentId = 1
+            });
+
+            modelBuilder.Entity<ComplexBenchmarkChildEntity>().HasData(new ComplexBenchmarkChildEntity
+            {
+                Id = 3,
+                Country = "Country3",
+                City = "City3",
+                Street = "Street3",
+                ParentId = 1
             });
         }
     }

@@ -516,4 +516,62 @@ namespace QueryMutator.TestDatabase
         public override int GetHashCode() => HashCode.Combine(Id, ChildChildName);
     }
 
+    public class ComplexBenchmarkParentEntityDto
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public decimal? Credit { get; set; }
+        
+        public IList<ComplexBenchmarkChildEntityDto> WorkAddresses { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is ComplexBenchmarkParentEntityDto c))
+            {
+                return false;
+            }
+
+            if ((Id != c.Id) || (WorkAddresses.Count != c.WorkAddresses.Count))
+            {
+                return false;
+            }
+
+            for (var i = 0; i < WorkAddresses.Count; i++)
+            {
+                if (!WorkAddresses[i].Equals(c.WorkAddresses[i]))
+                {
+                    return false;
+                }
+            }
+
+            return Name == c.Name && Credit == c.Credit;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id, Name, Credit, WorkAddresses);
+    }
+
+    public class ComplexBenchmarkChildEntityDto
+    {
+        public int Id { get; set; }
+
+        public string Street { get; set; }
+
+        public string City { get; set; }
+
+        public string Country { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is ComplexBenchmarkChildEntityDto c))
+            {
+                return false;
+            }
+
+            return Id == c.Id && Street == c.Street && City == c.City && Country == c.Country;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id, Street, City, Country);
+    }
 }

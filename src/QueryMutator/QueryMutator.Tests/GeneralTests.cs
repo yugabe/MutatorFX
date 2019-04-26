@@ -518,7 +518,7 @@ namespace QueryMutator.Tests
         [TestMethod]
         public void PropertyFlattening()
         {
-            var config = new MapperConfiguration(cfg => 
+            var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMapping<FlattenedParent, FlattenedParentDto>();
             });
@@ -537,6 +537,59 @@ namespace QueryMutator.Tests
                 {
                     Id = 1,
                     ChildChildName = "FlattenedChildChild"
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
+        public void BenchmarkEntity()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMapping<ComplexBenchmarkParentEntity, ComplexBenchmarkParentEntityDto>();
+            });
+            var mapper = config.CreateMapper();
+            var benchmarkMapping = mapper.GetMapping<ComplexBenchmarkParentEntity, ComplexBenchmarkParentEntityDto>();
+
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
+            {
+                var benchmarkDtos = context.ComplexBenchmarkParentEntities.Select(benchmarkMapping).ToList();
+
+                Assert.AreEqual(1, benchmarkDtos.Count);
+
+                var result = benchmarkDtos.FirstOrDefault();
+
+                var expected = new ComplexBenchmarkParentEntityDto
+                {
+                    Id = 1,
+                    Name = "Sample customer",
+                    Credit = 235.4m,
+                    WorkAddresses = new List<ComplexBenchmarkChildEntityDto>
+                    {
+                        new ComplexBenchmarkChildEntityDto
+                        {
+                            Id = 1,
+                            Country = "Country1",
+                            City = "City1",
+                            Street = "Street1"
+                        },
+                        new ComplexBenchmarkChildEntityDto
+                        {
+                            Id = 2,
+                            Country = "Country2",
+                            City = "City2",
+                            Street = "Street2"
+                        },
+                        new ComplexBenchmarkChildEntityDto
+                        {
+                            Id = 3,
+                            Country = "Country3",
+                            City = "City3",
+                            Street = "Street3"
+                        },
+                    }
                 };
 
                 Assert.AreEqual(true, expected.Equals(result));

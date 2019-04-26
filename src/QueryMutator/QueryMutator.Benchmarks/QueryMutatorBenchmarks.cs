@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using AutoMapper.QueryableExtensions;
 using BenchmarkDotNet.Attributes;
+using Mapster;
 using QueryMutator.Core;
 using QueryMutator.TestDatabase;
 
@@ -21,6 +23,8 @@ namespace QueryMutator.Benchmarks
         public IMapping<FlattenedParent, FlattenedParentDto> RunFlattenedMappingMapping { get; set; }
 
         public IMapping<ParentEntity, ParentEntityDto, int> RunParameterMappingMapping { get; set; }
+
+        public IMapping<ComplexBenchmarkParentEntity, ComplexBenchmarkParentEntityDto> RunBenchmarkMappingMapping { get; set; }
 
         public QueryMutatorBenchmarks()
         {
@@ -202,6 +206,57 @@ namespace QueryMutator.Benchmarks
             using (var context = new DatabaseContext(DatabaseHelper.Options))
             {
                 var dtos = context.ParentEntities.Select(RunParameterMappingMapping, 15).ToList();
+                return dtos.FirstOrDefault();
+            }
+        }
+
+        #endregion
+
+        #region Performance comparison
+
+        [GlobalSetup(Target = nameof(RunBenchmarkMapping))]
+        public void SetupRunBenchmarkMapping()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMapping<ComplexBenchmarkParentEntity, ComplexBenchmarkParentEntityDto>()).CreateMapper();
+            RunBenchmarkMappingMapping = mapper.GetMapping<ComplexBenchmarkParentEntity, ComplexBenchmarkParentEntityDto>();
+        }
+
+        [Benchmark]
+        public ComplexBenchmarkParentEntityDto RunBenchmarkMapping()
+        {
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
+            {
+                var dtos = context.ComplexBenchmarkParentEntities.Select(RunBenchmarkMappingMapping).ToList();
+                return dtos.FirstOrDefault();
+            }
+        }
+
+        [GlobalSetup(Target = nameof(RunAutoMapperBenchmarkMapping))]
+        public void SetupRunAutoMapperBenchmarkMapping()
+        {
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<ComplexBenchmarkChildEntity, ComplexBenchmarkChildEntityDto>();
+                cfg.CreateMap<ComplexBenchmarkParentEntity, ComplexBenchmarkParentEntityDto>();
+            });
+        }
+
+        [Benchmark]
+        public ComplexBenchmarkParentEntityDto RunAutoMapperBenchmarkMapping()
+        {
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
+            {
+                var dtos = context.ComplexBenchmarkParentEntities.ProjectTo<ComplexBenchmarkParentEntityDto>().ToList();
+                return dtos.FirstOrDefault();
+            }
+        }
+        
+        [Benchmark]
+        public ComplexBenchmarkParentEntityDto RunMapsterBenchmarkMapping()
+        {
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
+            {
+                var dtos = context.ComplexBenchmarkParentEntities.ProjectToType<ComplexBenchmarkParentEntityDto>().ToList();
                 return dtos.FirstOrDefault();
             }
         }

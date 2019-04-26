@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace QueryMutator.TestDatabase
 {
@@ -154,5 +155,30 @@ namespace QueryMutator.TestDatabase
         public int Id { get; set; }
 
         public string Name { get; set; }
+    }
+
+    public class ComplexBenchmarkParentEntity
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public decimal? Credit { get; set; }
+        
+        public ICollection<ComplexBenchmarkChildEntity> WorkAddresses { get; set; }
+    }
+
+    public class ComplexBenchmarkChildEntity
+    {
+        public int Id { get; set; }
+
+        public string Street { get; set; }
+
+        public string City { get; set; }
+
+        public string Country { get; set; }
+
+        public int ParentId { get; set; }
+        public ComplexBenchmarkParentEntity Parent { get; set; }
     }
 }
