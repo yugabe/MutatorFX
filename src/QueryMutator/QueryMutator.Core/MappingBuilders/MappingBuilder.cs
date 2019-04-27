@@ -158,7 +158,7 @@ namespace QueryMutator.Core
                     else
                     {
                         // If flattened properties exist, map them (e.g. ChildName -> Child.Name)
-                        CheckPropertyFlattening(sourceProperties, targetProperty, targetProperty.Name, SourceParameter);
+                        CheckPropertyFlattening(sourceProperties, targetProperty);
                     }
                 }
             }
@@ -179,26 +179,34 @@ namespace QueryMutator.Core
             }
         }
 
-        private void CheckPropertyFlattening(IEnumerable<PropertyInfo> sourceProperties, PropertyInfo targetProperty, string currentName, Expression propertyChain)
+        private void CheckPropertyFlattening(IEnumerable<PropertyInfo> sourceProperties, PropertyInfo targetProperty)
         {
-            if (sourceProperties.Any(p => p.Name == currentName))
+            var stack = new Stack<(IEnumerable<PropertyInfo>, string, Expression)>();
+            stack.Push((sourceProperties, targetProperty.Name, SourceParameter));
+
+            while (stack.Any())
             {
-                var sourceProperty = sourceProperties.FirstOrDefault(p => p.Name == currentName && p.PropertyType == targetProperty.PropertyType);
-                if (sourceProperty != null)
+                var (SourceProperties, CurrentName, PropertyChain) = stack.Pop();
+
+                if (SourceProperties.Any(p => p.Name == CurrentName))
                 {
-                    Bindings.Add(new MemberBinding
+                    var sourceProperty = SourceProperties.FirstOrDefault(p => p.Name == CurrentName && p.PropertyType == targetProperty.PropertyType);
+                    if (sourceProperty != null)
                     {
-                        SourceExpression = Expression.Property(propertyChain, sourceProperty),
-                        TargetMember = targetProperty
-                    });
+                        Bindings.Add(new MemberBinding
+                        {
+                            SourceExpression = Expression.Property(PropertyChain, sourceProperty),
+                            TargetMember = targetProperty
+                        });
+                    }
                 }
-            }
-            else if (sourceProperties.Any(p => currentName.StartsWith(p.Name)))
-            {
-                foreach (var property in sourceProperties.Where(p => currentName.StartsWith(p.Name)))
+                else if (SourceProperties.Any(p => CurrentName.StartsWith(p.Name)))
                 {
-                    var newName = currentName.Substring(property.Name.Length);
-                    CheckPropertyFlattening(property.PropertyType.GetProperties(), targetProperty, newName, Expression.Property(propertyChain, property));
+                    foreach (var property in SourceProperties.Where(p => CurrentName.StartsWith(p.Name)))
+                    {
+                        var newName = CurrentName.Substring(property.Name.Length);
+                        stack.Push((property.PropertyType.GetProperties(), newName, Expression.Property(PropertyChain, property)));
+                    }
                 }
             }
         }
