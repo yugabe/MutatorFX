@@ -516,6 +516,34 @@ namespace QueryMutator.Tests
         }
 
         [TestMethod]
+        public void ExplicitAttributeMapping()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+            });
+            var mapper = config.CreateMapper();
+            var attributeMapping = mapper.GetMapping<AttributeEntity, AttributeEntityExplicitDto>();
+
+            using (var context = new DatabaseContext(DatabaseHelper.Options))
+            {
+                var attributeDtos = context.AttributeEntities.Select(attributeMapping).ToList();
+
+                Assert.AreEqual(1, attributeDtos.Count);
+
+                var result = attributeDtos.FirstOrDefault();
+
+                var expected = new AttributeEntityExplicitDto
+                {
+                    Id = 1,
+                    ExplicitAttribute = "AttributeEntity"
+                };
+
+                Assert.AreEqual(true, expected.Equals(result));
+            }
+        }
+
+        [TestMethod]
         public void PropertyFlattening()
         {
             var config = new MapperConfiguration(cfg =>
@@ -778,6 +806,17 @@ namespace QueryMutator.Tests
                 );
             });
             config.CreateMapper();
+        }
+
+        [TestMethod]
+        public void InvalidPropertyName()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+            });
+            var exception = Assert.ThrowsException<TargetInvocationException>(() => config.CreateMapper());
+            Assert.IsInstanceOfType(exception.InnerException, typeof(InvalidPropertyNameException));
         }
     }
 }

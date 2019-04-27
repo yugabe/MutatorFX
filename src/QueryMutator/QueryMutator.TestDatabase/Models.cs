@@ -450,6 +450,36 @@ namespace QueryMutator.TestDatabase
         public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
+    [MapFrom(typeof(AttributeEntity))]
+    public class AttributeEntityExplicitDto
+    {
+        public int Id { get; set; }
+
+        [MapProperty(nameof(AttributeEntity.Name))]
+        public string ExplicitAttribute { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is AttributeEntityExplicitDto d))
+            {
+                return false;
+            }
+
+            return Id == d.Id && ExplicitAttribute == d.ExplicitAttribute;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(Id, ExplicitAttribute);
+    }
+
+    [MapFrom(typeof(AttributeEntity))]
+    public class AttributeEntityInvalidDto
+    {
+        public int Id { get; set; }
+
+        [MapProperty("Invalid property name")]
+        public string InvalidProperty { get; set; }
+    }
+
     [MapFrom(typeof(AttributeParent))]
     public class AttributeParentDto
     {

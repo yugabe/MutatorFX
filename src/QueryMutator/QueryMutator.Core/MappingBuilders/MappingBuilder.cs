@@ -88,10 +88,28 @@ namespace QueryMutator.Core
             {
                 if (!Bindings.Any(b => b.TargetMember.Name == targetProperty.Name))
                 {
+                    PropertyInfo sourceProperty = null;
+
                     if (sourceProperties.Any(p => p.Name == targetProperty.Name))
                     {
-                        var sourceProperty = sourceProperties.First(p => p.Name == targetProperty.Name);
+                        sourceProperty = sourceProperties.First(p => p.Name == targetProperty.Name);
+                    }
+                    else
+                    {
+                        var attribute = targetProperty.GetCustomAttributes(typeof(MapPropertyAttribute), false).FirstOrDefault();
+                        if (attribute != null)
+                        {
+                            sourceProperty = sourceProperties.FirstOrDefault(p => p.Name == (attribute as MapPropertyAttribute).PropertyName);
 
+                            if(sourceProperty == null)
+                            {
+                                throw new InvalidPropertyNameException("Cannot find property: " + (attribute as MapPropertyAttribute).PropertyName);
+                            }
+                        }
+                    }
+
+                    if (sourceProperty != null)
+                    { 
                         if (sourceProperty.PropertyType == targetProperty.PropertyType)
                         {
                             Bindings.Add(new MemberBinding
