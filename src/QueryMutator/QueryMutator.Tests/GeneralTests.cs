@@ -807,16 +807,5 @@ namespace QueryMutator.Tests
             });
             config.CreateMapper();
         }
-
-        [TestMethod]
-        public void InvalidPropertyName()
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
-            });
-            var exception = Assert.ThrowsException<TargetInvocationException>(() => config.CreateMapper());
-            Assert.IsInstanceOfType(exception.InnerException, typeof(InvalidPropertyNameException));
-        }
     }
 }
