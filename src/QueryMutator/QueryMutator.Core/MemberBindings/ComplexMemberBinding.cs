@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace QueryMutator.Core
 {
-    public class ComplexMemberBinding : MemberBindingBase
+    internal class ComplexMemberBinding : MemberBindingBase
     {
         public PropertyInfo SourceMember { get; set; }
 

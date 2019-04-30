@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace QueryMutator.Core
 {
-    public abstract class MemberBindingBase
+    internal abstract class MemberBindingBase
     {
         public Expression SourceExpression { get; set; }
 
@@ -12,7 +12,7 @@ namespace QueryMutator.Core
         public abstract Expression GenerateExpression(ParameterExpression target);
     }
 
-    public abstract class MemberBindingBase<TParam>
+    internal abstract class MemberBindingBase<TParam>
     {
         public Expression SourceExpression { get; set; }
 

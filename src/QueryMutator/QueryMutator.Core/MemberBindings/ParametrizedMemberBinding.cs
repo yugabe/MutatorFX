@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace QueryMutator.Core
 {
-    public class ParametrizedMemberBinding<TSource, TMember, TParam> : MemberBindingBase<TParam>
+    internal class ParametrizedMemberBinding<TSource, TMember, TParam> : MemberBindingBase<TParam>
     {
         public Func<TParam, Expression<Func<TSource, TMember>>> ExpressionFactory { get; set; }
         

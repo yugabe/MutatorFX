@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace QueryMutator.Core
 {
-    public class DependentListMemberBinding : MemberBindingBase
+    internal class DependentListMemberBinding : MemberBindingBase
     {
         public Type SourceType { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace QueryMutator.Core
 {
-    public class MemberBinding : MemberBindingBase
+    internal class MemberBinding : MemberBindingBase
     {
         public override Expression GenerateExpression(ParameterExpression parameter)
         {

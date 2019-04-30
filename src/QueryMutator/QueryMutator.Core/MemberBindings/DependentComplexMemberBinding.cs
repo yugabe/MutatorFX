@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace QueryMutator.Core
 {
-    public class DependentComplexMemberBinding : ComplexMemberBinding
+    internal class DependentComplexMemberBinding : ComplexMemberBinding
     {
         public Type SourceType { get; set; }
 
