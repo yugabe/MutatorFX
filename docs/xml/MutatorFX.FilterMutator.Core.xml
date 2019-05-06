@@ -1,436 +1,316 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>MutatorFX.FilterMutator.Core</name>
+        <name>QueryMutator.Core</name>
     </assembly>
     <members>
-        <member name="T:MutatorFX.FilterMutator.AscDescSorterBase`2">
+        <member name="T:QueryMutator.Core.MapFromAttribute">
             <summary>
-            A simple abstract base class for sorting a datasource in ascending or descending order.
-            </summary>
-            <typeparam name="TSource">The type of the elements in the source dataset.</typeparam>
-            <typeparam name="TSort">The type of the enum that reprensents the sorting types.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)">
-            <summary>
-            Get the expression to select the key for ordering a source dataset.
-            </summary>
-            <param name="sort">The value of the sorting enum.</param>
-            <returns>The Expression used by <see cref="M:System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})"/> or <see cref="M:System.Linq.Queryable.OrderByDescending``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})"/> (based on the value of ascending or descending ordering).</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.AscDescSorterBase`2.Sort(System.Linq.IQueryable{`0},`1,System.Boolean)">
-            <summary>
-            Sorts the <paramref name="filtered"/> dataset using the <paramref name="sort"/> value to get the key via <see cref="M:MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)"/>, and calls either 
-            <see cref="M:System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})"/> or <see cref="M:System.Linq.Queryable.OrderByDescending``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})"/> 
-            based on the value of <paramref name="sortDescending"/>.
-            </summary>
-            <param name="filtered">The dataset to sort.</param>
-            <param name="sort">The value of the sorting enum to be passed to the <see cref="M:MutatorFX.FilterMutator.AscDescSorterBase`2.KeySelector(`1)"/> method to get the sorting expression.</param>
-            <param name="sortDescending">True indicates the resultset should be in descending order.</param>
-            <returns>The sorted dataset, repesented as a queryable of <typeparamref name="TSource"/> objects.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.ClauseCollection`2">
-            <summary>
-            A collection of filtering clause objects.
-            </summary>
-            <typeparam name="TSource">The source type to use when filtering.</typeparam>
-            <typeparam name="TFilter">The filter type to apply when filtering.</typeparam>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.ClauseCollection`2.Clauses">
-            <summary>
-            The clauses contained in this collection.
+            Specifies a mapping from the supplied type to the attribute target.
             </summary>
         </member>
-        <member name="M:MutatorFX.FilterMutator.ClauseCollection`2.AddClause``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Func{``0,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`1,System.Boolean},System.ValueTuple{System.String,System.Object}[])">
+        <member name="P:QueryMutator.Core.MapFromAttribute.SourceType">
             <summary>
-            Adds an <see cref="T:MutatorFX.FilterMutator.IFilterClause`2"/> instance to the current collection. 
-            This method can be used for applying extensions for custom filtering clause implementations.
-            </summary>
-            <typeparam name="TClause">The type of the selected clause from <typeparamref name="TFilter"/>. Should be inferred.</typeparam>
-            <param name="filterClauseSelector">The accessor used to get the clause value from a filter.</param>
-            <param name="filterPredicate">The predicate factory that's used to generate the filtering expression based on the current clause value.</param>
-            <param name="onDisabledFilterPredicate">A predicate that is used when the clause is considered disabled for a given filter. The default returns a constant true value for each item in the collection.</param>
-            <param name="isClauseEnabled">A function that determines whether the current clause is enabled for a given filter.</param>
-            <param name="options">Additional options that can be passed to the clause. Will be converted to a <see cref="T:System.String"/>-<see cref="T:System.String"/> <see cref="T:System.Collections.Generic.Dictionary`2"/>, so the keys should be unique amongst the parameters.</param>
-            <returns>The current collection after that clause was added to it.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ClauseCollection`2.GetEnumerator">
-            <summary>Returns the enumerator for the <see cref="P:MutatorFX.FilterMutator.ClauseCollection`2.Clauses"/> in the collection.</summary>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.ClauseFilterer`2">
-            <summary>
-            A simple <see cref="T:MutatorFX.FilterMutator.IFilterer`2"/> implementation base class for creating a clause-based filtering mechanism.
-            </summary>
-            <typeparam name="TSource">The type of the source dataset items.</typeparam>
-            <typeparam name="TFilter">The type of the input filter used for filtering and creating clauses.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ClauseFilterer`2.GetClauses">
-            <summary>
-            Get the clauses, which will be used to filter the input datasource with a given filter.
-            You can use the shorthand static method <see cref="M:MutatorFX.FilterMutator.ClauseFilterer`2.CreateClauses"/> to create a static collection and refer it from here,
-            so that instantiations of the clauses don't happen every time. Take caution not to create the collection every time this 
-            method gets called unless you intend to generate them at runtime, because it can have performance repercussions.
-            </summary>
-            <returns>The clauses used for aggregating over the source dataset.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ClauseFilterer`2.Filter(System.Linq.IQueryable{`0},`1)">
-            <summary>
-            Executes all the available clauses over the given <paramref name="source"/> with values obtained for the clauses from the <paramref name="filter"/>.
-            </summary>
-            <param name="source">The source to filter with the clauses.</param>
-            <param name="filter">The filter to use when filtering <paramref name="source"/> with the clauses provided by <see cref="M:MutatorFX.FilterMutator.ClauseFilterer`2.GetClauses"/>.</param>
-            <returns>The filtered elements from the <paramref name="source"/>.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ClauseFilterer`2.CreateClauses">
-            <summary>
-            Factory method to create a generic <see cref="T:MutatorFX.FilterMutator.ClauseCollection`2"/> for the current type.
-            Can be used in non-static context to infer the generic type arguments for the collection.
-            </summary>
-            <returns>An empty collection of clauses, which can be used to build the individual filter clauses.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.ClosureSourceAccessor`1">
-            <summary>
-            A simple source accessor which accepts an accessor function to provide for the <see cref="T:MutatorFX.FilterMutator.ISourceAccessor`1"/> interface.
-            </summary>
-            <typeparam name="TSource">The type of the elements in the datasource.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ClosureSourceAccessor`1.#ctor(System.Func{System.Linq.IQueryable{`0}})">
-            <summary>
-            Create a new accessor, which will use the provided function to access the queryable source.
-            </summary>
-            <param name="sourceAccessor">The function to use to access the queryable source.</param>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.ClosureSourceAccessor`1.Source">
-            <summary>
-            Use the aquired accessor function to access the queryable source.
+            The type of the source class to map from.
             </summary>
         </member>
-        <member name="T:MutatorFX.FilterMutator.CompositeQueryExecutor`4">
+        <member name="M:QueryMutator.Core.MapFromAttribute.#ctor(System.Type)">
             <summary>
-            A queryexecutor implementation that accepts all its implementation details via its constructor.
-            Can be used via DI if all parameters can be trivially resolved.
+            Specifies a mapping from the supplied type <paramref name="sourceType"/> to the attribute target.
             </summary>
-            <typeparam name="TSource">The type of the elements in the source dataset.</typeparam>
-            <typeparam name="TResult">The type of the elements in the result dataset.</typeparam>
-            <typeparam name="TFilter">The type of the filter that is used when filtering the source dataset.</typeparam>
-            <typeparam name="TSort">The enum type that is used when sorting the dataset.</typeparam>
+            <param name="sourceType">The type of the source class to map from.</param>
         </member>
-        <member name="M:MutatorFX.FilterMutator.CompositeQueryExecutor`4.#ctor(MutatorFX.FilterMutator.ISourceAccessor{`0},MutatorFX.FilterMutator.IFilterer{`0,`2},MutatorFX.FilterMutator.ITransformer{`0,`1},MutatorFX.FilterMutator.ISorter{`0,`3},MutatorFX.FilterMutator.IPager{`1})">
+        <member name="T:QueryMutator.Core.MapPropertyAttribute">
             <summary>
-            Create a new instance of the <see cref="T:MutatorFX.FilterMutator.CompositeQueryExecutor`4"/> with all its implementation details injected via constructor.
-            </summary>
-            <param name="sourceAccessor">The source accessor used to acces the <typeparamref name="TSource"/> elements.</param>
-            <param name="filterer">The filterer implementation used to filter the dataset.</param>
-            <param name="transformer">The transformation object that can transform the <typeparamref name="TSource"/> types to <typeparamref name="TResult"/> types.</param>
-            <param name="sorter"></param>
-            <param name="pager"></param>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.SourceAccessor">
-            <summary>
-            The accessor used to access the source dataset.
+            Specifies a property mapping from the supplied property to the attribute target.
+            The defining class of the attribute target must be decorated with a <see cref="T:QueryMutator.Core.MapFromAttribute"/>.
             </summary>
         </member>
-        <member name="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Filterer">
+        <member name="P:QueryMutator.Core.MapPropertyAttribute.PropertyName">
             <summary>
-            The filterer used to filter the source dataset with a given <typeparamref name="TFilter"/>.
+            The name of the property to map from.
             </summary>
         </member>
-        <member name="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Transformer">
+        <member name="M:QueryMutator.Core.MapPropertyAttribute.#ctor(System.String)">
             <summary>
-            An <see cref="T:MutatorFX.FilterMutator.ITransformer`2"/> that can transform a source queryable to a result queryable dataset.
+            Specifies a property mapping from the supplied property <paramref name="propertyName"/> to the attribute target.
+            The defining class of the attribute target must be decorated with a <see cref="T:QueryMutator.Core.MapFromAttribute"/>.
+            </summary>
+            <param name="propertyName">The name of the source property to map from.</param>
+            <exception cref="T:QueryMutator.Core.InvalidPropertyNameException">Thrown when the property name does not exist on the source target.</exception>
+        </member>
+        <member name="T:QueryMutator.Core.InvalidPropertyNameException">
+            <summary>
+            Thrown when the property does not exist on the source type.
             </summary>
         </member>
-        <member name="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Sorter">
+        <member name="T:QueryMutator.Core.MappingAlreadyExistsException">
             <summary>
-            A sorter object that sorts a given <typeparamref name="TSource"/> object based on a sorting enum parameter.
+            Thrown when another mapping with the same generic parameters already exists.
             </summary>
         </member>
-        <member name="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Pager">
+        <member name="T:QueryMutator.Core.MappingNotFoundException">
             <summary>
-            A pager object that generates paging results for a given <typeparamref name="TResult"/> dataset.
+            Thrown when the mapping with the supplied generic arguments does not exist.
             </summary>
         </member>
-        <member name="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Source">
+        <member name="T:QueryMutator.Core.MappingValidationException">
             <summary>
-            The default source accessor implementation uses the injected <see cref="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.SourceAccessor"/> to access the source dataset.
+            Thrown when a mapping validation error occurs.
             </summary>
         </member>
-        <member name="M:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Filter(System.Linq.IQueryable{`0},`2)">
+        <member name="T:QueryMutator.Core.QueryableExtensions">
             <summary>
-            The default filtering implementation uses the injected <see cref="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Filterer"/> object to filter the given datasource with the provided filter.
-            </summary>
-            <param name="source">The datasource to apply filtering to.</param>
-            <param name="filter">The filter to apply to the datasource.</param>
-            <returns>The filtered dataset.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Sort(System.Linq.IQueryable{`0},`3,System.Boolean)">
-            <summary>
-            The default sorting implementation uses the injected <see cref="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Sorter"/> object to sort the given source dataset.
-            </summary>
-            <param name="filtered">The filtered, unsorted dataset to apply sorting to.</param>
-            <param name="sorting">The sorting value to determine the kind of sorting to use.</param>
-            <param name="sortDescending">The order of sorting.</param>
-            <returns>The sorted dataset.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Transform(System.Linq.IQueryable{`0})">
-            <summary>
-            The default transformation implementation uses the injected <see cref="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Transformer"/> object to transform the source dataset to the result dataset.
-            </summary>
-            <param name="source">The source objects to transform to <typeparamref name="TResult"/>.</param>
-            <returns>The transformed objects.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Page(System.Linq.IQueryable{`1},System.Int32,System.Int32)">
-            <summary>
-            The default implementation uses the injected <see cref="P:MutatorFX.FilterMutator.CompositeQueryExecutor`4.Pager"/> to apply paging to the result dataset.
-            </summary>
-            <param name="results">The results to apply paging to.</param>
-            <param name="page">The page (1-based) requested.</param>
-            <param name="pageSize">The page size requested.</param>
-            <returns>The paged entries.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.ExpressionSorter`2">
-            <summary>
-            A simple <see cref="T:MutatorFX.FilterMutator.AscDescSorterBase`2"/> implementation, which accepts the implementation details in constructor.
-            </summary>
-            <typeparam name="TSource">The source types to sort.</typeparam>
-            <typeparam name="TSort">The sort enum type to use for sorting.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ExpressionSorter`2.#ctor(System.Func{`1,System.Linq.Expressions.Expression{System.Func{`0,System.Object}}})">
-            <summary>
-            Create a simple sorter which accepts the implementation details to use for sorting.
-            </summary>
-            <param name="keySelector">The factory method used to get the keySelector <see cref="T:System.Linq.Expressions.Expression"/> for a given <typeparamref name="TSort"/> value.</param>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ExpressionSorter`2.KeySelector(`1)">
-            <summary>
-            Use the aquired factory function to get the selector for the sorting function.
-            </summary>
-            <param name="sort">The value of the sorting enum used to aquire the keySelector for.</param>
-            <returns>The expression used to select the key from a <typeparamref name="TSource"/> object.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.ExpressionTransformer`2">
-            <summary>
-            A simple <see cref="T:MutatorFX.FilterMutator.ITransformer`2"/> implementation, which accepts the implementation details in constructor.
-            </summary>
-            <typeparam name="TSource">The source type to transform.</typeparam>
-            <typeparam name="TResult">The result type to transform <typeparamref name="TSource"/> to.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ExpressionTransformer`2.#ctor(System.Linq.Expressions.Expression{System.Func{`0,`1}})">
-            <summary>
-            Create a simple transformer, which will use the provided expression to transform the source to the result dataset.
-            </summary>
-            <param name="transformExpression">The expression used to transform from <typeparamref name="TSource"/> to <typeparamref name="TResult"/>.</param>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.ExpressionTransformer`2.Transform(System.Linq.IQueryable{`0})">
-            <summary>
-            Use the aquired expression to transform the <paramref name="source"/> dataset to the result dataset.
-            </summary>
-            <param name="source">The source to transform.</param>
-            <returns>The transformed results.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.FilterClause`3">
-            <summary>
-            Represents the default implementation of a clause used for filtering. Provides a way to select 
-            a clause from a filter object, execute the clause on a given dataset, or fallback to a default
-            filtering mechanism when the clause is considered disabled.
-            </summary>
-            <typeparam name="TSource">The type of the source objects in the dataset to be filtered.</typeparam>
-            <typeparam name="TFilter">The filter type to select the clause from to apply to the dataset.</typeparam>
-            <typeparam name="TClause">The type of the selected clause.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.#ctor(System.Linq.Expressions.Expression{System.Func{`1,`2}},System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`1,System.Boolean},System.Collections.Generic.Dictionary{System.String,System.Object})">
-            <summary>
-            Create a new clause used for filtering.
-            </summary>
-            <param name="filterClauseSelector">
-            A selector that can be used to aquire the clause value from a given filter. As 
-            it is an Expression, it can be used to rationalize about a collection of clauses.
-            </param>
-            <param name="filterPredicate">
-            The predicate factory to use when building the filtering expressions. Can be a lambda,
-            that gets the selected clause value from the filter as parameter, that returns another lamdbda
-            that uses closure on the outer clause parameter to apply dynamically parametered filtering.
-            <para/>Example:
-            <code lang="csharp">
-            (clause: Clause) => (source: TSource) => source.Name.Contains(clause); 
-            <para/> // shorter version: <para/> c => s => s.Name.Contains(c);
-            </code>
-            </param>
-            <param name="onDisabledFilterPredicate">A predicate that gets used instead of 
-            <paramref name="filterPredicate"/> when the clause is considered disabled.</param>
-            <param name="isClauseEnabled">A predicate that indicates whether the clause is to be
-            considered enabled.</param>
-            <param name="options">Additional untyped options. Can be used for extensibility to add 
-            state or configuration to the clause via extensions.</param>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.FilterClause`3.Options">
-            <summary>
-            The options passed to this clause instance used to apply additional logic 
-            based on state via extensions.
+            Globally usable extensions for custom projections.
             </summary>
         </member>
-        <member name="P:MutatorFX.FilterMutator.FilterClause`3.ClauseExpression">
+        <member name="M:QueryMutator.Core.QueryableExtensions.Select``2(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1})">
             <summary>
-            The expression that represents the clause selector. Can be used to rationalize
-            about this clause in regards to other clauses (i.e. to check whether all filter
-            properties are matched in a collection of clauses).
+            Projects each element of a sequence into a new form using the supplied <paramref name="mapping"/>.
             </summary>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.MutatorFX#FilterMutator#IFilterClause{TSource,TFilter}#GetClause(`1)">
-            <summary>
-            Gets the clause object's value by applying the clause selector to the filter.
-            </summary>
-            <param name="filter">The filter object to apply the selector to.</param>
-            <returns>The clause value in the given object.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.GetClause(`1)">
-            <summary>
-            Gets the clause object's value by applying the clause selector to the filter.
-            </summary>
-            <param name="filter">The filter object to apply the selector to.</param>
-            <returns>The clause value in the given object.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.GetFilterPredicate(`1)">
-            <summary>
-            Get the predicate expression for a given source item by a given filter, which
-            indicates whether the given source item should be in the filtered resultset or not.
-            </summary>
-            <param name="filter">The filter object to get the predicate clause from.</param>
-            <returns>The expression that represents a predicate delegate, that can be used to
-            filter the source dataset by the clause value. Returns null if the 
-            <see cref="P:MutatorFX.FilterMutator.FilterClause`3.FilterPredicate"/> is null.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.GetOnDisabledFilterPredicate">
-            <summary>
-            Gets the predicate that should be applied when the filter is considered disabled.
-            If no custom predicate was supplied, the default is an always truthy predicate.
-            </summary>
-            <returns>The predicate to use for filtering, or a truthy predicate if none was supplied.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.IsClauseEnabled(`1)">
-            <summary>
-            Determine whether the clause is enabled for the given filter.
-            Uses the <typeparamref name="TClause"/> type's default <see cref="T:System.Collections.Generic.EqualityComparer`1"/> if none was supplied.
-            </summary>
-            <param name="filter">The filter to use when checking the clause's disabled state.</param>
-            <returns>True if the filter is considered enabled.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.FilterClause`3.Execute(System.Linq.IQueryable{`0},`1)">
-            <summary>
-            Executes a filtering by applying one of provided predicates to filter the given datasource.
-            </summary>
-            <param name="source">The source to filter by this clause's value.</param>
-            <param name="filter">The filter to get the clause value from.</param>
-            <returns>The dataset filtered by the predicate described by this clause.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.NoopFilterer`2">
-            <summary>
-            A simple filterer implementation that returns the input datasource (does not filter). Can be used for mocking and testing or composition.
-            </summary>
-            <typeparam name="TSource">The source type to apply no filtering to.</typeparam>
-            <typeparam name="TFilter">The filter type, not used.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.NoopFilterer`2.Filter(System.Linq.IQueryable{`0},`1)">
-            <summary>
-            Returns the input <paramref name="source"/> object.
-            </summary>
-            <param name="source">This object is returned.</param>
-            <param name="filter">This object is ignored.</param>
-            <returns>The <paramref name="source"/> object.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.PropertyChainNameSorter`2">
-            <summary>
-            A sorter object that can be used to apply sorting to a given source dataset.
-            This implementation instantiates a static cache for any given <typeparamref name="TSort"/> parameter,
-            which can throw if no matching property chains are found for any name in the given <typeparamref name="TSort"/> enum.
-            </summary>
-            <typeparam name="TSource">The type of the elements in the source dataset.</typeparam>
-            <typeparam name="TSort">The enum type. This enum should only contain names that can be resolved to property chains 
-            without the separating dot, otherwise the static cache will throw.</typeparam>
-        </member>
-        <member name="P:MutatorFX.FilterMutator.PropertyChainNameSorter`2.Lookup">
-            <summary>
-            The global cache lookup for any given <typeparamref name="TSort"/> type.
-            </summary>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.PropertyChainNameSorter`2.KeySelector(`1)">
-            <summary>
-            Uses the static cache <see cref="P:MutatorFX.FilterMutator.PropertyChainNameSorter`2.Lookup"/> to get the sorter property based on the <typeparamref name="TSort"/> enum value provided.
-            Throws if the given key was not found in the lookup.
-            </summary>
-            <param name="sort">The value to look for in the lookup and use. </param>
-            <returns>The expression used to aquire the key to apply sorting for.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.QueryExecutorBase`4">
-            <summary>A base implementation that provides a paging mechanism and composes the query to a resultset.</summary>
-            <typeparam name="TSource">The type of the elements in the source dataset.</typeparam>
-            <typeparam name="TResult">The type of the elements in the result dataset.</typeparam>
-            <typeparam name="TFilter">The type of the filter used in filtering the dataset.</typeparam>
-            <typeparam name="TSort">The enum type that is used to sort the dataset before paging is applied.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.QueryExecutorBase`4.ExecuteQuery(`2,System.Int32,System.Int32,`3,System.Boolean)">
-            <summary>
-            Executes the query with the given filtering, paging and sorting parameters on the source dataset.
-            </summary>
-            <param name="filter">The filter object to use when filtering the queryable source dataset.</param>
-            <param name="page">The page requested for the query.</param>
-            <param name="pageSize">The page size requested for the query.</param>
-            <param name="sorting">The sorting used when querying the dataset.</param>
-            <param name="sortDescending">Whether to use descending ordering of the results in the dataset.</param>
+            <typeparam name="TSource">The type of the given object <paramref name="source"/>.</typeparam>
+            <typeparam name="TTarget">The type of the destination object into which the source is projected.</typeparam>
+            <param name="source">The object to execute the given action on.</param>
+            <param name="mapping">The mapping to use for the projection.</param>
             <returns></returns>
         </member>
-        <member name="P:MutatorFX.FilterMutator.QueryExecutorBase`4.Source">
+        <member name="M:QueryMutator.Core.QueryableExtensions.Select``3(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1,``2},``2)">
             <summary>
-            The accessor for the queryable datasource.
+            Projects each element of a sequence into a new form using the supplied <paramref name="mapping"/> and <paramref name="parameter"/>.
             </summary>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.QueryExecutorBase`4.Filter(System.Linq.IQueryable{`0},`2)">
-            <summary>
-            Filters the given queryable datasource with the given filter.
-            </summary>
-            <param name="source">The source to filter.</param>
-            <param name="filter">The filter object to use when filtering the source.</param>
-            <returns>The filtered datasource queryable.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.QueryExecutorBase`4.Transform(System.Linq.IQueryable{`0})">
-            <summary>
-            Transforms the given <typeparamref name="TSource"/> datasource to a set of <typeparamref name="TResult"/> results.
-            </summary>
-            <param name="source">The source to transform.</param>
-            <returns>The transformed queryable datasource.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.QueryExecutorBase`4.Sort(System.Linq.IQueryable{`0},`3,System.Boolean)">
-            <summary>
-            Sorts the queryable datasource with the given sorting options.
-            </summary>
-            <param name="filtered">The dataset to sort.</param>
-            <param name="sort">The sorting enum used to parameterize the sorting.</param>
-            <param name="sortDescending">Whether to use descending ordering for sorting.</param>
-            <returns>The sorted queryable dataset.</returns>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.QueryExecutorBase`4.Page(System.Linq.IQueryable{`1},System.Int32,System.Int32)">
-            <summary>
-            Apply paging to a resultset queryable.
-            </summary>
-            <param name="results">The results to apply paging to.</param>
-            <param name="page">The page requested.</param>
-            <param name="pageSize">The page size requested.</param>
-            <returns>The elements in the queryable corresponding to the requested page.</returns>
-        </member>
-        <member name="T:MutatorFX.FilterMutator.SimplePager`1">
-            <summary>
-            A simple paging implementation that uses <see cref="M:System.Linq.Queryable.Skip``1(System.Linq.IQueryable{``0},System.Int32)"/> and <see cref="M:System.Linq.Queryable.Take``1(System.Linq.IQueryable{``0},System.Int32)"/>.
-            </summary>
-            <typeparam name="TResult">The type of the elements in the dataset to page.</typeparam>
-        </member>
-        <member name="M:MutatorFX.FilterMutator.SimplePager`1.Page(System.Linq.IQueryable{`0},System.Int32,System.Int32)">
-            <summary>
-            Get the paged results based on the input parameters.
-            </summary>
-            <param name="results">The results to page.</param>
-            <param name="page">The value of the page. Should be positive.</param>
-            <param name="pageSize">The page size to apply when paging. Should be positive.</param>
+            <typeparam name="TSource">The type of the given object <paramref name="source"/>.</typeparam>
+            <typeparam name="TTarget">The type of the destination object into which the source is projected.</typeparam>
+            <param name="source">The object to execute the given action on.</param>
+            <param name="mapping">The mapping to use for the projection.</param>
+            <param name="parameter">An instance of the type <typeparamref name="TParameter"/> required for the mapping.</param>
             <returns></returns>
+        </member>
+        <member name="T:QueryMutator.Core.QueryMutatorExtensions">
+            <summary>
+            Globally usable extensions for configuration purposes.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration)">
+            <summary>
+            Creates the mapper instance using the supplied configuration <paramref name="config"/>, then handles 
+            registering the mapper and the individual mappings to the service container <paramref name="services"/>.
+            </summary>
+            <param name="config">The object that contains the mappings and options necessary to create the mapper.</param>
+            <returns></returns>
+        </member>
+        <member name="T:QueryMutator.Core.IMapperConfigurationExpression">
+            <summary>
+            Represents an object which can be used to define mappings.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2">
+            <summary>
+            Creates a new mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2(System.Action{QueryMutator.Core.IMappingBuilder{``0,``1}})">
+            <summary>
+            Creates a new mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types,
+            using the supplied <paramref name="mappingFactory"/> options.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``3(System.Action{QueryMutator.Core.IMappingBuilder{``0,``1,``2}})">
+            <summary>
+            Creates a new mapping between the <typeparamref name="TSource"/>, <typeparamref name="TTarget"/> and <typeparamref name="TParam"/> types,
+            using the supplied <paramref name="mappingFactory"/> options.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The parameter type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            Enable scanning the supplied <paramref name="assemblies"/> assemblies for objects decorated with the <see cref="T:QueryMutator.Core.MapFromAttribute"/> attribute.
+            </summary>
+            <param name="assemblies">The list of assemblies to be scanned.</param>
+        </member>
+        <member name="T:QueryMutator.Core.MapperConfiguration">
+            <summary>
+            Represents the object used for configuring and creating a new mapper instance. 
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.MapperConfiguration.#ctor(System.Action{QueryMutator.Core.IMapperConfigurationExpression},QueryMutator.Core.MapperConfigurationOptions)">
+            <summary>
+            Represents the object used for configuring and creating a new mapper instance. 
+            </summary>
+            <param name="expression">The configuration expressions action to execute.</param>
+            <param name="options">The additional options. Can be null.</param>
+        </member>
+        <member name="M:QueryMutator.Core.MapperConfiguration.CreateMapper">
+            <summary>
+            Creates a new mapper object using the registered mappings or the default mappings where necessary.
+            </summary>
+            <returns>Returns a new <see cref="T:QueryMutator.Core.IMapper"/> object that contains the mappings.</returns>
+        </member>
+        <member name="T:QueryMutator.Core.MapperConfigurationOptions">
+            <summary>
+            A configuration object containing settings, that can be passed when creating a new instance of 
+            <see cref="T:QueryMutator.Core.MapperConfiguration"/>.
+            </summary>
+        </member>
+        <member name="P:QueryMutator.Core.MapperConfigurationOptions.ValidationMode">
+            <summary>
+            Specifies the validation mode to be used when creating the mappings.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.ValidationMode">
+            <summary>
+            Determines the validation mode when mapping objects.
+            </summary>
+        </member>
+        <member name="F:QueryMutator.Core.ValidationMode.Destination">
+            <summary>
+            All destination properties have to be mapped.
+            </summary>
+        </member>
+        <member name="F:QueryMutator.Core.ValidationMode.Source">
+            <summary>
+            All source properties have to be mapped.
+            </summary>
+        </member>
+        <member name="F:QueryMutator.Core.ValidationMode.None">
+            <summary>
+            No validation is used.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.IMapper">
+            <summary>
+            Represents an object that contains mappings.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.IMapper.GetMapping``2">
+            <summary>
+            Return a mapping specified by the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingNotFoundException">Thrown when the mapping is not found.</exception>
+            <returns>The specified mapping.</returns>
+        </member>
+        <member name="M:QueryMutator.Core.IMapper.GetMapping``3">
+            <summary>
+            Return a mapping specified by the <typeparamref name="TSource"/>, <typeparamref name="TTarget"/> and <typeparamref name="TParam"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The parameter type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingNotFoundException">Thrown when the mapping is not found.</exception>
+            <returns>The specified mapping.</returns>
+        </member>
+        <member name="T:QueryMutator.Core.IMapping">
+            <summary>
+            Represents a generic mapping.
+            </summary>
+        </member>
+        <member name="P:QueryMutator.Core.IMapping.Expression">
+            <summary>
+            Contains the expression used for the mapping.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.IMapping`2">
+            <summary>
+            Represents a mapping.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+        </member>
+        <member name="P:QueryMutator.Core.IMapping`2.Expression">
+            <summary>
+            Contains the expression used for the mapping.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.IMapping`3">
+            <summary>
+            Represents a mapping with a parameter.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The parameter type of the mapping.</typeparam>
+        </member>
+        <member name="T:QueryMutator.Core.IMappingBuilder`2">
+            <summary>
+            Represents an object that can be used to create a custom mapping between the 
+            <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},``0)">
+            <summary>
+            Creates a mapping between a target property and a constant.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="constant">The value of the constant.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Creates a mapping between a target and a source property.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{``0}}})">
+            <summary>
+            Creates a mapping between a target and a source property, where the source property type is nullable.
+            </summary>
+            <typeparam name="TMember">The underlying property type.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,System.Nullable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Creates a mapping between a target and a source property, where the target property type is nullable.
+            </summary>
+            <typeparam name="TMember">The underlying property type.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMemberList``2(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}})">
+            <summary>
+            Creates a mapping between a target and a source property, where each property type implements <see cref="!:IEnumerable&lt;&gt;"/>.
+            If no mapping exists between <typeparamref name="TSourceMember"/> and <typeparamref name="TTargetMember"/>, a default mapping will be created.
+            </summary>
+            <typeparam name="TTargetMember">The generic argument of the target property type.</typeparam>
+            <typeparam name="TSourceMember">The generic argument of the source property type.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.IgnoreMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})">
+            <summary>
+            Ignores the selected target property, excluding it from the mapping.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.ValidateMapping(QueryMutator.Core.ValidationMode)">
+            <summary>
+            Sets the validation mode to be used when creating the mappings.
+            </summary>
+            <param name="mode">The selected validation mode.</param>
+        </member>
+        <member name="T:QueryMutator.Core.IMappingBuilder`3">
+            <summary>
+            Represents an object that can be used to create a custom mapping between the 
+            <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types with a 
+            <typeparamref name="TParam"/> parameter.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The param type of the mapping.</typeparam>
         </member>
     </members>
 </doc>

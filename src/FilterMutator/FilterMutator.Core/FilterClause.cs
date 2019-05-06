@@ -19,25 +19,20 @@ namespace MutatorFX.FilterMutator
         /// Create a new clause used for filtering.
         /// </summary>
         /// <param name="filterClauseSelector">
-        /// A selector that can be used to aquire the clause value from a given filter. As 
-        /// it is an Expression, it can be used to rationalize about a collection of clauses.
+        /// A selector that can be used to aquire the clause value from a given filter. As it is an Expression, it can be used to rationalize about a collection of clauses.
         /// </param>
         /// <param name="filterPredicate">
-        /// The predicate factory to use when building the filtering expressions. Can be a lambda,
-        /// that gets the selected clause value from the filter as parameter, that returns another lamdbda
-        /// that uses closure on the outer clause parameter to apply dynamically parametered filtering.
-        /// <para/>Example:
-        /// <code lang="csharp">
-        /// (clause: Clause) => (source: TSource) => source.Name.Contains(clause); 
-        /// <para/> // shorter version: <para/> c => s => s.Name.Contains(c);
-        /// </code>
+        /// The predicate factory to use when building the filtering expressions. Can be a lambda, that gets the selected clause value from the filter as parameter, that returns another lamdbda that uses closure on the outer clause parameter to apply dynamically parametered filtering.
         /// </param>
-        /// <param name="onDisabledFilterPredicate">A predicate that gets used instead of 
-        /// <paramref name="filterPredicate"/> when the clause is considered disabled.</param>
-        /// <param name="isClauseEnabled">A predicate that indicates whether the clause is to be
-        /// considered enabled.</param>
-        /// <param name="options">Additional untyped options. Can be used for extensibility to add 
-        /// state or configuration to the clause via extensions.</param>
+        /// <param name="onDisabledFilterPredicate">
+        /// A predicate that gets used instead of <paramref name="filterPredicate"/> when the clause is considered disabled.
+        /// </param>
+        /// <param name="isClauseEnabled">
+        /// A predicate that indicates whether the clause is to beconsidered enabled.
+        /// </param>
+        /// <param name="options">
+        /// Additional untyped options. Can be used for extensibility to add state or configuration to the clause via extensions.
+        /// </param>
         public FilterClause(
             Expression<Func<TFilter, TClause>> filterClauseSelector,
             Func<TClause, Expression<Func<TSource, bool>>> filterPredicate = null,
