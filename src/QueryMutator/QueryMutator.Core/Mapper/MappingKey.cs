@@ -31,6 +31,6 @@ namespace QueryMutator.Core
             return SourceType == m.SourceType && TargetType == m.TargetType && ParameterType == m.ParameterType;
         }
 
-        public override int GetHashCode() => HashCode.Combine(SourceType.GetHashCode(), TargetType.GetHashCode(), ParameterType?.GetHashCode());
+        public override int GetHashCode() => SourceType.GetHashCode() + TargetType.GetHashCode() + (ParameterType?.GetHashCode() ?? 0);
     }
 }

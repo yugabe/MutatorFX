@@ -40,6 +40,6 @@ namespace QueryMutator.Core
             return Equals(b);
         }
 
-        public override int GetHashCode() => HashCode.Combine(Built, SourceType, TargetType, Dependencies?.GetHashCode());
+        public override int GetHashCode() => Built.GetHashCode() + SourceType.GetHashCode() + TargetType.GetHashCode() + (Dependencies?.GetHashCode() ?? 0);
     }
 }

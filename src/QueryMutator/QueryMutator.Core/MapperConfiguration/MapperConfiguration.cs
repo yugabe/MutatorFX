@@ -53,7 +53,7 @@ namespace QueryMutator.Core
 
                 var mapping = builder.Build(dependencies);
 
-                mappings.TryAdd(key, mapping);
+                mappings.Add(key, mapping);
             }
 
             foreach (var parametrizedBuilder in Config.ParametrizedBuilders)
@@ -63,7 +63,7 @@ namespace QueryMutator.Core
                 // This just stores the dependencies for later use
                 parametrizedBuilder.Value.Builder.Build(dependencies);
 
-                mappings.TryAdd(parametrizedBuilder.Key, parametrizedBuilder.Value.Mapping);
+                mappings.Add(parametrizedBuilder.Key, parametrizedBuilder.Value.Mapping);
             }
             
             return new Mapper

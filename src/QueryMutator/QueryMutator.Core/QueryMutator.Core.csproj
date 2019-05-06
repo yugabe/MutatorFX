@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MutatorFX.QueryMutator.Core</AssemblyName>
     <RootNamespace>MutatorFX.QueryMutator</RootNamespace>
     <Product>MutatorFX.QueryMutator</Product>
@@ -23,6 +23,6 @@
       <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets"/>
+  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
 
 </Project>
