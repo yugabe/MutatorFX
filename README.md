@@ -30,9 +30,9 @@ The abstractions package contains only the public facing interfaces of FilterMut
 ----------------------------------
 [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore) specific extension package. Only contains two SourceAccessor types (```DbSetSourceAccessor<TDbContext, TEntity>``` and ```DbSetSourceAccessor<TEntity>```) which you can use with EF Core and dependency injection frameworks.
 
-**QueryMutator** [Coming soon!]
+**MutatorFX.QueryMutator.Core** [NuGet, [Documentation](https://github.com/yugabe/MutatorFX/blob/master/docs/md/MutatorFX.QueryMutator.Core.md)]
 -------------------------------
-Check out the old QueryMutator [here](https://github.com/yugabe/QueryMutator) in the meantime to get the feeling of truly automagical mapping!
+TODO
 
 <hr/>
 
