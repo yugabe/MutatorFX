@@ -4,5 +4,313 @@
         <name>MutatorFX.QueryMutator.Core</name>
     </assembly>
     <members>
+        <member name="T:QueryMutator.Core.MapFromAttribute">
+            <summary>
+            Specifies a mapping from the supplied type to the attribute target.
+            </summary>
+        </member>
+        <member name="P:QueryMutator.Core.MapFromAttribute.SourceType">
+            <summary>
+            The type of the source class to map from.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.MapFromAttribute.#ctor(System.Type)">
+            <summary>
+            Specifies a mapping from the supplied type <paramref name="sourceType"/> to the attribute target.
+            </summary>
+            <param name="sourceType">The type of the source class to map from.</param>
+        </member>
+        <member name="T:QueryMutator.Core.MapPropertyAttribute">
+            <summary>
+            Specifies a property mapping from the supplied property to the attribute target.
+            The defining class of the attribute target must be decorated with a <see cref="T:QueryMutator.Core.MapFromAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:QueryMutator.Core.MapPropertyAttribute.PropertyName">
+            <summary>
+            The name of the property to map from.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.MapPropertyAttribute.#ctor(System.String)">
+            <summary>
+            Specifies a property mapping from the supplied property <paramref name="propertyName"/> to the attribute target.
+            The defining class of the attribute target must be decorated with a <see cref="T:QueryMutator.Core.MapFromAttribute"/>.
+            </summary>
+            <param name="propertyName">The name of the source property to map from.</param>
+            <exception cref="T:QueryMutator.Core.InvalidPropertyNameException">Thrown when the property name does not exist on the source target.</exception>
+        </member>
+        <member name="T:QueryMutator.Core.InvalidPropertyNameException">
+            <summary>
+            Thrown when the property does not exist on the source type.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.MappingAlreadyExistsException">
+            <summary>
+            Thrown when another mapping with the same generic parameters already exists.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.MappingNotFoundException">
+            <summary>
+            Thrown when the mapping with the supplied generic arguments does not exist.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.MappingValidationException">
+            <summary>
+            Thrown when a mapping validation error occurs.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.QueryableExtensions">
+            <summary>
+            Globally usable extensions for custom projections.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.QueryableExtensions.Select``2(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1})">
+            <summary>
+            Projects each element of a sequence into a new form using the supplied <paramref name="mapping"/>.
+            </summary>
+            <typeparam name="TSource">The type of the given object <paramref name="source"/>.</typeparam>
+            <typeparam name="TTarget">The type of the destination object into which the source is projected.</typeparam>
+            <param name="source">The object to execute the given action on.</param>
+            <param name="mapping">The mapping to use for the projection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:QueryMutator.Core.QueryableExtensions.Select``3(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1,``2},``2)">
+            <summary>
+            Projects each element of a sequence into a new form using the supplied <paramref name="mapping"/> and <paramref name="parameter"/>.
+            </summary>
+            <typeparam name="TSource">The type of the given object <paramref name="source"/>.</typeparam>
+            <typeparam name="TTarget">The type of the destination object into which the source is projected.</typeparam>
+            <param name="source">The object to execute the given action on.</param>
+            <param name="mapping">The mapping to use for the projection.</param>
+            <param name="parameter">An instance of the type <typeparamref name="TParameter"/> required for the mapping.</param>
+            <returns></returns>
+        </member>
+        <member name="T:QueryMutator.Core.QueryMutatorExtensions">
+            <summary>
+            Globally usable extensions for configuration purposes.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration)">
+            <summary>
+            Creates the mapper instance using the supplied configuration <paramref name="config"/>, then handles 
+            registering the mapper and the individual mappings to the service container <paramref name="services"/>.
+            </summary>
+            <param name="config">The object that contains the mappings and options necessary to create the mapper.</param>
+            <returns></returns>
+        </member>
+        <member name="T:QueryMutator.Core.IMapperConfigurationExpression">
+            <summary>
+            Represents an object which can be used to define mappings.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2">
+            <summary>
+            Creates a new mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2(System.Action{QueryMutator.Core.IMappingBuilder{``0,``1}})">
+            <summary>
+            Creates a new mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types,
+            using the supplied <paramref name="mappingFactory"/> options.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``3(System.Action{QueryMutator.Core.IMappingBuilder{``0,``1,``2}})">
+            <summary>
+            Creates a new mapping between the <typeparamref name="TSource"/>, <typeparamref name="TTarget"/> and <typeparamref name="TParam"/> types,
+            using the supplied <paramref name="mappingFactory"/> options.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The parameter type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
+        </member>
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            Enable scanning the supplied <paramref name="assemblies"/> assemblies for objects decorated with the <see cref="T:QueryMutator.Core.MapFromAttribute"/> attribute.
+            </summary>
+            <param name="assemblies">The list of assemblies to be scanned.</param>
+        </member>
+        <member name="T:QueryMutator.Core.MapperConfiguration">
+            <summary>
+            Represents the object used for configuring and creating a new mapper instance. 
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.MapperConfiguration.#ctor(System.Action{QueryMutator.Core.IMapperConfigurationExpression},QueryMutator.Core.MapperConfigurationOptions)">
+            <summary>
+            Represents the object used for configuring and creating a new mapper instance. 
+            </summary>
+            <param name="expression">The configuration expressions action to execute.</param>
+            <param name="options">The additional options. Can be null.</param>
+        </member>
+        <member name="M:QueryMutator.Core.MapperConfiguration.CreateMapper">
+            <summary>
+            Creates a new mapper object using the registered mappings or the default mappings where necessary.
+            </summary>
+            <returns>Returns a new <see cref="T:QueryMutator.Core.IMapper"/> object that contains the mappings.</returns>
+        </member>
+        <member name="T:QueryMutator.Core.MapperConfigurationOptions">
+            <summary>
+            A configuration object containing settings, that can be passed when creating a new instance of 
+            <see cref="T:QueryMutator.Core.MapperConfiguration"/>.
+            </summary>
+        </member>
+        <member name="P:QueryMutator.Core.MapperConfigurationOptions.ValidationMode">
+            <summary>
+            Specifies the validation mode to be used when creating the mappings.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.ValidationMode">
+            <summary>
+            Determines the validation mode when mapping objects.
+            </summary>
+        </member>
+        <member name="F:QueryMutator.Core.ValidationMode.Destination">
+            <summary>
+            All destination properties have to be mapped.
+            </summary>
+        </member>
+        <member name="F:QueryMutator.Core.ValidationMode.Source">
+            <summary>
+            All source properties have to be mapped.
+            </summary>
+        </member>
+        <member name="F:QueryMutator.Core.ValidationMode.None">
+            <summary>
+            No validation is used.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.IMapper">
+            <summary>
+            Represents an object that contains mappings.
+            </summary>
+        </member>
+        <member name="M:QueryMutator.Core.IMapper.GetMapping``2">
+            <summary>
+            Return a mapping specified by the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingNotFoundException">Thrown when the mapping is not found.</exception>
+            <returns>The specified mapping.</returns>
+        </member>
+        <member name="M:QueryMutator.Core.IMapper.GetMapping``3">
+            <summary>
+            Return a mapping specified by the <typeparamref name="TSource"/>, <typeparamref name="TTarget"/> and <typeparamref name="TParam"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The parameter type of the mapping.</typeparam>
+            <exception cref="T:QueryMutator.Core.MappingNotFoundException">Thrown when the mapping is not found.</exception>
+            <returns>The specified mapping.</returns>
+        </member>
+        <member name="T:QueryMutator.Core.IMapping">
+            <summary>
+            Represents a generic mapping.
+            </summary>
+        </member>
+        <member name="P:QueryMutator.Core.IMapping.Expression">
+            <summary>
+            Contains the expression used for the mapping.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.IMapping`2">
+            <summary>
+            Represents a mapping.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+        </member>
+        <member name="P:QueryMutator.Core.IMapping`2.Expression">
+            <summary>
+            Contains the expression used for the mapping.
+            </summary>
+        </member>
+        <member name="T:QueryMutator.Core.IMapping`3">
+            <summary>
+            Represents a mapping with a parameter.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The parameter type of the mapping.</typeparam>
+        </member>
+        <member name="T:QueryMutator.Core.IMappingBuilder`2">
+            <summary>
+            Represents an object that can be used to create a custom mapping between the 
+            <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},``0)">
+            <summary>
+            Creates a mapping between a target property and a constant.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="constant">The value of the constant.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Creates a mapping between a target and a source property.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{``0}}})">
+            <summary>
+            Creates a mapping between a target and a source property, where the source property type is nullable.
+            </summary>
+            <typeparam name="TMember">The underlying property type.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,System.Nullable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Creates a mapping between a target and a source property, where the target property type is nullable.
+            </summary>
+            <typeparam name="TMember">The underlying property type.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMemberList``2(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}})">
+            <summary>
+            Creates a mapping between a target and a source property, where each property type implements <see cref="!:IEnumerable&lt;&gt;"/>.
+            If no mapping exists between <typeparamref name="TSourceMember"/> and <typeparamref name="TTargetMember"/>, a default mapping will be created.
+            </summary>
+            <typeparam name="TTargetMember">The generic argument of the target property type.</typeparam>
+            <typeparam name="TSourceMember">The generic argument of the source property type.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.IgnoreMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})">
+            <summary>
+            Ignores the selected target property, excluding it from the mapping.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`2.ValidateMapping(QueryMutator.Core.ValidationMode)">
+            <summary>
+            Sets the validation mode to be used when creating the mappings.
+            </summary>
+            <param name="mode">The selected validation mode.</param>
+        </member>
+        <member name="T:QueryMutator.Core.IMappingBuilder`3">
+            <summary>
+            Represents an object that can be used to create a custom mapping between the 
+            <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types with a 
+            <typeparamref name="TParam"/> parameter.
+            </summary>
+            <typeparam name="TSource">The source type of the mapping.</typeparam>
+            <typeparam name="TTarget">The target type of the mapping.</typeparam>
+            <typeparam name="TParam">The param type of the mapping.</typeparam>
+        </member>
     </members>
 </doc>

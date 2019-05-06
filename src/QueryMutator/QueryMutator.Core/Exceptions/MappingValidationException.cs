@@ -2,6 +2,9 @@
 
 namespace QueryMutator.Core
 {
+    /// <summary>
+    /// Thrown when a mapping validation error occurs.
+    /// </summary>
     public class MappingValidationException : Exception
     {
         public MappingValidationException(): base() { }

@@ -4,10 +4,18 @@ using System.Linq;
 
 namespace QueryMutator.Core
 {
+    /// <summary>
+    /// Represents the object used for configuring and creating a new mapper instance. 
+    /// </summary>
     public class MapperConfiguration
     {
         private MapperConfigurationExpression Config { get; set; }
-        
+
+        /// <summary>
+        /// Represents the object used for configuring and creating a new mapper instance. 
+        /// </summary>
+        /// <param name="expression">The configuration expressions action to execute.</param>
+        /// <param name="options">The additional options. Can be null.</param>
         public MapperConfiguration(Action<IMapperConfigurationExpression> expression, MapperConfigurationOptions options = null)
         {
             Config = new MapperConfigurationExpression
@@ -18,6 +26,10 @@ namespace QueryMutator.Core
             expression(Config);
         }
 
+        /// <summary>
+        /// Creates a new mapper object using the registered mappings or the default mappings where necessary.
+        /// </summary>
+        /// <returns>Returns a new <see cref="IMapper"/> object that contains the mappings.</returns>
         public IMapper CreateMapper()
         {
             CreateAttributeBuilders();

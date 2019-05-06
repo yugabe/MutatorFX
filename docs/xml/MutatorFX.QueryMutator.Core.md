@@ -1,5 +1,5 @@
 <a name='assembly'></a>
-# MutatorFX.QueryMutator.Core
+# QueryMutator.Core
 
 ## Contents
 
@@ -13,22 +13,25 @@
   - [UseAttributeMapping(assemblies)](#M-QueryMutator-Core-IMapperConfigurationExpression-UseAttributeMapping-System-Collections-Generic-IEnumerable{System-Reflection-Assembly}- 'QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})')
 - [IMapping](#T-QueryMutator-Core-IMapping 'QueryMutator.Core.IMapping')
   - [Expression](#P-QueryMutator-Core-IMapping-Expression 'QueryMutator.Core.IMapping.Expression')
-- [IMapping\`2](#T-QueryMutator-Core-IMapping`2 'QueryMutator.Core.IMapping`2')
-  - [Expression](#P-QueryMutator-Core-IMapping`2-Expression 'QueryMutator.Core.IMapping`2.Expression')
-- [IMapping\`3](#T-QueryMutator-Core-IMapping`3 'QueryMutator.Core.IMapping`3')
 - [IMappingBuilder\`2](#T-QueryMutator-Core-IMappingBuilder`2 'QueryMutator.Core.IMappingBuilder`2')
   - [IgnoreMember\`\`1(memberSelector)](#M-QueryMutator-Core-IMappingBuilder`2-IgnoreMember``1-System-Linq-Expressions-Expression{System-Func{`1,``0}}- 'QueryMutator.Core.IMappingBuilder`2.IgnoreMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})')
+  - [MapMemberList\`\`2(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`2-MapMemberList``2-System-Linq-Expressions-Expression{System-Func{`1,System-Collections-Generic-IEnumerable{``0}}},System-Linq-Expressions-Expression{System-Func{`0,System-Collections-Generic-IEnumerable{``1}}}- 'QueryMutator.Core.IMappingBuilder`2.MapMemberList``2(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}})')
   - [MapMember\`\`1(memberSelector,constant)](#M-QueryMutator-Core-IMappingBuilder`2-MapMember``1-System-Linq-Expressions-Expression{System-Func{`1,``0}},``0- 'QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},``0)')
   - [MapMember\`\`1(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`2-MapMember``1-System-Linq-Expressions-Expression{System-Func{`1,``0}},System-Linq-Expressions-Expression{System-Func{`0,``0}}- 'QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}})')
   - [MapMember\`\`1(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`2-MapMember``1-System-Linq-Expressions-Expression{System-Func{`1,``0}},System-Linq-Expressions-Expression{System-Func{`0,System-Nullable{``0}}}- 'QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{``0}}})')
   - [MapMember\`\`1(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`2-MapMember``1-System-Linq-Expressions-Expression{System-Func{`1,System-Nullable{``0}}},System-Linq-Expressions-Expression{System-Func{`0,``0}}- 'QueryMutator.Core.IMappingBuilder`2.MapMember``1(System.Linq.Expressions.Expression{System.Func{`1,System.Nullable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,``0}})')
-  - [MapMemberList\`\`2(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`2-MapMemberList``2-System-Linq-Expressions-Expression{System-Func{`1,System-Collections-Generic-IEnumerable{``0}}},System-Linq-Expressions-Expression{System-Func{`0,System-Collections-Generic-IEnumerable{``1}}}- 'QueryMutator.Core.IMappingBuilder`2.MapMemberList``2(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}})')
   - [ValidateMapping(mode)](#M-QueryMutator-Core-IMappingBuilder`2-ValidateMapping-QueryMutator-Core-ValidationMode- 'QueryMutator.Core.IMappingBuilder`2.ValidateMapping(QueryMutator.Core.ValidationMode)')
 - [IMappingBuilder\`3](#T-QueryMutator-Core-IMappingBuilder`3 'QueryMutator.Core.IMappingBuilder`3')
+- [IMapping\`2](#T-QueryMutator-Core-IMapping`2 'QueryMutator.Core.IMapping`2')
+  - [Expression](#P-QueryMutator-Core-IMapping`2-Expression 'QueryMutator.Core.IMapping`2.Expression')
+- [IMapping\`3](#T-QueryMutator-Core-IMapping`3 'QueryMutator.Core.IMapping`3')
 - [InvalidPropertyNameException](#T-QueryMutator-Core-InvalidPropertyNameException 'QueryMutator.Core.InvalidPropertyNameException')
 - [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute')
   - [#ctor(sourceType)](#M-QueryMutator-Core-MapFromAttribute-#ctor-System-Type- 'QueryMutator.Core.MapFromAttribute.#ctor(System.Type)')
   - [SourceType](#P-QueryMutator-Core-MapFromAttribute-SourceType 'QueryMutator.Core.MapFromAttribute.SourceType')
+- [MapPropertyAttribute](#T-QueryMutator-Core-MapPropertyAttribute 'QueryMutator.Core.MapPropertyAttribute')
+  - [#ctor(propertyName)](#M-QueryMutator-Core-MapPropertyAttribute-#ctor-System-String- 'QueryMutator.Core.MapPropertyAttribute.#ctor(System.String)')
+  - [PropertyName](#P-QueryMutator-Core-MapPropertyAttribute-PropertyName 'QueryMutator.Core.MapPropertyAttribute.PropertyName')
 - [MapperConfiguration](#T-QueryMutator-Core-MapperConfiguration 'QueryMutator.Core.MapperConfiguration')
   - [#ctor(expression,options)](#M-QueryMutator-Core-MapperConfiguration-#ctor-System-Action{QueryMutator-Core-IMapperConfigurationExpression},QueryMutator-Core-MapperConfigurationOptions- 'QueryMutator.Core.MapperConfiguration.#ctor(System.Action{QueryMutator.Core.IMapperConfigurationExpression},QueryMutator.Core.MapperConfigurationOptions)')
   - [CreateMapper()](#M-QueryMutator-Core-MapperConfiguration-CreateMapper 'QueryMutator.Core.MapperConfiguration.CreateMapper')
@@ -37,14 +40,11 @@
 - [MappingAlreadyExistsException](#T-QueryMutator-Core-MappingAlreadyExistsException 'QueryMutator.Core.MappingAlreadyExistsException')
 - [MappingNotFoundException](#T-QueryMutator-Core-MappingNotFoundException 'QueryMutator.Core.MappingNotFoundException')
 - [MappingValidationException](#T-QueryMutator-Core-MappingValidationException 'QueryMutator.Core.MappingValidationException')
-- [MapPropertyAttribute](#T-QueryMutator-Core-MapPropertyAttribute 'QueryMutator.Core.MapPropertyAttribute')
-  - [#ctor(propertyName)](#M-QueryMutator-Core-MapPropertyAttribute-#ctor-System-String- 'QueryMutator.Core.MapPropertyAttribute.#ctor(System.String)')
-  - [PropertyName](#P-QueryMutator-Core-MapPropertyAttribute-PropertyName 'QueryMutator.Core.MapPropertyAttribute.PropertyName')
+- [QueryMutatorExtensions](#T-QueryMutator-Core-QueryMutatorExtensions 'QueryMutator.Core.QueryMutatorExtensions')
+  - [UseQueryMutator(config)](#M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration- 'QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration)')
 - [QueryableExtensions](#T-QueryMutator-Core-QueryableExtensions 'QueryMutator.Core.QueryableExtensions')
   - [Select\`\`2(source,mapping)](#M-QueryMutator-Core-QueryableExtensions-Select``2-System-Linq-IQueryable{``0},QueryMutator-Core-IMapping{``0,``1}- 'QueryMutator.Core.QueryableExtensions.Select``2(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1})')
   - [Select\`\`3(source,mapping,parameter)](#M-QueryMutator-Core-QueryableExtensions-Select``3-System-Linq-IQueryable{``0},QueryMutator-Core-IMapping{``0,``1,``2},``2- 'QueryMutator.Core.QueryableExtensions.Select``3(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1,``2},``2)')
-- [QueryMutatorExtensions](#T-QueryMutator-Core-QueryMutatorExtensions 'QueryMutator.Core.QueryMutatorExtensions')
-  - [UseQueryMutator(config)](#M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration- 'QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration)')
 - [ValidationMode](#T-QueryMutator-Core-ValidationMode 'QueryMutator.Core.ValidationMode')
   - [Destination](#F-QueryMutator-Core-ValidationMode-Destination 'QueryMutator.Core.ValidationMode.Destination')
   - [None](#F-QueryMutator-Core-ValidationMode-None 'QueryMutator.Core.ValidationMode.None')
@@ -66,7 +66,7 @@ Represents an object that contains mappings.
 
 ##### Summary
 
-Return a mapping specified by the `TSource`and `TTarget`types.
+Return a mapping specified by the `TSource` and `TTarget` types.
 
 ##### Returns
 
@@ -94,7 +94,7 @@ This method has no parameters.
 
 ##### Summary
 
-Return a mapping specified by the `TSource`, `TTarget`and `TParam`types.
+Return a mapping specified by the `TSource`, `TTarget` and `TParam` types.
 
 ##### Returns
 
@@ -134,7 +134,7 @@ Represents an object which can be used to define mappings.
 
 ##### Summary
 
-Creates a new mapping between the `TSource`and `TTarget`types.
+Creates a new mapping between the `TSource` and `TTarget` types.
 
 ##### Parameters
 
@@ -158,8 +158,8 @@ This method has no parameters.
 
 ##### Summary
 
-Creates a new mapping between the `TSource`and `TTarget`types,
-using the supplied `mappingFactory`options.
+Creates a new mapping between the `TSource` and `TTarget` types,
+using the supplied `mappingFactory` options.
 
 ##### Parameters
 
@@ -183,8 +183,8 @@ This method has no parameters.
 
 ##### Summary
 
-Creates a new mapping between the `TSource`, `TTarget`and `TParam`types,
-using the supplied `mappingFactory`options.
+Creates a new mapping between the `TSource`, `TTarget` and `TParam` types,
+using the supplied `mappingFactory` options.
 
 ##### Parameters
 
@@ -209,7 +209,7 @@ This method has no parameters.
 
 ##### Summary
 
-Enable scanning the supplied `assemblies`assemblies for objects decorated with the [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute')attribute.
+Enable scanning the supplied `assemblies` assemblies for objects decorated with the [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute') attribute.
 
 ##### Parameters
 
@@ -235,50 +235,6 @@ Represents a generic mapping.
 
 Contains the expression used for the mapping.
 
-<a name='T-QueryMutator-Core-IMapping`2'></a>
-## IMapping\`2 `type`
-
-##### Namespace
-
-QueryMutator.Core
-
-##### Summary
-
-Represents a mapping.
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| TSource | The source type of the mapping. |
-| TTarget | The target type of the mapping. |
-
-<a name='P-QueryMutator-Core-IMapping`2-Expression'></a>
-### Expression `property`
-
-##### Summary
-
-Contains the expression used for the mapping.
-
-<a name='T-QueryMutator-Core-IMapping`3'></a>
-## IMapping\`3 `type`
-
-##### Namespace
-
-QueryMutator.Core
-
-##### Summary
-
-Represents a mapping with a parameter.
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| TSource | The source type of the mapping. |
-| TTarget | The target type of the mapping. |
-| TParam | The parameter type of the mapping. |
-
 <a name='T-QueryMutator-Core-IMappingBuilder`2'></a>
 ## IMappingBuilder\`2 `type`
 
@@ -289,7 +245,7 @@ QueryMutator.Core
 ##### Summary
 
 Represents an object that can be used to create a custom mapping between the 
-`TSource`and `TTarget`types.
+`TSource` and `TTarget` types.
 
 ##### Generic Types
 
@@ -316,6 +272,28 @@ Ignores the selected target property, excluding it from the mapping.
 | Name | Description |
 | ---- | ----------- |
 | TMember | The type of the property. |
+
+<a name='M-QueryMutator-Core-IMappingBuilder`2-MapMemberList``2-System-Linq-Expressions-Expression{System-Func{`1,System-Collections-Generic-IEnumerable{``0}}},System-Linq-Expressions-Expression{System-Func{`0,System-Collections-Generic-IEnumerable{``1}}}-'></a>
+### MapMemberList\`\`2(memberSelector,mappingExpression) `method`
+
+##### Summary
+
+Creates a mapping between a target and a source property, where each property type implements [](#!-IEnumerable<> 'IEnumerable<>').
+If no mapping exists between `TSourceMember` and `TTargetMember`, a default mapping will be created.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| memberSelector | [System.Linq.Expressions.Expression{System.Func{\`1,System.Collections.Generic.IEnumerable{\`\`0}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}}') | The selector for the target property. |
+| mappingExpression | [System.Linq.Expressions.Expression{System.Func{\`0,System.Collections.Generic.IEnumerable{\`\`1}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}}') | The expression for the source property. |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TTargetMember | The generic argument of the target property type. |
+| TSourceMember | The generic argument of the source property type. |
 
 <a name='M-QueryMutator-Core-IMappingBuilder`2-MapMember``1-System-Linq-Expressions-Expression{System-Func{`1,``0}},``0-'></a>
 ### MapMember\`\`1(memberSelector,constant) `method`
@@ -397,28 +375,6 @@ Creates a mapping between a target and a source property, where the target prope
 | ---- | ----------- |
 | TMember | The underlying property type. |
 
-<a name='M-QueryMutator-Core-IMappingBuilder`2-MapMemberList``2-System-Linq-Expressions-Expression{System-Func{`1,System-Collections-Generic-IEnumerable{``0}}},System-Linq-Expressions-Expression{System-Func{`0,System-Collections-Generic-IEnumerable{``1}}}-'></a>
-### MapMemberList\`\`2(memberSelector,mappingExpression) `method`
-
-##### Summary
-
-Creates a mapping between a target and a source property, where each property type implements [](#!-IEnumerable<> 'IEnumerable<>').
-If no mapping exists between `TSourceMember`and `TTargetMember`, a default mapping will be created.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| memberSelector | [System.Linq.Expressions.Expression{System.Func{\`1,System.Collections.Generic.IEnumerable{\`\`0}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}}') | The selector for the target property. |
-| mappingExpression | [System.Linq.Expressions.Expression{System.Func{\`0,System.Collections.Generic.IEnumerable{\`\`1}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}}') | The expression for the source property. |
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| TTargetMember | The generic argument of the target property type. |
-| TSourceMember | The generic argument of the source property type. |
-
 <a name='M-QueryMutator-Core-IMappingBuilder`2-ValidateMapping-QueryMutator-Core-ValidationMode-'></a>
 ### ValidateMapping(mode) `method`
 
@@ -442,8 +398,8 @@ QueryMutator.Core
 ##### Summary
 
 Represents an object that can be used to create a custom mapping between the 
-`TSource`and `TTarget`types with a 
-`TParam`parameter.
+`TSource` and `TTarget` types with a 
+`TParam` parameter.
 
 ##### Generic Types
 
@@ -452,6 +408,50 @@ Represents an object that can be used to create a custom mapping between the
 | TSource | The source type of the mapping. |
 | TTarget | The target type of the mapping. |
 | TParam | The param type of the mapping. |
+
+<a name='T-QueryMutator-Core-IMapping`2'></a>
+## IMapping\`2 `type`
+
+##### Namespace
+
+QueryMutator.Core
+
+##### Summary
+
+Represents a mapping.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TSource | The source type of the mapping. |
+| TTarget | The target type of the mapping. |
+
+<a name='P-QueryMutator-Core-IMapping`2-Expression'></a>
+### Expression `property`
+
+##### Summary
+
+Contains the expression used for the mapping.
+
+<a name='T-QueryMutator-Core-IMapping`3'></a>
+## IMapping\`3 `type`
+
+##### Namespace
+
+QueryMutator.Core
+
+##### Summary
+
+Represents a mapping with a parameter.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TSource | The source type of the mapping. |
+| TTarget | The target type of the mapping. |
+| TParam | The parameter type of the mapping. |
 
 <a name='T-QueryMutator-Core-InvalidPropertyNameException'></a>
 ## InvalidPropertyNameException `type`
@@ -480,7 +480,7 @@ Specifies a mapping from the supplied type to the attribute target.
 
 ##### Summary
 
-Specifies a mapping from the supplied type `sourceType`to the attribute target.
+Specifies a mapping from the supplied type `sourceType` to the attribute target.
 
 ##### Parameters
 
@@ -494,6 +494,45 @@ Specifies a mapping from the supplied type `sourceType`to the attribute target.
 ##### Summary
 
 The type of the source class to map from.
+
+<a name='T-QueryMutator-Core-MapPropertyAttribute'></a>
+## MapPropertyAttribute `type`
+
+##### Namespace
+
+QueryMutator.Core
+
+##### Summary
+
+Specifies a property mapping from the supplied property to the attribute target.
+The defining class of the attribute target must be decorated with a [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute').
+
+<a name='M-QueryMutator-Core-MapPropertyAttribute-#ctor-System-String-'></a>
+### #ctor(propertyName) `constructor`
+
+##### Summary
+
+Specifies a property mapping from the supplied property `propertyName` to the attribute target.
+The defining class of the attribute target must be decorated with a [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute').
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| propertyName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The name of the source property to map from. |
+
+##### Exceptions
+
+| Name | Description |
+| ---- | ----------- |
+| [QueryMutator.Core.InvalidPropertyNameException](#T-QueryMutator-Core-InvalidPropertyNameException 'QueryMutator.Core.InvalidPropertyNameException') | Thrown when the property name does not exist on the source target. |
+
+<a name='P-QueryMutator-Core-MapPropertyAttribute-PropertyName'></a>
+### PropertyName `property`
+
+##### Summary
+
+The name of the property to map from.
 
 <a name='T-QueryMutator-Core-MapperConfiguration'></a>
 ## MapperConfiguration `type`
@@ -529,7 +568,7 @@ Creates a new mapper object using the registered mappings or the default mapping
 
 ##### Returns
 
-Returns a new [IMapper](#T-QueryMutator-Core-IMapper 'QueryMutator.Core.IMapper')object that contains the mappings.
+Returns a new [IMapper](#T-QueryMutator-Core-IMapper 'QueryMutator.Core.IMapper') object that contains the mappings.
 
 ##### Parameters
 
@@ -587,8 +626,8 @@ QueryMutator.Core
 
 Thrown when a mapping validation error occurs.
 
-<a name='T-QueryMutator-Core-MapPropertyAttribute'></a>
-## MapPropertyAttribute `type`
+<a name='T-QueryMutator-Core-QueryMutatorExtensions'></a>
+## QueryMutatorExtensions `type`
 
 ##### Namespace
 
@@ -596,35 +635,25 @@ QueryMutator.Core
 
 ##### Summary
 
-Specifies a property mapping from the supplied property to the attribute target.
-The defining class of the attribute target must be decorated with a [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute').
+Globally usable extensions for configuration purposes.
 
-<a name='M-QueryMutator-Core-MapPropertyAttribute-#ctor-System-String-'></a>
-### #ctor(propertyName) `constructor`
+<a name='M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration-'></a>
+### UseQueryMutator(config) `method`
 
 ##### Summary
 
-Specifies a property mapping from the supplied property `propertyName`to the attribute target.
-The defining class of the attribute target must be decorated with a [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute').
+Creates the mapper instance using the supplied configuration `config`, then handles 
+registering the mapper and the individual mappings to the service container `services`.
+
+##### Returns
+
+
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| propertyName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The name of the source property to map from. |
-
-##### Exceptions
-
-| Name | Description |
-| ---- | ----------- |
-| [QueryMutator.Core.InvalidPropertyNameException](#T-QueryMutator-Core-InvalidPropertyNameException 'QueryMutator.Core.InvalidPropertyNameException') | Thrown when the property name does not exist on the source target. |
-
-<a name='P-QueryMutator-Core-MapPropertyAttribute-PropertyName'></a>
-### PropertyName `property`
-
-##### Summary
-
-The name of the property to map from.
+| config | [Microsoft.Extensions.DependencyInjection.IServiceCollection](#T-Microsoft-Extensions-DependencyInjection-IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection') | The object that contains the mappings and options necessary to create the mapper. |
 
 <a name='T-QueryMutator-Core-QueryableExtensions'></a>
 ## QueryableExtensions `type`
@@ -667,7 +696,7 @@ Projects each element of a sequence into a new form using the supplied `mapping`
 
 ##### Summary
 
-Projects each element of a sequence into a new form using the supplied `mapping`and `parameter`.
+Projects each element of a sequence into a new form using the supplied `mapping` and `parameter`.
 
 ##### Returns
 
@@ -679,7 +708,7 @@ Projects each element of a sequence into a new form using the supplied `mapping`
 | ---- | ---- | ----------- |
 | source | [System.Linq.IQueryable{\`\`0}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.IQueryable 'System.Linq.IQueryable{``0}') | The object to execute the given action on. |
 | mapping | [QueryMutator.Core.IMapping{\`\`0,\`\`1,\`\`2}](#T-QueryMutator-Core-IMapping{``0,``1,``2} 'QueryMutator.Core.IMapping{``0,``1,``2}') | The mapping to use for the projection. |
-| parameter | [\`\`2](#T-``2 '``2') | An instance of the type `TParameter`required for the mapping. |
+| parameter | [\`\`2](#T-``2 '``2') | An instance of the type `TParameter` required for the mapping. |
 
 ##### Generic Types
 
@@ -687,35 +716,6 @@ Projects each element of a sequence into a new form using the supplied `mapping`
 | ---- | ----------- |
 | TSource | The type of the given object `source`. |
 | TTarget | The type of the destination object into which the source is projected. |
-
-<a name='T-QueryMutator-Core-QueryMutatorExtensions'></a>
-## QueryMutatorExtensions `type`
-
-##### Namespace
-
-QueryMutator.Core
-
-##### Summary
-
-Globally usable extensions for configuration purposes.
-
-<a name='M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration-'></a>
-### UseQueryMutator(config) `method`
-
-##### Summary
-
-Creates the mapper instance using the supplied configuration `config`, then handles 
-registering the mapper and the individual mappings to the service container `services`.
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| config | [Microsoft.Extensions.DependencyInjection.IServiceCollection](#T-Microsoft-Extensions-DependencyInjection-IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection') | The object that contains the mappings and options necessary to create the mapper. |
 
 <a name='T-QueryMutator-Core-ValidationMode'></a>
 ## ValidationMode `type`
