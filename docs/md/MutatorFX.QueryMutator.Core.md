@@ -25,6 +25,7 @@
   - [MapMemberList\`\`2(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`2-MapMemberList``2-System-Linq-Expressions-Expression{System-Func{`1,System-Collections-Generic-IEnumerable{``0}}},System-Linq-Expressions-Expression{System-Func{`0,System-Collections-Generic-IEnumerable{``1}}}- 'QueryMutator.Core.IMappingBuilder`2.MapMemberList``2(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}})')
   - [ValidateMapping(mode)](#M-QueryMutator-Core-IMappingBuilder`2-ValidateMapping-QueryMutator-Core-ValidationMode- 'QueryMutator.Core.IMappingBuilder`2.ValidateMapping(QueryMutator.Core.ValidationMode)')
 - [IMappingBuilder\`3](#T-QueryMutator-Core-IMappingBuilder`3 'QueryMutator.Core.IMappingBuilder`3')
+  - [MapMemberWithParameter\`\`1(memberSelector,mappingExpression)](#M-QueryMutator-Core-IMappingBuilder`3-MapMemberWithParameter``1-System-Linq-Expressions-Expression{System-Func{`1,``0}},System-Func{`2,System-Linq-Expressions-Expression{System-Func{`0,``0}}}- 'QueryMutator.Core.IMappingBuilder`3.MapMemberWithParameter``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,``0}}})')
 - [InvalidPropertyNameException](#T-QueryMutator-Core-InvalidPropertyNameException 'QueryMutator.Core.InvalidPropertyNameException')
 - [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute')
   - [#ctor(sourceType)](#M-QueryMutator-Core-MapFromAttribute-#ctor-System-Type- 'QueryMutator.Core.MapFromAttribute.#ctor(System.Type)')
@@ -134,7 +135,7 @@ Represents an object which can be used to define mappings.
 
 ##### Summary
 
-Creates a new mapping between the `TSource`and `TTarget`types.
+Creates a new default mapping between the `TSource`and `TTarget`types.
 
 ##### Parameters
 
@@ -209,7 +210,7 @@ This method has no parameters.
 
 ##### Summary
 
-Enable scanning the supplied `assemblies`assemblies for objects decorated with the [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute')attribute.
+Enable scanning the supplied `assemblies`for objects decorated with the [MapFromAttribute](#T-QueryMutator-Core-MapFromAttribute 'QueryMutator.Core.MapFromAttribute')attribute.
 
 ##### Parameters
 
@@ -402,7 +403,7 @@ Creates a mapping between a target and a source property, where the target prope
 
 ##### Summary
 
-Creates a mapping between a target and a source property, where each property type implements [](#!-IEnumerable<> 'IEnumerable<>').
+Creates a mapping between a target and a source property, where each property type implements [IEnumerable\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable`1 'System.Collections.Generic.IEnumerable`1').
 If no mapping exists between `TSourceMember`and `TTargetMember`, a default mapping will be created.
 
 ##### Parameters
@@ -452,6 +453,27 @@ Represents an object that can be used to create a custom mapping between the
 | TSource | The source type of the mapping. |
 | TTarget | The target type of the mapping. |
 | TParam | The param type of the mapping. |
+
+<a name='M-QueryMutator-Core-IMappingBuilder`3-MapMemberWithParameter``1-System-Linq-Expressions-Expression{System-Func{`1,``0}},System-Func{`2,System-Linq-Expressions-Expression{System-Func{`0,``0}}}-'></a>
+### MapMemberWithParameter\`\`1(memberSelector,mappingExpression) `method`
+
+##### Summary
+
+Creates a mapping between a target and a source property using the. The `TParam`
+type can be used for operations in the `mappingExpression`.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| memberSelector | [System.Linq.Expressions.Expression{System.Func{\`1,\`\`0}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`1,``0}}') | The selector for the target property. |
+| mappingExpression | [System.Func{\`2,System.Linq.Expressions.Expression{System.Func{\`0,\`\`0}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,``0}}}') | The expression for the source property. |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TMember | The type of the property. |
 
 <a name='T-QueryMutator-Core-InvalidPropertyNameException'></a>
 ## InvalidPropertyNameException `type`
@@ -687,6 +709,7 @@ Projects each element of a sequence into a new form using the supplied `mapping`
 | ---- | ----------- |
 | TSource | The type of the given object `source`. |
 | TTarget | The type of the destination object into which the source is projected. |
+| TParameter | The type of the parameter used for the projection. |
 
 <a name='T-QueryMutator-Core-QueryMutatorExtensions'></a>
 ## QueryMutatorExtensions `type`

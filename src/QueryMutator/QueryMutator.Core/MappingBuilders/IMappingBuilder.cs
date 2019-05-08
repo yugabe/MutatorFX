@@ -45,7 +45,7 @@ namespace QueryMutator.Core
         IMappingBuilder<TSource, TTarget> MapMember<TMember>(Expression<Func<TTarget, TMember?>> memberSelector, Expression<Func<TSource, TMember>> mappingExpression) where TMember : struct;
 
         /// <summary>
-        /// Creates a mapping between a target and a source property, where each property type implements <see cref="IEnumerable{}"/>.
+        /// Creates a mapping between a target and a source property, where each property type implements <see cref="IEnumerable{T}"/>.
         /// If no mapping exists between <typeparamref name="TSourceMember"/> and <typeparamref name="TTargetMember"/>, a default mapping will be created.
         /// </summary>
         /// <typeparam name="TTargetMember">The generic argument of the target property type.</typeparam>
@@ -78,6 +78,13 @@ namespace QueryMutator.Core
     /// <typeparam name="TParam">The param type of the mapping.</typeparam>
     public interface IMappingBuilder<TSource, TTarget, TParam> : IMappingBuilder<TSource, TTarget>
     {
+        /// <summary>
+        /// Creates a mapping between a target and a source property using the. The <typeparamref name="TParam"/>
+        /// type can be used for operations in the <paramref name="mappingExpression"/>.
+        /// </summary>
+        /// <typeparam name="TMember">The type of the property.</typeparam>
+        /// <param name="memberSelector">The selector for the target property.</param>
+        /// <param name="mappingExpression">The expression for the source property.</param>
         IMappingBuilder<TSource, TTarget, TParam> MapMemberWithParameter<TMember>(Expression<Func<TTarget, TMember>> memberSelector, Func<TParam, Expression<Func<TSource, TMember>>> mappingExpression);
     }
 }

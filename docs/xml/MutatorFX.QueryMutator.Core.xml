@@ -80,6 +80,7 @@
             </summary>
             <typeparam name="TSource">The type of the given object <paramref name="source"/>.</typeparam>
             <typeparam name="TTarget">The type of the destination object into which the source is projected.</typeparam>
+            <typeparam name="TParameter">The type of the parameter used for the projection.</typeparam>
             <param name="source">The object to execute the given action on.</param>
             <param name="mapping">The mapping to use for the projection.</param>
             <param name="parameter">An instance of the type <typeparamref name="TParameter"/> required for the mapping.</param>
@@ -105,7 +106,7 @@
         </member>
         <member name="M:QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2">
             <summary>
-            Creates a new mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+            Creates a new default mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
             </summary>
             <typeparam name="TSource">The source type of the mapping.</typeparam>
             <typeparam name="TTarget">The target type of the mapping.</typeparam>
@@ -132,7 +133,7 @@
         </member>
         <member name="M:QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
             <summary>
-            Enable scanning the supplied <paramref name="assemblies"/> assemblies for objects decorated with the <see cref="T:QueryMutator.Core.MapFromAttribute"/> attribute.
+            Enable scanning the supplied <paramref name="assemblies"/> for objects decorated with the <see cref="T:QueryMutator.Core.MapFromAttribute"/> attribute.
             </summary>
             <param name="assemblies">The list of assemblies to be scanned.</param>
         </member>
@@ -281,7 +282,7 @@
         </member>
         <member name="M:QueryMutator.Core.IMappingBuilder`2.MapMemberList``2(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IEnumerable{``0}}},System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``1}}})">
             <summary>
-            Creates a mapping between a target and a source property, where each property type implements <see cref="!:IEnumerable&lt;&gt;"/>.
+            Creates a mapping between a target and a source property, where each property type implements <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
             If no mapping exists between <typeparamref name="TSourceMember"/> and <typeparamref name="TTargetMember"/>, a default mapping will be created.
             </summary>
             <typeparam name="TTargetMember">The generic argument of the target property type.</typeparam>
@@ -311,6 +312,15 @@
             <typeparam name="TSource">The source type of the mapping.</typeparam>
             <typeparam name="TTarget">The target type of the mapping.</typeparam>
             <typeparam name="TParam">The param type of the mapping.</typeparam>
+        </member>
+        <member name="M:QueryMutator.Core.IMappingBuilder`3.MapMemberWithParameter``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,``0}}})">
+            <summary>
+            Creates a mapping between a target and a source property using the. The <typeparamref name="TParam"/>
+            type can be used for operations in the <paramref name="mappingExpression"/>.
+            </summary>
+            <typeparam name="TMember">The type of the property.</typeparam>
+            <param name="memberSelector">The selector for the target property.</param>
+            <param name="mappingExpression">The expression for the source property.</param>
         </member>
     </members>
 </doc>

@@ -10,7 +10,7 @@ namespace QueryMutator.Core
     public interface IMapperConfigurationExpression
     {
         /// <summary>
-        /// Creates a new mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
+        /// Creates a new default mapping between the <typeparamref name="TSource"/> and <typeparamref name="TTarget"/> types.
         /// </summary>
         /// <typeparam name="TSource">The source type of the mapping.</typeparam>
         /// <typeparam name="TTarget">The target type of the mapping.</typeparam>
@@ -37,7 +37,7 @@ namespace QueryMutator.Core
         void CreateMapping<TSource, TTarget, TParam>(Action<IMappingBuilder<TSource, TTarget, TParam>> mappingFactory);
 
         /// <summary>
-        /// Enable scanning the supplied <paramref name="assemblies"/> assemblies for objects decorated with the <see cref="MapFromAttribute"/> attribute.
+        /// Enable scanning the supplied <paramref name="assemblies"/> for objects decorated with the <see cref="MapFromAttribute"/> attribute.
         /// </summary>
         /// <param name="assemblies">The list of assemblies to be scanned.</param>
         void UseAttributeMapping(IEnumerable<Assembly> assemblies);

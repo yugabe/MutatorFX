@@ -25,6 +25,7 @@ namespace QueryMutator.Core
         /// </summary>
         /// <typeparam name="TSource">The type of the given object <paramref name="source"/>.</typeparam>
         /// <typeparam name="TTarget">The type of the destination object into which the source is projected.</typeparam>
+        /// <typeparam name="TParameter">The type of the parameter used for the projection.</typeparam>
         /// <param name="source">The object to execute the given action on.</param>
         /// <param name="mapping">The mapping to use for the projection.</param>
         /// <param name="parameter">An instance of the type <typeparamref name="TParameter"/> required for the mapping.</param>
