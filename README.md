@@ -12,7 +12,7 @@ All MutatorFX packages lets you write much less code for the same effect, with a
 
 **MutatorFX.Core** [[NuGet](https://www.nuget.org/packages/MutatorFX.Core/), [Documentation](https://github.com/yugabe/MutatorFX/blob/master/docs/md/MutatorFX.Core.md)]
 ------------------
-The lightweight Core package other packages depend upon. In itself, it contains useful extension methods for creating one-liners, using reflection, etc., so that you can use these if you fancy enormous one-liners! I haven't found a problem that couldn't be solved in one expression with these yet!
+The lightweight Core package other packages depend upon. In itself, it contains useful extension methods for creating one-liners, using reflection, etc., so that you can use these if you fancy enormous one-liners! I have not yet found a problem that couldn't be solved in one expression with these!
 
 **Fluent extensions**: for writing one-liners and shortening code. 
 
@@ -30,9 +30,11 @@ The abstractions package contains only the public facing interfaces of FilterMut
 ----------------------------------
 [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore) specific extension package. Only contains two SourceAccessor types (```DbSetSourceAccessor<TDbContext, TEntity>``` and ```DbSetSourceAccessor<TEntity>```) which you can use with EF Core and dependency injection frameworks.
 
-**MutatorFX.QueryMutator.Core** [NuGet, [Documentation](https://github.com/yugabe/MutatorFX/blob/master/docs/md/MutatorFX.QueryMutator.Core.md)]
+**MutatorFX.QueryMutator.Core** [NuGet, [Documentation](https://github.com/csokiskeksz/MutatorFX/blob/master/docs/md/MutatorFX.QueryMutator.Core.md)]
 -------------------------------
-TODO
+QueryMutator is a convention-based object mapper specifically built for Queryable projection. Easily create and customize mappings between objects, create mappings with runtime parameters or by using attributes. Mapping Queryables has never been easier!
+
+On how to get started using the library, check out the [getting started guide](https://github.com/csokiskeksz/MutatorFX/blob/master/src/QueryMutator).
 
 <hr/>
 
