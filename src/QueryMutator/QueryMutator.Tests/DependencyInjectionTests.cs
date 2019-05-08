@@ -124,7 +124,7 @@ namespace QueryMutator.Tests
             });
 
             var serviceProvider = new ServiceCollection()
-                .UseQueryMutator(config)
+                .UseQueryMutator(config, true)
                 .BuildServiceProvider();
 
             var mapper = serviceProvider.GetService<IMapper>();

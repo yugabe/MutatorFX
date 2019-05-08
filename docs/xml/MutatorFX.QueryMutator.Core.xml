@@ -91,12 +91,13 @@
             Globally usable extensions for configuration purposes.
             </summary>
         </member>
-        <member name="M:QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration)">
+        <member name="M:QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration,System.Boolean)">
             <summary>
             Creates the mapper instance using the supplied configuration <paramref name="config"/>, then handles 
             registering the mapper and the individual mappings to the service container <paramref name="services"/>.
             </summary>
             <param name="config">The object that contains the mappings and options necessary to create the mapper.</param>
+            <param name="registerIndividualMappings">Specifies if individual mappings should be registered to the DI container.</param>
             <returns></returns>
         </member>
         <member name="T:QueryMutator.Core.IMapperConfigurationExpression">

@@ -45,7 +45,7 @@
   - [Select\`\`2(source,mapping)](#M-QueryMutator-Core-QueryableExtensions-Select``2-System-Linq-IQueryable{``0},QueryMutator-Core-IMapping{``0,``1}- 'QueryMutator.Core.QueryableExtensions.Select``2(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1})')
   - [Select\`\`3(source,mapping,parameter)](#M-QueryMutator-Core-QueryableExtensions-Select``3-System-Linq-IQueryable{``0},QueryMutator-Core-IMapping{``0,``1,``2},``2- 'QueryMutator.Core.QueryableExtensions.Select``3(System.Linq.IQueryable{``0},QueryMutator.Core.IMapping{``0,``1,``2},``2)')
 - [QueryMutatorExtensions](#T-QueryMutator-Core-QueryMutatorExtensions 'QueryMutator.Core.QueryMutatorExtensions')
-  - [UseQueryMutator(config)](#M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration- 'QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration)')
+  - [UseQueryMutator(config,registerIndividualMappings)](#M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration,System-Boolean- 'QueryMutator.Core.QueryMutatorExtensions.UseQueryMutator(Microsoft.Extensions.DependencyInjection.IServiceCollection,QueryMutator.Core.MapperConfiguration,System.Boolean)')
 - [ValidationMode](#T-QueryMutator-Core-ValidationMode 'QueryMutator.Core.ValidationMode')
   - [Destination](#F-QueryMutator-Core-ValidationMode-Destination 'QueryMutator.Core.ValidationMode.Destination')
   - [None](#F-QueryMutator-Core-ValidationMode-None 'QueryMutator.Core.ValidationMode.None')
@@ -722,8 +722,8 @@ QueryMutator.Core
 
 Globally usable extensions for configuration purposes.
 
-<a name='M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration-'></a>
-### UseQueryMutator(config) `method`
+<a name='M-QueryMutator-Core-QueryMutatorExtensions-UseQueryMutator-Microsoft-Extensions-DependencyInjection-IServiceCollection,QueryMutator-Core-MapperConfiguration,System-Boolean-'></a>
+### UseQueryMutator(config,registerIndividualMappings) `method`
 
 ##### Summary
 
@@ -739,6 +739,7 @@ registering the mapper and the individual mappings to the service container `ser
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | config | [Microsoft.Extensions.DependencyInjection.IServiceCollection](#T-Microsoft-Extensions-DependencyInjection-IServiceCollection 'Microsoft.Extensions.DependencyInjection.IServiceCollection') | The object that contains the mappings and options necessary to create the mapper. |
+| registerIndividualMappings | [QueryMutator.Core.MapperConfiguration](#T-QueryMutator-Core-MapperConfiguration 'QueryMutator.Core.MapperConfiguration') | Specifies if individual mappings should be registered to the DI container. |
 
 <a name='T-QueryMutator-Core-ValidationMode'></a>
 ## ValidationMode `type`
