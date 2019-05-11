@@ -492,7 +492,7 @@ namespace QueryMutator.Tests
         {
             var config = new MapperConfiguration(cfg => 
             {
-                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+                cfg.UseAttributeMapping(typeof(DatabaseContext).Assembly);
             });
             var mapper = config.CreateMapper();
             var attributeMapping = mapper.GetMapping<AttributeEntity, AttributeEntityDto>();
@@ -520,7 +520,7 @@ namespace QueryMutator.Tests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+                cfg.UseAttributeMapping(typeof(DatabaseContext).Assembly);
             });
             var mapper = config.CreateMapper();
             var attributeMapping = mapper.GetMapping<AttributeEntity, AttributeEntityExplicitDto>();
@@ -787,7 +787,7 @@ namespace QueryMutator.Tests
             {
                 cfg.CreateMapping<AttributeEntity, AttributeEntityDto>();
 
-                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+                cfg.UseAttributeMapping(typeof(DatabaseContext).Assembly);
             });
             var mapper = config.CreateMapper();
         }

@@ -74,7 +74,7 @@ namespace QueryMutator.Core
             });
         }
 
-        public void UseAttributeMapping(IEnumerable<Assembly> assemblies)
+        public void UseAttributeMapping(params Assembly[] assemblies)
         {
             AttributeAssemblies = assemblies;
         }

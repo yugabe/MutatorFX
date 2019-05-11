@@ -262,7 +262,7 @@ namespace QueryMutator.Tests
         {
             var config = new MapperConfiguration(cfg => 
             {
-                cfg.UseAttributeMapping(new List<Assembly> { typeof(DatabaseContext).Assembly });
+                cfg.UseAttributeMapping(typeof(DatabaseContext).Assembly);
             });
             var mapper = config.CreateMapper();
             var attributeMapping = mapper.GetMapping<AttributeParent, AttributeParentDto>();

@@ -132,11 +132,11 @@
             <typeparam name="TParam">The parameter type of the mapping.</typeparam>
             <exception cref="T:QueryMutator.Core.MappingAlreadyExistsException">Thrown when another mapping with the same generic parameters already exists.</exception>
         </member>
-        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+        <member name="M:QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Reflection.Assembly[])">
             <summary>
             Enable scanning the supplied <paramref name="assemblies"/> for objects decorated with the <see cref="T:QueryMutator.Core.MapFromAttribute"/> attribute.
             </summary>
-            <param name="assemblies">The list of assemblies to be scanned.</param>
+            <param name="assemblies">The assemblies to be scanned.</param>
         </member>
         <member name="T:QueryMutator.Core.MapperConfiguration">
             <summary>

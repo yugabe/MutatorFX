@@ -110,12 +110,12 @@ public class EntityDto
 ```
 Note: because in the newest language standard generic attributes are not yet supported, the MapProperty attribute finds the properties by name. This means there is no type safety in this case, so be careful.
 
-Once the target classes are decorated, you have to tell QueryMutator which assemblies should be scanned for the classes. You can do this by calling the UseAttributeMapping method when configuring the mapper.
+Once the target classes are decorated, you have to tell QueryMutator which assemblies should be scanned for the classes. You can do this by calling the UseAttributeMapping method and passing the assemblies to it, when configuring the mapper.
 
 ```csharp
 var config = new MapperConfiguration(cfg =>
 {
-    cfg.UseAttributeMapping(new List<Assembly> { typeof(EntityDto).Assembly });
+    cfg.UseAttributeMapping(typeof(EntityDto).Assembly);
 });
 ```
 

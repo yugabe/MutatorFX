@@ -10,7 +10,7 @@
   - [CreateMapping\`\`2()](#M-QueryMutator-Core-IMapperConfigurationExpression-CreateMapping``2 'QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2')
   - [CreateMapping\`\`2()](#M-QueryMutator-Core-IMapperConfigurationExpression-CreateMapping``2-System-Action{QueryMutator-Core-IMappingBuilder{``0,``1}}- 'QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``2(System.Action{QueryMutator.Core.IMappingBuilder{``0,``1}})')
   - [CreateMapping\`\`3()](#M-QueryMutator-Core-IMapperConfigurationExpression-CreateMapping``3-System-Action{QueryMutator-Core-IMappingBuilder{``0,``1,``2}}- 'QueryMutator.Core.IMapperConfigurationExpression.CreateMapping``3(System.Action{QueryMutator.Core.IMappingBuilder{``0,``1,``2}})')
-  - [UseAttributeMapping(assemblies)](#M-QueryMutator-Core-IMapperConfigurationExpression-UseAttributeMapping-System-Collections-Generic-IEnumerable{System-Reflection-Assembly}- 'QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})')
+  - [UseAttributeMapping(assemblies)](#M-QueryMutator-Core-IMapperConfigurationExpression-UseAttributeMapping-System-Reflection-Assembly[]- 'QueryMutator.Core.IMapperConfigurationExpression.UseAttributeMapping(System.Reflection.Assembly[])')
 - [IMapping](#T-QueryMutator-Core-IMapping 'QueryMutator.Core.IMapping')
   - [Expression](#P-QueryMutator-Core-IMapping-Expression 'QueryMutator.Core.IMapping.Expression')
 - [IMapping\`2](#T-QueryMutator-Core-IMapping`2 'QueryMutator.Core.IMapping`2')
@@ -205,7 +205,7 @@ This method has no parameters.
 | ---- | ----------- |
 | [QueryMutator.Core.MappingAlreadyExistsException](#T-QueryMutator-Core-MappingAlreadyExistsException 'QueryMutator.Core.MappingAlreadyExistsException') | Thrown when another mapping with the same generic parameters already exists. |
 
-<a name='M-QueryMutator-Core-IMapperConfigurationExpression-UseAttributeMapping-System-Collections-Generic-IEnumerable{System-Reflection-Assembly}-'></a>
+<a name='M-QueryMutator-Core-IMapperConfigurationExpression-UseAttributeMapping-System-Reflection-Assembly[]-'></a>
 ### UseAttributeMapping(assemblies) `method`
 
 ##### Summary
@@ -216,7 +216,7 @@ Enable scanning the supplied `assemblies`for objects decorated with the [MapFrom
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| assemblies | [System.Collections.Generic.IEnumerable{System.Reflection.Assembly}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable 'System.Collections.Generic.IEnumerable{System.Reflection.Assembly}') | The list of assemblies to be scanned. |
+| assemblies | [System.Reflection.Assembly[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Reflection.Assembly[] 'System.Reflection.Assembly[]') | The assemblies to be scanned. |
 
 <a name='T-QueryMutator-Core-IMapping'></a>
 ## IMapping `type`

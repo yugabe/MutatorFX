@@ -39,7 +39,7 @@ namespace QueryMutator.Core
         /// <summary>
         /// Enable scanning the supplied <paramref name="assemblies"/> for objects decorated with the <see cref="MapFromAttribute"/> attribute.
         /// </summary>
-        /// <param name="assemblies">The list of assemblies to be scanned.</param>
-        void UseAttributeMapping(IEnumerable<Assembly> assemblies);
+        /// <param name="assemblies">The assemblies to be scanned.</param>
+        void UseAttributeMapping(params Assembly[] assemblies);
     }
 }
