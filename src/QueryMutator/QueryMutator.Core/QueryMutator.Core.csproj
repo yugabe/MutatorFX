@@ -8,6 +8,7 @@
     <Description>Reusable, generic query mutator framework for all .NET applications.</Description>
     <PackageTags>Mutator, MutatorFX, framework, QueryMutator, querying</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
+    <Authors>Kristof Ritter</Authors>
   </PropertyGroup>
   
   <ItemGroup>
@@ -23,6 +24,6 @@
       <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
+  <Import Project="$(ProjectDir)../../../src/MutatorFX.Common.targets" />
 
 </Project>
