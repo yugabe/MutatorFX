@@ -69,6 +69,23 @@ All mappings will be built when calling the CreateMapper method. After that, onl
 - IgnoreMember: Don't map the property.
 - MapMemberList: Create a mapping between two IEnumerable<> properties.
 
+### Dependency Injection
+
+If you are using the Microsoft.Extensions.DependencyInjection package, and don't want to register the mapper by hand, you can let the UseQueryMutator method take care of it. In addition to registering the mapper, it can also register each individual mapping to the container. This behaviour is enabled by the optional parameter, and it is false by default.
+
+```csharp
+// Register individual mappings as well
+services.UseQueryMutator(config, true);
+
+...
+
+// Retrieve the mapper and mappings with constructor injection
+public SomeClass(IMapper mapper, IMapping<Entity, EntityDto> entityMapping)
+{
+    var otherEntityMapping = mapper.GetMapping<OtherEntity, OtherEntityDto>();
+}
+```
+
 ### Property flattening
 
 When creating a mapping, nested properties will be flattened based on naming convention. In this example the "ChildName" target property will be automatically mapped to the "Child.Name" source property.
@@ -153,14 +170,22 @@ While normal mappings are built when configuring the mapper, parameter mappings 
 
 ### Validation
 
-If you want to make sure all properties are mapped, you can validate your mappings. Properties can be validate on both the source and the destination side. You can also set a global validation rule, or individually for each mapping.
+If you want to make sure all properties are mapped, you can validate your mappings. Properties can be validate on both the source and the destination side. You can also set a global validation rule, or individually for each mapping. The two different methods can also be used together, in which case the individual validation setting has higher priority.
 
 ```csharp
+// Global validation
 var config = new MapperConfiguration(cfg =>
 {
-    // Individual validation
+    cfg.CreateMapping<Entity, EntityDto>();
+}, new MapperConfigurationOptions { ValidationMode = ValidationMode.Source });
+```
+
+```csharp
+// Individual validation
+var config = new MapperConfiguration(cfg =>
+{
     cfg.CreateMapping<Entity, EntityDto>(mapping => mapping
         .ValidateMapping(ValidationMode.Source)
     );
-}, new MapperConfigurationOptions { ValidationMode = ValidationMode.Source }); // Global validation
+});
 ```
