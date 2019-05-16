@@ -21,6 +21,18 @@
             no return value or with a return value that should be ignored.</param>
             <returns>The object itself after the invokation of the action.</returns>
         </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action)">
+            <summary>
+            Execute an action, then return the object.
+            Useful for creating fluent APIs and shortening two-liners.
+            Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="action"/> if it is a reference type.
+            </summary>
+            <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
+            <param name="obj">The object to execute the given action on. Can be null.</param>
+            <param name="action">The action to execute. Usually a method with 
+            no return value or with a return value that should be ignored.</param>
+            <returns>The object itself after the invokation of the action.</returns>
+        </member>
         <member name="M:MutatorFX.Coding.GeneralFluentExtensions.DoAsync``1(``0,System.Func{``0,System.Threading.Tasks.Task})">
             <summary>
             The asynchronous pair of <see cref="M:MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action{``0})"/>.
@@ -31,6 +43,17 @@
             <param name="obj">The object to execute the given action on. Can be null.</param>
             <param name="action">The (generally) async function to execute on the object <paramref name="obj"/>. 
             If the task has a return value, it is ignored.</param>
+            <returns>The object itself after the invokation and awaiting of the asynchronous function.</returns>
+        </member>
+        <member name="M:MutatorFX.Coding.GeneralFluentExtensions.DoAsync``1(``0,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            The asynchronous pair of <see cref="M:MutatorFX.Coding.GeneralFluentExtensions.Do``1(``0,System.Action)"/>.
+            Useful for creating fluent APIs and shortening two-liners.
+            Note that the input object <paramref name="obj"/> can only be mutated by the provided <paramref name="action"/> if it is a reference type.
+            </summary>
+            <typeparam name="T">The type of the given object <paramref name="obj"/>. Should be inferred.</typeparam>
+            <param name="obj">The object to execute the given action on. Can be null.</param>
+            <param name="action">The (generally) async function to execute.</param>
             <returns>The object itself after the invokation and awaiting of the asynchronous function.</returns>
         </member>
         <member name="M:MutatorFX.Coding.GeneralFluentExtensions.Branch``1(``0,System.Func{``0,System.Boolean},System.Action{``0},System.Action{``0})">
@@ -188,6 +211,7 @@
         <member name="M:MutatorFX.Coding.GeneralFluentExtensions.DoAwait``1(``0,System.Func{``0,System.Threading.Tasks.Task})">
             <summary>
             Awaits an asynchrounous operation on an object and returns the object. Uses <see cref="M:System.Threading.Tasks.Task.GetAwaiter"/> and <see cref="M:System.Runtime.CompilerServices.TaskAwaiter.GetResult"/>.
+            Useful for invoking an async operation in a synchronous context.
             </summary>
             <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
             <param name="obj">The object to use. Should not be null.</param>
@@ -198,6 +222,7 @@
         <member name="M:MutatorFX.Coding.GeneralFluentExtensions.PipeAwait``2(``0,System.Func{``0,System.Threading.Tasks.Task{``1}})">
             <summary>
             Awaits an asynchrounous operation on an object and returns the result of the operation. Uses <see cref="M:System.Threading.Tasks.Task.GetAwaiter"/> and <see cref="M:System.Runtime.CompilerServices.TaskAwaiter.GetResult"/>.
+            Useful for invoking an async operation in a synchronous context.
             </summary>
             <typeparam name="T">The type of the object to use. Should be inferred.</typeparam>
             <typeparam name="TResult">The type of result of the function <paramref name="func"/>. Should be inferred.</typeparam>

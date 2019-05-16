@@ -1,16 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MutatorFX.QueryMutator.Core</AssemblyName>
     <RootNamespace>MutatorFX.QueryMutator</RootNamespace>
     <Product>MutatorFX.QueryMutator</Product>
-    <Description>Highly configurable query and object mapping.</Description>
-    <PackageTags>Mutator, MutatorFX, framework, QueryMutator, querying, mapping, AutoMapper</PackageTags>
+    <Description>Reusable, generic query mutator framework for all .NET applications.</Description>
+    <PackageTags>Mutator, MutatorFX, framework, QueryMutator, querying</PackageTags>
     <PackageReleaseNotes>Initial release for experimental use.</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/yugabe/MutatorFX/master/res/querymutator-logo.png</PackageIconUrl>
+    <Authors>Kristof Ritter</Authors>
   </PropertyGroup>
+  
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Vsxmd" Version="1.4.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)/src/MutatorFX.Common.targets" />
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(ProjectDir)../../../src/MutatorFX.Common.targets" />
+
 </Project>

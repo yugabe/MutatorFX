@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer</name>
+    </assembly>
+    <members>
+        <member name="T:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.MigrateSqlDatabase`1">
+            <summary>
+            A startup task that calls <see cref="M:Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.Migrate(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade)"/> on a <typeparamref name="TDbContext"/> instance.
+            </summary>
+            <typeparam name="TDbContext">The type of the <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> to use.</typeparam>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.MigrateSqlDatabase`1.#ctor(`0)">
+            <summary>
+            Create a new task that can migrate the database.
+            </summary>
+            <param name="dbContext">The instance of <typeparamref name="TDbContext"/> to use for applying migrations.</param>
+        </member>
+        <member name="P:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.MigrateSqlDatabase`1.DbContext">
+            <summary>
+            The instance of <typeparamref name="TDbContext"/> to use for applying migrations.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.MigrateSqlDatabase`1.OnBeforeHostStartsAsync(Microsoft.AspNetCore.Hosting.IWebHost)">
+            <summary>
+            Applies all migrations to the database.
+            </summary>
+            <param name="webHost">The host to use for migrations.</param>
+            <returns>A completed task.</returns>
+        </member>
+        <member name="T:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.WebHostingExtensions">
+            <summary>
+            Contains extensions for configuring the <see cref="T:Microsoft.AspNetCore.Hosting.IWebHost"/> with Kraken modules and services.
+            </summary>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.WebHostingExtensions.MigrateSqlDatabase(Microsoft.AspNetCore.Hosting.IWebHost)">
+            <summary>
+            Migrate an SQL database using Entity Framework Core migrations with the default <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>.
+            </summary>
+            <param name="webHost">The host to execute the startup task on.</param>
+            <returns>The <paramref name="webHost"/>, after the startup task finished.</returns>
+        </member>
+        <member name="M:MutatorFX.Kraken.AspNetCore.EntityFrameworkCore.SqlServer.WebHostingExtensions.MigrateSqlDatabase``1(Microsoft.AspNetCore.Hosting.IWebHost)">
+            <summary>
+            Migrate an SQL database using Entity Framework Core migrations with a given <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> type.
+            </summary>
+            <typeparam name="T">The type of DbContext to use for migrations.</typeparam>
+            <param name="webHost">The host to execute the startup task on.</param>
+            <returns>The <paramref name="webHost"/>, after the startup task finished.</returns>
+        </member>
+    </members>
+</doc>

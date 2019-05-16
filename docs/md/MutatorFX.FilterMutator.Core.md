@@ -568,25 +568,11 @@ Create a new clause used for filtering.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| filterClauseSelector | [System.Linq.Expressions.Expression{System.Func{\`1,\`2}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`1,`2}}') | A selector that can be used to aquire the clause value from a given filter. As 
-it is an Expression, it can be used to rationalize about a collection of clauses. |
-| filterPredicate | [System.Func{\`2,System.Linq.Expressions.Expression{System.Func{\`0,System.Boolean}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}}') | The predicate factory to use when building the filtering expressions. Can be a lambda,
-that gets the selected clause value from the filter as parameter, that returns another lamdbda
-that uses closure on the outer clause parameter to apply dynamically parametered filtering.
-
-
-
-Example:
-
-```csharp
-(clause: Clause) =&gt; (source: TSource) =&gt; source.Name.Contains(clause);  
-``` |
-| onDisabledFilterPredicate | [System.Linq.Expressions.Expression{System.Func{\`0,System.Boolean}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}') | A predicate that gets used instead of 
-`filterPredicate`when the clause is considered disabled. |
-| isClauseEnabled | [System.Func{\`1,System.Boolean}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`1,System.Boolean}') | A predicate that indicates whether the clause is to be
-considered enabled. |
-| options | [System.Collections.Generic.Dictionary{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.Dictionary 'System.Collections.Generic.Dictionary{System.String,System.Object}') | Additional untyped options. Can be used for extensibility to add 
-state or configuration to the clause via extensions. |
+| filterClauseSelector | [System.Linq.Expressions.Expression{System.Func{\`1,\`2}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`1,`2}}') | A selector that can be used to aquire the clause value from a given filter. As it is an Expression, it can be used to rationalize about a collection of clauses. |
+| filterPredicate | [System.Func{\`2,System.Linq.Expressions.Expression{System.Func{\`0,System.Boolean}}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`2,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}}') | The predicate factory to use when building the filtering expressions. Can be a lambda, that gets the selected clause value from the filter as parameter, that returns another lamdbda that uses closure on the outer clause parameter to apply dynamically parametered filtering. |
+| onDisabledFilterPredicate | [System.Linq.Expressions.Expression{System.Func{\`0,System.Boolean}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Linq.Expressions.Expression 'System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}') | A predicate that gets used instead of `filterPredicate`when the clause is considered disabled. |
+| isClauseEnabled | [System.Func{\`1,System.Boolean}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{`1,System.Boolean}') | A predicate that indicates whether the clause is to beconsidered enabled. |
+| options | [System.Collections.Generic.Dictionary{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.Dictionary 'System.Collections.Generic.Dictionary{System.String,System.Object}') | Additional untyped options. Can be used for extensibility to add state or configuration to the clause via extensions. |
 
 <a name='P-MutatorFX-FilterMutator-FilterClause`3-ClauseExpression'></a>
 ### ClauseExpression `property`
