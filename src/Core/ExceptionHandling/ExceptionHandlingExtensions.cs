@@ -19,6 +19,6 @@ namespace MutatorFX.ExceptionHandling
         /// If the <paramref name="exception"/> was null, null will be returned.</returns>
         public static TException WithData<TException>(this TException exception, object data)
             where TException : Exception
-            => exception.Branch(e => e != null && data != null, e => e.Do(ex => data.GetType().GetProperties().For(p => e.Data.Add(p.Name, p.GetValue(data)))));
+            => exception.Branch(e => e != null && data != null, e => e.Do(ex => data.GetType().GetProperties().For(p => e.Data.Add(p.Name, p.GetValue(data)))), _ => exception);
     }
 }
